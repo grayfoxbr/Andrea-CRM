@@ -49,6 +49,10 @@ public class GatewayConfig {
                                 "/api/leads/**",
                                 "/api/deals/**",
                                 "/api/activities/**",
+                                "/api/clients/**",   // <-- Novo endpoint
+                                "/api/client-tasks/**",
+                                "/api/leads/**",
+                                "/api/lead-tasks/**",
                                 "/public/**",
                                 "/privado/**"
                         )
