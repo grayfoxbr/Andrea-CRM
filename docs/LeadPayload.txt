@@ -1,0 +1,15 @@
+{
+  "date": "2025-06-15",
+  "communicationChannel": "E-mail",
+  "location": "Curitiba",
+  "offer": "Consultoria Empresarial",
+  "isLead": true,
+  "company": {
+    "companyName": "InovaTech Solutions",
+    "cnpj": "12.345.678/0001-90",
+    "description": "Empresa especializada em soluções de tecnologia para negócios.",
+    "companyEmail": "contato@innovatech.com",
+    "companyPhoneNumber": "(41) 98765-4321",
+    "businessArea": "Tecnologia da Informação"
+  }
+}

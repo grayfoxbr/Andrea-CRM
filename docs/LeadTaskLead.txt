@@ -1,0 +1,12 @@
+{
+  "contact": "Maria Oliveira",
+  "place": "Escritório Regional",
+  "contactMethod": "WhatsApp",
+  "feedback": "Interessada na proposta",
+  "taskBegin": "2025-06-20",
+  "taskEnd": "2025-06-21",
+  "taskStatus": "Em processo",
+  "lead": {
+    "leadId": 2
+  }
+}

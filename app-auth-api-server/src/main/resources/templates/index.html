@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" class="h-full bg-slate-950 text-slate-100">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HermeCRM Dashboard</title>
+    <!-- Tailwind CSS (via local main.css or CDN fallback for UI safety) -->
+    <link th:href="@{/main.css}" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .glass {
+            background: rgba(15, 23, 42, 0.45);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-hover:hover {
+            background: rgba(30, 41, 59, 0.6);
+            border-color: rgba(99, 102, 241, 0.4);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.15);
+            transform: translateY(-2px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glow {
+            text-shadow: 0 0 10px rgba(99, 102, 241, 0.6);
+        }
+        .kanban-col {
+            min-height: 400px;
+        }
+    </style>
+</head>
+<body class="h-full font-sans antialiased overflow-hidden">
+
+<div class="flex h-full">
+    <!-- Sidebar -->
+    <aside class="w-64 glass flex flex-col justify-between p-6 border-r border-slate-800">
+        <div>
+            <!-- Logo -->
+            <div class="flex items-center space-x-3 mb-10">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center font-bold text-white text-xl shadow-lg shadow-indigo-500/30">H</div>
+                <span class="text-xl font-bold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">HermeCRM</span>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="space-y-2">
+                <button onclick="switchTab('dashboard')" id="btn-dashboard" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 font-medium">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2v-4zM14 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2v-4z"/></svg>
+                    <span>Dashboard</span>
+                </button>
+                <button onclick="switchTab('leads')" id="btn-leads" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition text-slate-400 hover:text-slate-200 hover:bg-slate-800/40">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                    <span>Leads</span>
+                </button>
+                <button onclick="switchTab('deals')" id="btn-deals" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition text-slate-400 hover:text-slate-200 hover:bg-slate-800/40">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                    <span>Funil (Kanban)</span>
+                </button>
+                <button onclick="switchTab('activities')" id="btn-activities" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition text-slate-400 hover:text-slate-200 hover:bg-slate-800/40">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                    <span>Atividades</span>
+                </button>
+            </nav>
+        </div>
+
+        <!-- User Info & Logout -->
+        <div class="border-t border-slate-800 pt-6 flex flex-col space-y-4">
+            <div class="flex items-center space-x-3">
+                <img src="https://i.pravatar.cc/100?img=33" class="w-10 h-10 rounded-full border border-indigo-500/50" alt="Avatar">
+                <div>
+                    <p class="font-medium text-slate-200">Raul Angels</p>
+                    <p class="text-xs text-indigo-400">Administrador</p>
+                </div>
+            </div>
+            <form th:action="@{/logout}" method="post">
+                <button type="submit" class="w-full py-2.5 rounded-xl border border-red-500/20 text-red-400 bg-red-500/5 hover:bg-red-500/10 transition flex items-center justify-center space-x-2 font-medium">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+                    <span>Sair</span>
+                </button>
+            </form>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 overflow-y-auto p-8 relative">
+        <!-- Glow accents -->
+        <div class="absolute top-0 right-0 w-96 h-96 bg-indigo-500/5 rounded-full filter blur-[120px] pointer-events-none"></div>
+        <div class="absolute bottom-0 left-1/3 w-96 h-96 bg-purple-500/5 rounded-full filter blur-[120px] pointer-events-none"></div>
+
+        <!-- TAB: DASHBOARD -->
+        <section id="tab-dashboard" class="space-y-8">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-3xl font-extrabold text-white tracking-wide">Bem-vindo, Raul!</h1>
+                    <p class="text-slate-400">Aqui está um resumo do pipeline de vendas hoje.</p>
+                </div>
+            </div>
+
+            <!-- Dashboard Stats Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="glass glass-hover p-6 rounded-2xl flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-semibold text-slate-400 uppercase tracking-wider">Total de Oportunidades</p>
+                        <h3 id="stat-total-deals" class="text-3xl font-black text-white mt-2 glow">0</h3>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-400 border border-indigo-500/20">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                    </div>
+                </div>
+                <div class="glass glass-hover p-6 rounded-2xl flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-semibold text-slate-400 uppercase tracking-wider">Valor em Pipeline</p>
+                        <h3 id="stat-pipeline-value" class="text-3xl font-black text-white mt-2 glow">R$ 0,00</h3>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-400 border border-emerald-500/20">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    </div>
+                </div>
+                <div class="glass glass-hover p-6 rounded-2xl flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-semibold text-slate-400 uppercase tracking-wider">Cache do Dashboard (Redis)</p>
+                        <h3 id="stat-cache-status" class="text-sm font-bold text-indigo-400 mt-2">Pronto para Carregar</h3>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-400 border border-purple-500/20">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Welcome/Details panel -->
+            <div class="glass p-8 rounded-3xl relative overflow-hidden flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="z-10 space-y-4">
+                    <h2 class="text-2xl font-bold text-white">Como Funciona esta Integração com o Redis?</h2>
+                    <p class="text-slate-300 max-w-xl">
+                        O total de negócios e o valor do pipeline acima são lidos do cache do **Redis**. 
+                        Ao criar, editar ou excluir uma oportunidade na aba **Funil (Kanban)**, a chave de cache `crm::web::dashboard::summary` é apagada automaticamente. A próxima leitura buscará os dados novos do PostgreSQL e recriará o cache no Redis.
+                    </p>
+                </div>
+                <div class="w-48 h-48 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 rounded-full flex items-center justify-center border border-indigo-500/30">
+                    <span class="text-lg font-black text-indigo-300 tracking-widest uppercase">Redis Caching</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB: LEADS -->
+        <section id="tab-leads" class="hidden space-y-8">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-3xl font-extrabold text-white">Leads Qualificados</h1>
+                    <p class="text-slate-400">Gerencie potenciais clientes que entraram em contato.</p>
+                </div>
+                <button onclick="openModal('modal-lead')" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl transition font-semibold shadow-lg shadow-indigo-600/30 flex items-center space-x-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                    <span>Novo Lead</span>
+                </button>
+            </div>
+
+            <!-- Leads Table -->
+            <div class="glass rounded-2xl overflow-hidden">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-900/50 border-b border-slate-800 text-slate-400 font-semibold text-sm">
+                            <th class="p-4">Nome</th>
+                            <th class="p-4">Empresa</th>
+                            <th class="p-4">E-mail</th>
+                            <th class="p-4">Telefone</th>
+                            <th class="p-4">Status</th>
+                            <th class="p-4">Origem</th>
+                            <th class="p-4">Responsável</th>
+                            <th class="p-4 text-right">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leads-list">
+                        <!-- Leads list items will be injected here -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- TAB: DEALS (KANBAN) -->
+        <section id="tab-deals" class="hidden space-y-8">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-3xl font-extrabold text-white">Funil de Vendas (Kanban)</h1>
+                    <p class="text-slate-400">Acompanhe seus negócios em andamento e mude suas etapas.</p>
+                </div>
+                <button onclick="openModal('modal-deal')" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl transition font-semibold shadow-lg shadow-indigo-600/30 flex items-center space-x-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                    <span>Novo Negócio</span>
+                </button>
+            </div>
+
+            <!-- Kanban Board Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-6 gap-4 overflow-x-auto pb-4">
+                <!-- Column: Prospecting -->
+                <div class="glass p-4 rounded-2xl flex flex-col space-y-4 min-w-[200px]">
+                    <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+                        <span class="font-bold text-sm text-slate-300">Prospecção</span>
+                        <span class="text-xs px-2 py-0.5 rounded bg-slate-800 text-slate-400 font-semibold" id="count-PROSPECTING">0</span>
+                    </div>
+                    <div class="space-y-3 kanban-col" id="col-PROSPECTING"></div>
+                </div>
+
+                <!-- Column: Qualification -->
+                <div class="glass p-4 rounded-2xl flex flex-col space-y-4 min-w-[200px]">
+                    <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+                        <span class="font-bold text-sm text-indigo-400">Qualificação</span>
+                        <span class="text-xs px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-400 font-semibold" id="count-QUALIFICATION">0</span>
+                    </div>
+                    <div class="space-y-3 kanban-col" id="col-QUALIFICATION"></div>
+                </div>
+
+                <!-- Column: Proposal -->
+                <div class="glass p-4 rounded-2xl flex flex-col space-y-4 min-w-[200px]">
+                    <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+                        <span class="font-bold text-sm text-yellow-400">Proposta</span>
+                        <span class="text-xs px-2 py-0.5 rounded bg-yellow-500/10 text-yellow-400 font-semibold" id="count-PROPOSAL">0</span>
+                    </div>
+                    <div class="space-y-3 kanban-col" id="col-PROPOSAL"></div>
+                </div>
+
+                <!-- Column: Negotiation -->
+                <div class="glass p-4 rounded-2xl flex flex-col space-y-4 min-w-[200px]">
+                    <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+                        <span class="font-bold text-sm text-purple-400">Negociação</span>
+                        <span class="text-xs px-2 py-0.5 rounded bg-purple-500/10 text-purple-400 font-semibold" id="count-NEGOTIATION">0</span>
+                    </div>
+                    <div class="space-y-3 kanban-col" id="col-NEGOTIATION"></div>
+                </div>
+
+                <!-- Column: Won -->
+                <div class="glass p-4 rounded-2xl flex flex-col space-y-4 min-w-[200px]">
+                    <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+                        <span class="font-bold text-sm text-emerald-400">Ganhos</span>
+                        <span class="text-xs px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-semibold" id="count-WON">0</span>
+                    </div>
+                    <div class="space-y-3 kanban-col" id="col-WON"></div>
+                </div>
+
+                <!-- Column: Lost -->
+                <div class="glass p-4 rounded-2xl flex flex-col space-y-4 min-w-[200px]">
+                    <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+                        <span class="font-bold text-sm text-rose-400">Perdidos</span>
+                        <span class="text-xs px-2 py-0.5 rounded bg-rose-500/10 text-rose-400 font-semibold" id="count-LOST">0</span>
+                    </div>
+                    <div class="space-y-3 kanban-col" id="col-LOST"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB: ACTIVITIES -->
+        <section id="tab-activities" class="hidden space-y-8">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-3xl font-extrabold text-white">Tarefas e Compromissos</h1>
+                    <p class="text-slate-400">Acompanhe e marque suas atividades de acompanhamento como concluídas.</p>
+                </div>
+                <button onclick="openModal('modal-activity')" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl transition font-semibold shadow-lg shadow-indigo-600/30 flex items-center space-x-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                    <span>Nova Atividade</span>
+                </button>
+            </div>
+
+            <!-- Activities List -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="activities-list">
+                <!-- Activities list injected here -->
+            </div>
+        </section>
+    </main>
+</div>
+
+<!-- MODAL: CREATE LEAD -->
+<div id="modal-lead" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
+    <div class="glass max-w-md w-full p-8 rounded-3xl space-y-6">
+        <h2 class="text-2xl font-bold text-white">Criar Novo Lead</h2>
+        <form onsubmit="handleCreateLead(event)" class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-slate-300">Primeiro Nome</label>
+                <input id="lead-firstName" type="text" required class="mt-1.5 w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-white focus:border-indigo-500 focus:outline-none">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-slate-300">Sobrenome</label>
+                <input id="lead-lastName" type="text" required class="mt-1.5 w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-white focus:border-indigo-500 focus:outline-none">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-slate-300">Empresa</label>
+                <input id="lead-companyName" type="text" class="mt-1.5 w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-white focus:border-indigo-500 focus:outline-none">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-slate-300">E-mail</label>
+                <input id="lead-email" type="email" class="mt-1.5 w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-white focus:border-indigo-500 focus:outline-none">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-slate-300">Telefone</label>
+                <input id="lead-phone" type="text" class="mt-1.5 w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-white focus:border-indigo-500 focus:outline-none">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-slate-300">Origem do Lead</label>
+                <input id="lead-source" type="text" placeholder="ex: LinkedIn, Site, Indicação" class="mt-1.5 w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-white focus:border-indigo-500 focus:outline-none">
+            </div>
+            <div class="flex justify-end space-x-3 pt-4">
+                <button type="button" onclick="closeModal('modal-lead')" class="px-5 py-2.5 rounded-xl text-slate-400 bg-slate-800/40 hover:bg-slate-800 hover:text-slate-200 transition">Cancelar</button>
+                <button type="submit" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl transition font-semibold shadow-lg shadow-indigo-600/30">Salvar Lead</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- MODAL: CREATE DEAL -->
+<div id="modal-deal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
+    <div class="glass max-w-md w-full p-8 rounded-3xl space-y-6">
+        <h2 class="text-2xl font-bold text-white">Criar Oportunidade de Negócio</h2>
+        <form onsubmit="handleCreateDeal(event)" class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-slate-300">Nome do Negócio</label>
+                <input id="deal-name" type="text" required placeholder="ex: Licença Enterprise XYZ" class="mt-1.5 w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-white focus:border-indigo-500 focus:outline-none">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-slate-300">Valor (R$)</label>
+                <input id="deal-amount" type="number" step="0.01" required placeholder="ex: 15000" class="mt-1.5 w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-white focus:border-indigo-500 focus:outline-none">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-slate-300">Estágio do Funil</label>
+                <select id="deal-stage" class="mt-1.5 w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-white focus:border-indigo-500 focus:outline-none">
+                    <option value="PROSPECTING">Prospecção</option>
+                    <option value="QUALIFICATION">Qualificação</option>
+                    <option value="PROPOSAL">Proposta</option>
+                    <option value="NEGOTIATION">Negociação</option>
+                    <option value="WON">Ganho (Vendido)</option>
+                    <option value="LOST">Perdido</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-slate-300">Probabilidade de Fechamento (%)</label>
+                <input id="deal-probability" type="number" min="0" max="100" default="10" class="mt-1.5 w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-white focus:border-indigo-500 focus:outline-none">
+            </div>
+            <div class="flex justify-end space-x-3 pt-4">
+                <button type="button" onclick="closeModal('modal-deal')" class="px-5 py-2.5 rounded-xl text-slate-400 bg-slate-800/40 hover:bg-slate-800 hover:text-slate-200 transition">Cancelar</button>
+                <button type="submit" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl transition font-semibold shadow-lg shadow-indigo-600/30">Salvar Oportunidade</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- MODAL: CREATE ACTIVITY -->
+<div id="modal-activity" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
+    <div class="glass max-w-md w-full p-8 rounded-3xl space-y-6">
+        <h2 class="text-2xl font-bold text-white">Criar Nova Atividade</h2>
+        <form onsubmit="handleCreateActivity(event)" class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-slate-300">Título / Assunto</label>
+                <input id="act-title" type="text" required placeholder="ex: Ligar para confirmar proposta" class="mt-1.5 w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-white focus:border-indigo-500 focus:outline-none">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-slate-300">Tipo de Atividade</label>
+                <select id="act-type" class="mt-1.5 w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-white focus:border-indigo-500 focus:outline-none">
+                    <option value="CALL">Chamada</option>
+                    <option value="EMAIL">E-mail</option>
+                    <option value="MEETING">Reunião</option>
+                    <option value="TASK">Tarefa</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-slate-300">Data de Vencimento</label>
+                <input id="act-dueDate" type="datetime-local" required class="mt-1.5 w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-white focus:border-indigo-500 focus:outline-none">
+            </div>
+            <div class="flex justify-end space-x-3 pt-4">
+                <button type="button" onclick="closeModal('modal-activity')" class="px-5 py-2.5 rounded-xl text-slate-400 bg-slate-800/40 hover:bg-slate-800 hover:text-slate-200 transition">Cancelar</button>
+                <button type="submit" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl transition font-semibold shadow-lg shadow-indigo-600/30">Salvar Atividade</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Tab switching logic
+    function switchTab(tabId) {
+        document.querySelectorAll('main > section').forEach(sec => sec.classList.add('hidden'));
+        document.getElementById('tab-' + tabId).classList.remove('hidden');
+
+        document.querySelectorAll('aside nav button').forEach(btn => {
+            btn.className = "w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition text-slate-400 hover:text-slate-200 hover:bg-slate-800/40";
+        });
+        const activeBtn = document.getElementById('btn-' + tabId);
+        activeBtn.className = "w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 font-medium";
+
+        // Refresh tab data
+        if (tabId === 'dashboard') loadDashboard();
+        if (tabId === 'leads') loadLeads();
+        if (tabId === 'deals') loadDeals();
+        if (tabId === 'activities') loadActivities();
+    }
+
+    // Modal Control
+    function openModal(id) {
+        document.getElementById(id).classList.remove('hidden');
+    }
+    function closeModal(id) {
+        document.getElementById(id).classList.add('hidden');
+    }
+
+    // Load Dashboard Summary (cached in Redis)
+    function loadDashboard() {
+        const start = performance.now();
+        fetch('/api/web/dashboard')
+            .then(res => res.json())
+            .then(data => {
+                const end = performance.now();
+                document.getElementById('stat-total-deals').innerText = data.totalDeals;
+                document.getElementById('stat-pipeline-value').innerText = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(data.totalPipelineValue || 0);
+                document.getElementById('stat-cache-status').innerText = `Carregado em ${(end - start).toFixed(2)} ms`;
+            })
+            .catch(err => console.error('Erro ao carregar dashboard', err));
+    }
+
+    // Load Leads
+    function loadLeads() {
+        fetch('/api/web/leads')
+            .then(res => res.json())
+            .then(leads => {
+                const list = document.getElementById('leads-list');
+                list.innerHTML = '';
+                leads.forEach(lead => {
+                    list.innerHTML += `
+                        <tr class="border-b border-slate-900/60 hover:bg-slate-800/20 transition text-slate-300 text-sm">
+                            <td class="p-4 font-semibold text-slate-200">${lead.firstName} ${lead.lastName}</td>
+                            <td class="p-4">${lead.companyName || '-'}</td>
+                            <td class="p-4">${lead.email || '-'}</td>
+                            <td class="p-4">${lead.phone || '-'}</td>
+                            <td class="p-4">
+                                <span class="text-xs px-2.5 py-1 rounded-full font-semibold ${lead.status === 'NEW' ? 'bg-indigo-500/10 text-indigo-400' : 'bg-green-500/10 text-green-400'}">${lead.status}</span>
+                            </td>
+                            <td class="p-4">${lead.leadSource || '-'}</td>
+                            <td class="p-4">
+                                <span class="text-xs px-2.5 py-1 rounded bg-slate-800 border border-slate-700 text-indigo-300 font-semibold">${lead.assignedTo || 'Não atribuído'}</span>
+                            </td>
+                            <td class="p-4 text-right">
+                                <button onclick="deleteLead(${lead.id})" class="text-red-400 hover:text-red-300 font-semibold">Excluir</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            })
+            .catch(err => console.error(err));
+    }
+
+    // Create Lead Action
+    function handleCreateLead(event) {
+        event.preventDefault();
+        const payload = {
+            firstName: document.getElementById('lead-firstName').value,
+            lastName: document.getElementById('lead-lastName').value,
+            companyName: document.getElementById('lead-companyName').value,
+            email: document.getElementById('lead-email').value,
+            phone: document.getElementById('lead-phone').value,
+            leadSource: document.getElementById('lead-source').value
+        };
+
+        fetch('/api/web/leads', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        })
+        .then(res => {
+            closeModal('modal-lead');
+            loadLeads();
+        })
+        .catch(err => console.error(err));
+    }
+
+    // Delete Lead Action
+    function deleteLead(id) {
+        if(confirm("Tem certeza que deseja excluir este Lead?")) {
+            fetch('/api/web/leads/' + id, { method: 'DELETE' })
+                .then(() => loadLeads())
+                .catch(err => console.error(err));
+        }
+    }
+
+    // Load Deals (Kanban columns)
+    const stages = ['PROSPECTING', 'QUALIFICATION', 'PROPOSAL', 'NEGOTIATION', 'WON', 'LOST'];
+    function loadDeals() {
+        fetch('/api/web/deals')
+            .then(res => res.json())
+            .then(deals => {
+                stages.forEach(stage => {
+                    document.getElementById('col-' + stage).innerHTML = '';
+                    document.getElementById('count-' + stage).innerText = '0';
+                });
+
+                const counts = {};
+                deals.forEach(deal => {
+                    const col = document.getElementById('col-' + deal.pipelineStage);
+                    counts[deal.pipelineStage] = (counts[deal.pipelineStage] || 0) + 1;
+                    
+                    col.innerHTML += `
+                        <div class="glass p-4 rounded-xl flex flex-col space-y-3 text-slate-300 relative group border border-slate-800/80">
+                            <div>
+                                <h4 class="font-bold text-slate-200 text-sm">${deal.name}</h4>
+                                <p class="text-xs text-indigo-400 font-bold mt-1">${new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(deal.amount)}</p>
+                            </div>
+                            <div class="flex justify-between items-center pt-2 border-t border-slate-900">
+                                <span class="text-[10px] text-slate-500 font-semibold">Prob. ${deal.probability}%</span>
+                                <div class="flex space-x-1.5">
+                                    <button onclick="moveDeal(${deal.id}, '${deal.pipelineStage}', -1)" class="w-6 h-6 rounded bg-slate-800/60 hover:bg-slate-700 text-xs flex items-center justify-center">◀</button>
+                                    <button onclick="moveDeal(${deal.id}, '${deal.pipelineStage}', 1)" class="w-6 h-6 rounded bg-slate-800/60 hover:bg-slate-700 text-xs flex items-center justify-center">▶</button>
+                                    <button onclick="deleteDeal(${deal.id})" class="text-red-400 hover:text-red-300 text-xs font-semibold px-1">✕</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                Object.keys(counts).forEach(stage => {
+                    document.getElementById('count-' + stage).innerText = counts[stage];
+                });
+            })
+            .catch(err => console.error(err));
+    }
+
+    // Create Deal Action
+    function handleCreateDeal(event) {
+        event.preventDefault();
+        const payload = {
+            name: document.getElementById('deal-name').value,
+            amount: parseFloat(document.getElementById('deal-amount').value),
+            pipelineStage: document.getElementById('deal-stage').value,
+            probability: parseInt(document.getElementById('deal-probability').value) || 10
+        };
+
+        fetch('/api/web/deals', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        })
+        .then(() => {
+            closeModal('modal-deal');
+            loadDeals();
+            loadDashboard();
+        })
+        .catch(err => console.error(err));
+    }
+
+    // Move Deal inside Kanban columns
+    function moveDeal(id, currentStage, direction) {
+        const currentIndex = stages.indexOf(currentStage);
+        const nextIndex = currentIndex + direction;
+        if(nextIndex >= 0 && nextIndex < stages.length) {
+            const nextStage = stages[nextIndex];
+            fetch('/api/web/deals/' + id)
+                .then(res => res.json())
+                .then(deal => {
+                    deal.pipelineStage = nextStage;
+                    return fetch('/api/web/deals/' + id, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(deal)
+                    });
+                })
+                .then(() => {
+                    loadDeals();
+                    loadDashboard();
+                })
+                .catch(err => console.error(err));
+        }
+    }
+
+    // Delete Deal Action
+    function deleteDeal(id) {
+        if(confirm("Deseja deletar este negócio?")) {
+            fetch('/api/web/deals/' + id, { method: 'DELETE' })
+                .then(() => {
+                    loadDeals();
+                    loadDashboard();
+                })
+                .catch(err => console.error(err));
+        }
+    }
+
+    // Load Activities
+    function loadActivities() {
+        fetch('/api/web/activities')
+            .then(res => res.json())
+            .then(activities => {
+                const list = document.getElementById('activities-list');
+                list.innerHTML = '';
+                activities.forEach(act => {
+                    const parsedDate = new Date(act.dueDate).toLocaleDateString('pt-BR', { hour: '2-digit', minute:'2-digit'});
+                    list.innerHTML += `
+                        <div class="glass p-5 rounded-2xl flex items-center justify-between border ${act.status === 'COMPLETED' ? 'border-emerald-500/20 bg-emerald-500/5' : 'border-slate-800'}">
+                            <div class="flex items-center space-x-4">
+                                <button onclick="toggleActivity(${act.id}, '${act.status}')" class="w-6 h-6 rounded-full border-2 ${act.status === 'COMPLETED' ? 'bg-emerald-500 border-emerald-400' : 'border-slate-600 hover:border-indigo-400'} flex items-center justify-center">
+                                    ${act.status === 'COMPLETED' ? '✓' : ''}
+                                </button>
+                                <div>
+                                    <h4 class="font-bold text-slate-200 ${act.status === 'COMPLETED' ? 'line-through text-slate-500' : ''}">${act.title}</h4>
+                                    <p class="text-xs text-slate-400 mt-0.5">Vence em: ${parsedDate} • Tipo: ${act.type}</p>
+                                </div>
+                            </div>
+                            <button onclick="deleteActivity(${act.id})" class="text-red-400 hover:text-red-300 font-semibold text-sm">Excluir</button>
+                        </div>
+                    `;
+                });
+            })
+            .catch(err => console.error(err));
+    }
+
+    // Create Activity Action
+    function handleCreateActivity(event) {
+        event.preventDefault();
+        const payload = {
+            title: document.getElementById('act-title').value,
+            type: document.getElementById('act-type').value,
+            dueDate: document.getElementById('act-dueDate').value
+        };
+
+        fetch('/api/web/activities', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        })
+        .then(() => {
+            closeModal('modal-activity');
+            loadActivities();
+        })
+        .catch(err => console.error(err));
+    }
+
+    // Toggle Activity Status
+    function toggleActivity(id, currentStatus) {
+        const nextStatus = currentStatus === 'PENDING' ? 'COMPLETED' : 'PENDING';
+        fetch('/api/web/activities')
+            .then(res => res.json())
+            .then(list => {
+                const act = list.find(a => a.id === id);
+                act.status = nextStatus;
+                return fetch('/api/web/activities/' + id, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(act)
+                });
+            })
+            .then(() => loadActivities())
+            .catch(err => console.error(err));
+    }
+
+    // Delete Activity Action
+    function deleteActivity(id) {
+        if(confirm("Tem certeza que deseja excluir esta atividade?")) {
+            fetch('/api/web/activities/' + id, { method: 'DELETE' })
+                .then(() => loadActivities())
+                .catch(err => console.error(err));
+        }
+    }
+
+    // Init Page load
+    loadDashboard();
+</script>
+</body>
+</html>
