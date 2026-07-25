@@ -1,0 +1,1 @@
+$challenge = [Convert]::ToBase64String(([System.Security.Cryptography.SHA256]::Create()).ComputeHash([System.Text.Encoding]::ASCII.GetBytes($verifier))).Replace('+','-').Replace('/','_').TrimEnd('='); $challenge

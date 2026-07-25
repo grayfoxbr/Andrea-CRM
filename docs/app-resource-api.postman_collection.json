@@ -1,0 +1,440 @@
+{
+  "info": {
+    "name": "App Resource API",
+    "description": "Coleção para testar o fluxo de autenticação (app-auth-api-server) e os endpoints do módulo app-resource-api (Leads, Lead Tasks, Clients, Client Tasks e endpoints de teste JWT).\n\nBase URLs:\n- authBaseUrl: http://localhost:8080 (app-auth-api-server, direto)\n- baseUrl: http://localhost:8081 (app-resource-api, direto)\n\nSe preferir passar tudo pelo gateway (app-gateway), troque ambas para http://localhost:8082 — as rotas /oauth2/**, /login/**, /users, /callback (auth) e /api/**, /public/**, /privado/** (resource) são roteadas por lá também.\n\nFluxo recomendado para testar os endpoints protegidos:\n1. (Opcional) Rode 'Cadastrar usuário' para criar uma conta, ou use o usuário seed 'admin' / senha '123456'.\n2. Rode 'Authorization Code + PKCE (via aba Authorization)' — o Postman abre um popup de login; faça login com usuário/senha e o token é obtido automaticamente.\n3. Copie o access_token retornado para a variável {{jwtToken}} (ou use o botão 'Use Token' do Postman).\n4. Chame os endpoints /privado/** ou os do resource-api normalmente.\n\nAlternativa manual: use 'Obter Authorization Code (navegador manual)' + 'Trocar código por token (POST /oauth2/token)' para montar o fluxo passo a passo (esse último já salva {{jwtToken}} e {{refreshToken}} automaticamente via script de teste).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_postman_id": "b6c2a6b0-0000-4000-8000-000000000001"
+  },
+  "variable": [
+    { "key": "authBaseUrl", "value": "http://localhost:8080", "type": "string" },
+    { "key": "baseUrl", "value": "http://localhost:8081", "type": "string" },
+    { "key": "clientId", "value": "meu-client", "type": "string" },
+    { "key": "redirectUri", "value": "http://localhost:8081/login/oauth2/code/meu-client", "type": "string" },
+    { "key": "scope", "value": "openid profile email read write", "type": "string" },
+    { "key": "codeVerifier", "value": "", "type": "string" },
+    { "key": "codeChallenge", "value": "", "type": "string" },
+    { "key": "authCode", "value": "", "type": "string" },
+    { "key": "jwtToken", "value": "", "type": "string" },
+    { "key": "refreshToken", "value": "", "type": "string" },
+    { "key": "leadId", "value": "1", "type": "string" },
+    { "key": "leadTaskId", "value": "1", "type": "string" },
+    { "key": "clientId2", "value": "1", "type": "string" },
+    { "key": "clientTaskId", "value": "1", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "Autenticação (app-auth-api-server)",
+      "item": [
+        {
+          "name": "Cadastrar usuário (POST /users)",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"novo.usuario@example.com\",\n  \"password\": \"senha123\"\n}"
+            },
+            "url": { "raw": "{{authBaseUrl}}/users", "host": ["{{authBaseUrl}}"], "path": ["users"] },
+            "description": "Cria um novo usuário. Não exige autenticação (permitAll no SecurityConfig). Retorna 201 com id e email, ou 409 se o e-mail já existir. Use este usuário depois no fluxo de login."
+          }
+        },
+        {
+          "name": "Login via formulário (POST /login)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                { "key": "username", "value": "admin", "type": "text" },
+                { "key": "password", "value": "123456", "type": "text" }
+              ]
+            },
+            "url": { "raw": "{{authBaseUrl}}/login", "host": ["{{authBaseUrl}}"], "path": ["login"] },
+            "description": "Login baseado em sessão (form login clássico do Spring Security), usando o usuário seed 'admin' / '123456' (ver V2__seed_data.sql). Cria uma sessão (cookie JSESSIONID) no client de requisições do Postman — útil para navegar as páginas Thymeleaf (/, /login), mas NÃO gera um JWT para os endpoints /privado/** ou do resource-api.\n\nATENÇÃO: como o CSRF não está desabilitado para /login, esta chamada pode retornar 403 se o Postman não enviar um token CSRF válido. Para esse caso, prefira o fluxo OAuth2 (Authorization Code + PKCE) abaixo, que é o mecanismo real usado para emitir tokens."
+          }
+        },
+        {
+          "name": "Authorization Code + PKCE (via aba Authorization)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                { "key": "grantType", "value": "authorization_code_with_pkce", "type": "string" },
+                { "key": "authUrl", "value": "{{authBaseUrl}}/oauth2/authorize", "type": "string" },
+                { "key": "accessTokenUrl", "value": "{{authBaseUrl}}/oauth2/token", "type": "string" },
+                { "key": "clientId", "value": "{{clientId}}", "type": "string" },
+                { "key": "redirectUri", "value": "{{redirectUri}}", "type": "string" },
+                { "key": "scope", "value": "{{scope}}", "type": "string" },
+                { "key": "state", "value": "postman-state-123", "type": "string" },
+                { "key": "challengeAlgorithm", "value": "S256", "type": "string" },
+                { "key": "client_authentication", "value": "header", "type": "string" },
+                { "key": "addTokenTo", "value": "header", "type": "string" },
+                { "key": "tokenName", "value": "resource-api token", "type": "string" }
+              ]
+            },
+            "url": { "raw": "{{authBaseUrl}}/oauth2/authorize", "host": ["{{authBaseUrl}}"], "path": ["oauth2", "authorize"] },
+            "description": "Forma recomendada de obter um JWT: clique em 'Get New Access Token' na aba Authorization deste request. O Postman abre um popup para você fazer login (usuário 'admin' / senha '123456', ou o que você cadastrou), cuida do PKCE automaticamente (o client 'meu-client' exige require-proof-key=true) e troca o código por um access_token.\n\nDepois de gerado, clique em 'Use Token' e copie o valor para a variável de coleção {{jwtToken}} para reaproveitar nos requests 'Privado' e, se quiser, nos do resource-api."
+          }
+        },
+        {
+          "name": "Obter Authorization Code (navegador manual)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{authBaseUrl}}/oauth2/authorize?response_type=code&client_id={{clientId}}&scope={{scope}}&redirect_uri={{redirectUri}}&code_challenge={{codeChallenge}}&code_challenge_method=S256&state=manual-state-123",
+              "host": ["{{authBaseUrl}}"],
+              "path": ["oauth2", "authorize"],
+              "query": [
+                { "key": "response_type", "value": "code" },
+                { "key": "client_id", "value": "{{clientId}}" },
+                { "key": "scope", "value": "{{scope}}" },
+                { "key": "redirect_uri", "value": "{{redirectUri}}" },
+                { "key": "code_challenge", "value": "{{codeChallenge}}" },
+                { "key": "code_challenge_method", "value": "S256" },
+                { "key": "state", "value": "manual-state-123" }
+              ]
+            },
+            "description": "Passo manual do fluxo Authorization Code + PKCE: abra esta URL diretamente no NAVEGADOR (não dá para seguir o redirect de login dentro do Postman), faça login, e você será redirecionado para {{redirectUri}}?code=XXXX&state=... — a página vai dar erro de conexão (pois não existe nada rodando em /login/oauth2/code/meu-client), mas o parâmetro 'code' na URL é o que você precisa.\n\nAntes de usar, gere manualmente {{codeVerifier}} (string aleatória de 43-128 caracteres) e {{codeChallenge}} = BASE64URL(SHA256({{codeVerifier}})) — ou simplesmente use o fluxo automático acima, que faz tudo isso por você."
+          }
+        },
+        {
+          "name": "Trocar código por token (POST /oauth2/token)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const json = pm.response.json();",
+                  "    if (json.access_token) pm.collectionVariables.set('jwtToken', json.access_token);",
+                  "    if (json.refresh_token) pm.collectionVariables.set('refreshToken', json.refresh_token);",
+                  "    console.log('jwtToken e refreshToken atualizados na coleção.');",
+                  "} else {",
+                  "    console.warn('Falha ao obter token:', pm.response.code, pm.response.text());",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                { "key": "grant_type", "value": "authorization_code", "type": "text" },
+                { "key": "code", "value": "{{authCode}}", "type": "text" },
+                { "key": "redirect_uri", "value": "{{redirectUri}}", "type": "text" },
+                { "key": "client_id", "value": "{{clientId}}", "type": "text" },
+                { "key": "code_verifier", "value": "{{codeVerifier}}", "type": "text" }
+              ]
+            },
+            "url": { "raw": "{{authBaseUrl}}/oauth2/token", "host": ["{{authBaseUrl}}"], "path": ["oauth2", "token"] },
+            "description": "Passo final do fluxo manual: cole em {{authCode}} o 'code' obtido no passo anterior (via navegador) e mantenha {{codeVerifier}} igual ao usado para gerar o code_challenge. Client 'meu-client' usa client_authentication_method=none (client público), por isso não é enviado client_secret.\n\nEssa request já salva automaticamente access_token em {{jwtToken}} e refresh_token em {{refreshToken}} (ver aba Tests)."
+          }
+        },
+        {
+          "name": "Renovar token (POST /oauth2/token - refresh_token)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const json = pm.response.json();",
+                  "    if (json.access_token) pm.collectionVariables.set('jwtToken', json.access_token);",
+                  "    if (json.refresh_token) pm.collectionVariables.set('refreshToken', json.refresh_token);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                { "key": "grant_type", "value": "refresh_token", "type": "text" },
+                { "key": "refresh_token", "value": "{{refreshToken}}", "type": "text" },
+                { "key": "client_id", "value": "{{clientId}}", "type": "text" },
+                { "key": "scope", "value": "{{scope}}", "type": "text" }
+              ]
+            },
+            "url": { "raw": "{{authBaseUrl}}/oauth2/token", "host": ["{{authBaseUrl}}"], "path": ["oauth2", "token"] },
+            "description": "Usa o refresh_token (válido por 7 dias, conforme settings.token.refresh-token-time-to-live no seed) para obter um novo access_token sem precisar logar de novo."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Leads",
+      "item": [
+        {
+          "name": "Listar todos os leads",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/leads", "host": ["{{baseUrl}}"], "path": ["api", "leads"] }
+          }
+        },
+        {
+          "name": "Buscar lead por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/leads/{{leadId}}", "host": ["{{baseUrl}}"], "path": ["api", "leads", "{{leadId}}"] }
+          }
+        },
+        {
+          "name": "Criar lead",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"companyId\": 1,\n  \"isLead\": true,\n  \"phoneNumber\": \"+5511988887777\",\n  \"email\": \"lead@example.com\",\n  \"date\": \"2026-07-23\",\n  \"comunicationChannel\": \"WhatsApp\",\n  \"agentName\": \"Raul Angels\",\n  \"location\": \"São Paulo, SP\",\n  \"offer\": \"Plano Enterprise\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/leads", "host": ["{{baseUrl}}"], "path": ["api", "leads"] }
+          }
+        },
+        {
+          "name": "Atualizar lead",
+          "request": {
+            "method": "PUT",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"companyId\": 1,\n  \"isLead\": true,\n  \"phoneNumber\": \"+5511988887777\",\n  \"email\": \"lead@example.com\",\n  \"date\": \"2026-07-23\",\n  \"comunicationChannel\": \"WhatsApp\",\n  \"agentName\": \"Raul Angels\",\n  \"location\": \"São Paulo, SP\",\n  \"offer\": \"Plano Enterprise Atualizado\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/leads/{{leadId}}", "host": ["{{baseUrl}}"], "path": ["api", "leads", "{{leadId}}"] }
+          }
+        },
+        {
+          "name": "Excluir lead",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/leads/{{leadId}}", "host": ["{{baseUrl}}"], "path": ["api", "leads", "{{leadId}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Lead Tasks",
+      "item": [
+        {
+          "name": "Listar todas as lead tasks",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/lead-tasks", "host": ["{{baseUrl}}"], "path": ["api", "lead-tasks"] }
+          }
+        },
+        {
+          "name": "Buscar lead task por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/lead-tasks/{{leadTaskId}}", "host": ["{{baseUrl}}"], "path": ["api", "lead-tasks", "{{leadTaskId}}"] }
+          }
+        },
+        {
+          "name": "Criar lead task",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"leadId\": 1,\n  \"agentName\": \"Raul Angels\",\n  \"place\": \"Escritório\",\n  \"contactMethod\": \"Telefone\",\n  \"meetingLocation\": \"Sala 3\",\n  \"proposal\": \"Proposta comercial enviada\",\n  \"feedback\": \"Aguardando retorno\",\n  \"leadTaskStatus\": \"EM_PROCESSO\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/lead-tasks", "host": ["{{baseUrl}}"], "path": ["api", "lead-tasks"] }
+          }
+        },
+        {
+          "name": "Atualizar lead task",
+          "request": {
+            "method": "PUT",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"leadId\": 1,\n  \"agentName\": \"Raul Angels\",\n  \"place\": \"Escritório\",\n  \"contactMethod\": \"E-mail\",\n  \"meetingLocation\": \"Sala 3\",\n  \"proposal\": \"Proposta revisada\",\n  \"feedback\": \"Cliente aceitou\",\n  \"leadTaskStatus\": \"CONCLUIDO\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/lead-tasks/{{leadTaskId}}", "host": ["{{baseUrl}}"], "path": ["api", "lead-tasks", "{{leadTaskId}}"] }
+          }
+        },
+        {
+          "name": "Excluir lead task",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/lead-tasks/{{leadTaskId}}", "host": ["{{baseUrl}}"], "path": ["api", "lead-tasks", "{{leadTaskId}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Clients",
+      "item": [
+        {
+          "name": "Listar todos os clients",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/clients", "host": ["{{baseUrl}}"], "path": ["api", "clients"] }
+          }
+        },
+        {
+          "name": "Buscar client por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/clients/{{clientId2}}", "host": ["{{baseUrl}}"], "path": ["api", "clients", "{{clientId2}}"] }
+          }
+        },
+        {
+          "name": "Criar client",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"companyId\": 1,\n  \"leadId\": 1\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/clients", "host": ["{{baseUrl}}"], "path": ["api", "clients"] }
+          }
+        },
+        {
+          "name": "Atualizar client",
+          "request": {
+            "method": "PUT",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"companyId\": 1,\n  \"leadId\": 2\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/clients/{{clientId2}}", "host": ["{{baseUrl}}"], "path": ["api", "clients", "{{clientId2}}"] }
+          }
+        },
+        {
+          "name": "Excluir client",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/clients/{{clientId2}}", "host": ["{{baseUrl}}"], "path": ["api", "clients", "{{clientId2}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Client Tasks",
+      "item": [
+        {
+          "name": "Listar todas as client tasks",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/client-tasks", "host": ["{{baseUrl}}"], "path": ["api", "client-tasks"] }
+          }
+        },
+        {
+          "name": "Buscar client task por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/client-tasks/{{clientTaskId}}", "host": ["{{baseUrl}}"], "path": ["api", "client-tasks", "{{clientTaskId}}"] }
+          }
+        },
+        {
+          "name": "Listar client tasks por clientId",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/client-tasks/client/{{clientId2}}", "host": ["{{baseUrl}}"], "path": ["api", "client-tasks", "client", "{{clientId2}}"] }
+          }
+        },
+        {
+          "name": "Criar client task",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"clientId\": 1,\n  \"meetingTopic\": \"Kickoff do projeto\",\n  \"taskBegin\": \"2026-07-23\",\n  \"taskEnd\": \"2026-08-01\",\n  \"projectDescription\": \"Implantação do sistema\",\n  \"notes\": \"Cliente prefere reuniões pela manhã\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/client-tasks", "host": ["{{baseUrl}}"], "path": ["api", "client-tasks"] }
+          }
+        },
+        {
+          "name": "Atualizar client task",
+          "request": {
+            "method": "PUT",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"clientId\": 1,\n  \"meetingTopic\": \"Kickoff do projeto - revisado\",\n  \"taskBegin\": \"2026-07-24\",\n  \"taskEnd\": \"2026-08-05\",\n  \"projectDescription\": \"Implantação do sistema - fase 2\",\n  \"notes\": \"Reagendado a pedido do cliente\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/client-tasks/{{clientTaskId}}", "host": ["{{baseUrl}}"], "path": ["api", "client-tasks", "{{clientTaskId}}"] }
+          }
+        },
+        {
+          "name": "Excluir client task",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/client-tasks/{{clientTaskId}}", "host": ["{{baseUrl}}"], "path": ["api", "client-tasks", "{{clientTaskId}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Teste / JWT",
+      "item": [
+        {
+          "name": "Público (sem token)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/public/hello", "host": ["{{baseUrl}}"], "path": ["public", "hello"] }
+          }
+        },
+        {
+          "name": "Privado - hello (requer JWT)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [ { "key": "token", "value": "{{jwtToken}}", "type": "string" } ]
+            },
+            "url": { "raw": "{{baseUrl}}/privado/hello", "host": ["{{baseUrl}}"], "path": ["privado", "hello"] }
+          }
+        },
+        {
+          "name": "Privado - claims (requer JWT)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [ { "key": "token", "value": "{{jwtToken}}", "type": "string" } ]
+            },
+            "url": { "raw": "{{baseUrl}}/privado/claims", "host": ["{{baseUrl}}"], "path": ["privado", "claims"] }
+          }
+        }
+      ]
+    }
+  ]
+}

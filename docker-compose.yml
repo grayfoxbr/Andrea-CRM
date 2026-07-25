@@ -3,7 +3,7 @@ version: '3.8'
 services:
   postgres:
     image: postgres:15-alpine
-    container_name: hermecard-postgres
+    container_name: andrea-postgres
     environment:
       POSTGRES_DB: hermecarddb
       POSTGRES_USER: postgres
@@ -16,7 +16,7 @@ services:
 
   redis:
     image: redis:7-alpine
-    container_name: hermecard-redis
+    container_name: andrea-redis
     ports:
       - "6379:6379"
     volumes:
