@@ -120,11 +120,19 @@ fun MainNavigation(
 
         // Navigation.kt, dentro de entry<Home>
         entry<Home> {
+
           HomeScreen(
-            accessToken = uiState.accessToken,
-            onLogout = { authViewModel.logout() },
+
+            onLogout = {
+              authViewModel.logout()
+            },
+
             onCompaniesClick = {
-              backStack.add(CompanyList)   // ← é aqui que a navegação acontece
+              backStack.add(CompanyList)
+            },
+
+            onNewCompanyClick = {
+              backStack.add(CompanyForm())
             }
           )
         }
