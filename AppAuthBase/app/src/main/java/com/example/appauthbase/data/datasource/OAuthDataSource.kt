@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import com.example.appauthbase.config.NetworkConfig
 import com.example.appauthbase.config.DevConnectionBuilder
+import com.example.appauthbase.config.TokenHolder
 import net.openid.appauth.*
 
 class OAuthDataSource(
@@ -90,6 +91,7 @@ class OAuthDataSource(
         prefs.edit()
             .putString("state", state.jsonSerializeString())
             .apply()
+        TokenHolder.token = state.accessToken  // ← adicionar esta linha
     }
 
     private fun readState(): AuthState {

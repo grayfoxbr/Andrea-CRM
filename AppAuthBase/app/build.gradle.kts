@@ -57,7 +57,7 @@ dependencies {
   implementation(libs.androidx.activity.compose)
   
   // AppAuth
-  implementation("net.openid:appauth:0.11.1")
+  implementation(libs.appauth)
 
   // Arch Components
   implementation(libs.androidx.lifecycle.runtime.compose)
@@ -92,6 +92,11 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.kotlinx.coroutines.android)
+
+    // Ícones do Material (Icons.Filled.*, Icons.AutoMirrored.Filled.*)
+    implementation(libs.androidx.compose.material.icons.extended)  // ← adicionar esta linha
+
+
 }
 
 val setupGatewayAdbReverse by tasks.registering(Exec::class) {

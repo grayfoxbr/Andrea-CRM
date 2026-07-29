@@ -53,6 +53,7 @@ public class GatewayConfig {
                                 "/api/client-tasks/**",
                                 "/api/leads/**",
                                 "/api/lead-tasks/**",
+                                "/api/companies/**",
                                 "/public/**",
                                 "/privado/**"
                         )

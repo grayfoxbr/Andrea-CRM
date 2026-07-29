@@ -1,0 +1,58 @@
+Andrea Project Stucture
+
+
+	Project parts: 
+
+		Client Relashionship:
+
+			Fluxos: 
+
+				Lead:
+
+					Client detection plan:
+
+						Contact plan: 
+
+							- Target
+
+							- Mode
+
+							- Date
+
+							- Localization
+
+						- Proposals
+
+					Approach status: 
+
+						- Who contacted (ref: Contac plan: Target)
+
+						- Where
+
+						- How (references the contact plan)
+
+						- When (ref: Contact plan: Date)
+
+						- Feedback
+
+
+				Client:
+
+					* Reunions
+
+					* Projects
+
+					* Status
+
+					* Notes
+
+					// Adicionar dados de contato
+
+					// We add perfil types in the future
+
+
+		Project Management: 
+
+			// Will be produced in the future
+
+	

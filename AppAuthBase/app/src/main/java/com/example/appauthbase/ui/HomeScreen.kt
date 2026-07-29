@@ -2,8 +2,12 @@ package com.example.appauthbase.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -22,7 +26,9 @@ fun HomeScreen(
 
     accessToken: String?,
 
-    onLogout: () -> Unit
+    onLogout: () -> Unit,
+
+    onCompaniesClick: () -> Unit
 
 ) {
 
@@ -91,6 +97,15 @@ fun HomeScreen(
                     accessToken
                         ?: "Token indisponível"
             )
+
+            Spacer(Modifier.height(32.dp))
+
+            Button(
+                onClick = onCompaniesClick,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Empresas")
+            }
         }
     }
 }
