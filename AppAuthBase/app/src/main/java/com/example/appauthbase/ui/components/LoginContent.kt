@@ -21,6 +21,61 @@ import com.example.appauthbase.presentation.AuthStateData
  * Pure UI for the login screen. Knows nothing about [com.example.appauthbase.presentation.AuthViewModel] —
  * it only receives state and reports user intent through callbacks.
  */
+
+import androidx.compose.ui.tooling.preview.Preview
+import com.example.appauthbase.theme.AppAuthBaseTheme
+
+@Preview(showBackground = true, name = "Logged Out")
+@Composable
+private fun LoginContentLoggedOutPreview() {
+    AppAuthBaseTheme {
+        LoginContent(
+            uiState = AuthStateData(),
+            onLoginClick = {},
+            onRegisterClick = {},
+            onLogoutClick = {}
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "Logged Out - Error")
+@Composable
+private fun LoginContentErrorPreview() {
+    AppAuthBaseTheme {
+        LoginContent(
+            uiState = AuthStateData(errorMessage = "Falha na autenticação"),
+            onLoginClick = {},
+            onRegisterClick = {},
+            onLogoutClick = {}
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "Loading")
+@Composable
+private fun LoginContentLoadingPreview() {
+    AppAuthBaseTheme {
+        LoginContent(
+            uiState = AuthStateData(isLoading = true),
+            onLoginClick = {},
+            onRegisterClick = {},
+            onLogoutClick = {}
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "Logged In")
+@Composable
+private fun LoginContentLoggedInPreview() {
+    AppAuthBaseTheme {
+        LoginContent(
+            uiState = AuthStateData(isLoggedIn = true, accessToken = "abc123"),
+            onLoginClick = {},
+            onRegisterClick = {},
+            onLogoutClick = {}
+        )
+    }
+}
 @Composable
 fun LoginContent(
     uiState: AuthStateData,
@@ -90,4 +145,8 @@ private fun LoggedOutSection(
         Spacer(Modifier.height(16.dp))
         Text(text = message, color = MaterialTheme.colorScheme.error)
     }
+
+
 }
+
+

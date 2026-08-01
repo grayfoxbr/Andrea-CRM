@@ -34,10 +34,83 @@ import androidx.compose.ui.unit.dp
 import com.example.appauthbase.presentation.CompanyFormUiState
 
 /**
- * Pure UI for the create/edit company screen. Receives state and
+ * Pure UI for the createee/edit company screen. Receives state and
  * reports intent through callbacks — has no knowledge of
  * [com.example.appauthbase.presentation.CompanyFormViewModel].
  */
+
+import androidx.compose.ui.tooling.preview.Preview
+import com.example.appauthbase.theme.AppAuthBaseTheme
+
+@Preview(showBackground = true, name = "Criação")
+@Composable
+private fun CompanyFormContentCreatePreview() {
+    AppAuthBaseTheme {
+        CompanyFormContent(
+            uiState = CompanyFormUiState(companyName = "Nova Empresa"),
+            isEditMode = false,
+            onCompanyNameChange = {},
+            onCnpjChange = {},
+            onBusinessAreaChange = {},
+            onCompanyEmailChange = {},
+            onCompanyPhoneNumberChange = {},
+            onDescriptionChange = {},
+            onSaveClick = {},
+            onErrorConsumed = {},
+            onSaveSuccess = {},
+            onBack = {}
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "Edição")
+@Composable
+private fun CompanyFormContentEditPreview() {
+    AppAuthBaseTheme {
+        CompanyFormContent(
+            uiState = CompanyFormUiState(
+                companyName = "Acme Ltda",
+                cnpj = "12.345.678/0001-99",
+                businessArea = "Tecnologia",
+                companyEmail = "contato@acme.com",
+                companyPhoneNumber = "(11) 99999-0000",
+                description = "Empresa de tecnologia"
+            ),
+            isEditMode = true,
+            onCompanyNameChange = {},
+            onCnpjChange = {},
+            onBusinessAreaChange = {},
+            onCompanyEmailChange = {},
+            onCompanyPhoneNumberChange = {},
+            onDescriptionChange = {},
+            onSaveClick = {},
+            onErrorConsumed = {},
+            onSaveSuccess = {},
+            onBack = {}
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "Carregando inicial")
+@Composable
+private fun CompanyFormContentLoadingPreview() {
+    AppAuthBaseTheme {
+        CompanyFormContent(
+            uiState = CompanyFormUiState(isLoadingInitial = true),
+            isEditMode = true,
+            onCompanyNameChange = {},
+            onCnpjChange = {},
+            onBusinessAreaChange = {},
+            onCompanyEmailChange = {},
+            onCompanyPhoneNumberChange = {},
+            onDescriptionChange = {},
+            onSaveClick = {},
+            onErrorConsumed = {},
+            onSaveSuccess = {},
+            onBack = {}
+        )
+    }
+}
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CompanyFormContent(

@@ -30,6 +30,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -39,6 +40,61 @@ import com.example.appauthbase.presentation.CompanyListUiState
  * Pure UI for the company list screen. Has no knowledge of
  * [com.example.appauthbase.presentation.CompanyListViewModel].
  */
+
+import androidx.compose.ui.tooling.preview.Preview
+import com.example.appauthbase.data.remote.dto.CompanyDto
+import com.example.appauthbase.theme.AppAuthBaseTheme
+
+private val FAKE_COMPANIES = listOf(
+    CompanyDto(companyId = 1, companyName = "Acme Ltda", businessArea = "Tecnologia", companyEmail = "contato@acme.com"),
+    CompanyDto(companyId = 2, companyName = "Beta Corp", businessArea = "Financeiro"),
+    CompanyDto(companyId = 3, companyName = "Gamma S.A.")
+)
+
+@Preview(showBackground = true, name = "Com dados")
+@Composable
+private fun CompanyListContentPreview() {
+    AppAuthBaseTheme {
+        CompanyListContent(
+            uiState = CompanyListUiState(companies = FAKE_COMPANIES),
+            onAddClick = {},
+            onCompanyClick = {},
+            onDeleteConfirmed = {},
+            onErrorConsumed = {},
+            onBack = {}
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "Carregando")
+@Composable
+private fun CompanyListContentLoadingPreview() {
+    AppAuthBaseTheme {
+        CompanyListContent(
+            uiState = CompanyListUiState(isLoading = true),
+            onAddClick = {},
+            onCompanyClick = {},
+            onDeleteConfirmed = {},
+            onErrorConsumed = {},
+            onBack = {}
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "Vazio")
+@Composable
+private fun CompanyListContentEmptyPreview() {
+    AppAuthBaseTheme {
+        CompanyListContent(
+            uiState = CompanyListUiState(companies = emptyList()),
+            onAddClick = {},
+            onCompanyClick = {},
+            onDeleteConfirmed = {},
+            onErrorConsumed = {},
+            onBack = {}
+        )
+    }
+}
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CompanyListContent(

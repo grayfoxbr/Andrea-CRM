@@ -24,6 +24,21 @@ import androidx.compose.ui.unit.dp
  * Pure UI for the home screen. Takes plain data and callbacks only —
  * it has no dependency on any ViewModel.
  */
+
+import androidx.compose.ui.tooling.preview.Preview
+import com.example.appauthbase.theme.AppAuthBaseTheme
+
+@Preview(showBackground = true)
+@Composable
+private fun HomeContentPreview() {
+    AppAuthBaseTheme {
+        HomeContent(
+            accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+            onLogout = {},
+            onCompaniesClick = {}
+        )
+    }
+}
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeContent(

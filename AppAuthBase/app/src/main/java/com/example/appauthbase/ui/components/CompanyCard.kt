@@ -21,6 +21,40 @@ import com.example.appauthbase.data.remote.dto.CompanyDto
 /**
  * A single company row shown in [CompanyListContent].
  */
+
+import androidx.compose.foundation.layout.padding
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.example.appauthbase.theme.AppAuthBaseTheme
+
+@Preview(showBackground = true)
+@Composable
+private fun CompanyCardPreview() {
+    AppAuthBaseTheme {
+        CompanyCard(
+            company = CompanyDto(
+                companyId = 1,
+                companyName = "Acme Ltda",
+                businessArea = "Tecnologia",
+                companyEmail = "contato@acme.com"
+            ),
+            onClick = {},
+            onDeleteClick = {}
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "Sem campos opcionais")
+@Composable
+private fun CompanyCardMinimalPreview() {
+    AppAuthBaseTheme {
+        CompanyCard(
+            company = CompanyDto(companyId = 2, companyName = "Empresa X"),
+            onClick = {},
+            onDeleteClick = {}
+        )
+    }
+}
 @Composable
 fun CompanyCard(
     company: CompanyDto,

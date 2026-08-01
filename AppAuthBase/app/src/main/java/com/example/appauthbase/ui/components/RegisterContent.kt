@@ -21,6 +21,81 @@ import com.example.appauthbase.presentation.RegisterUiState
  * Pure UI for the registration screen. Knows nothing about
  * [com.example.appauthbase.presentation.RegisterViewModel].
  */
+
+import androidx.compose.ui.tooling.preview.Preview
+import com.example.appauthbase.theme.AppAuthBaseTheme
+
+@Preview(showBackground = true, name = "Default")
+@Composable
+private fun RegisterContentPreview() {
+    AppAuthBaseTheme {
+        RegisterContent(
+            uiState = RegisterUiState(),
+            email = "usuario@email.com",
+            password = "123456",
+            confirmPassword = "123456",
+            onEmailChange = {},
+            onPasswordChange = {},
+            onConfirmPasswordChange = {},
+            onRegisterClick = {},
+            onBack = {}
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "Loading")
+@Composable
+private fun RegisterContentLoadingPreview() {
+    AppAuthBaseTheme {
+        RegisterContent(
+            uiState = RegisterUiState(loading = true),
+            email = "usuario@email.com",
+            password = "123456",
+            confirmPassword = "123456",
+            onEmailChange = {},
+            onPasswordChange = {},
+            onConfirmPasswordChange = {},
+            onRegisterClick = {},
+            onBack = {}
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "Error")
+@Composable
+private fun RegisterContentErrorPreview() {
+    AppAuthBaseTheme {
+        RegisterContent(
+            uiState = RegisterUiState(error = "As senhas não coincidem"),
+            email = "usuario@email.com",
+            password = "123456",
+            confirmPassword = "1234567",
+            onEmailChange = {},
+            onPasswordChange = {},
+            onConfirmPasswordChange = {},
+            onRegisterClick = {},
+            onBack = {}
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "Success")
+@Composable
+private fun RegisterContentSuccessPreview() {
+    AppAuthBaseTheme {
+        RegisterContent(
+            uiState = RegisterUiState(success = true),
+            email = "usuario@email.com",
+            password = "123456",
+            confirmPassword = "123456",
+            onEmailChange = {},
+            onPasswordChange = {},
+            onConfirmPasswordChange = {},
+            onRegisterClick = {},
+            onBack = {}
+        )
+    }
+}
 @Composable
 fun RegisterContent(
     uiState: RegisterUiState,

@@ -8,6 +8,17 @@ import androidx.compose.runtime.Composable
 /**
  * Confirmation dialog shown before deleting a company.
  */
+
+import androidx.compose.ui.tooling.preview.Preview
+import com.example.appauthbase.theme.AppAuthBaseTheme
+
+@Preview(showBackground = true)
+@Composable
+private fun DeleteCompanyDialogPreview() {
+    AppAuthBaseTheme {
+        DeleteCompanyDialog(onConfirm = {}, onDismiss = {})
+    }
+}
 @Composable
 fun DeleteCompanyDialog(
     onConfirm: () -> Unit,
