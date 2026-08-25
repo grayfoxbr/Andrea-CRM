@@ -113,20 +113,28 @@ val resolvedAdbPath: String = if (!sdkDirConfig.isNullOrBlank()) {
     "adb"
 }
 
-val setupGatewayAdbReverse by tasks.registering {
+val setupAdb8080 by tasks.registering(Exec::class) {
     group = "custom"
-    description = "Setup adb reverse ports 8080, 8081, 8082 for local dev"
-    doLast {
-        listOf(8080, 8081, 8082).forEach { port ->
-            try {
-                ProcessBuilder(resolvedAdbPath, "reverse", "tcp:$port", "tcp:$port").start().waitFor()
-            } catch (_: Exception) {
-            }
-        }
-    }
+    description = "Setup adb reverse port 8080"
+    commandLine(resolvedAdbPath, "reverse", "tcp:8080", "tcp:8080")
+    isIgnoreExitValue = true
+}
+
+val setupAdb8081 by tasks.registering(Exec::class) {
+    group = "custom"
+    description = "Setup adb reverse port 8081"
+    commandLine(resolvedAdbPath, "reverse", "tcp:8081", "tcp:8081")
+    isIgnoreExitValue = true
+}
+
+val setupAdb8082 by tasks.registering(Exec::class) {
+    group = "custom"
+    description = "Setup adb reverse port 8082"
+    commandLine(resolvedAdbPath, "reverse", "tcp:8082", "tcp:8082")
+    isIgnoreExitValue = true
 }
 
 tasks.named("preBuild") {
-    dependsOn(setupGatewayAdbReverse)
+    dependsOn(setupAdb8080, setupAdb8081, setupAdb8082)
 }
 
