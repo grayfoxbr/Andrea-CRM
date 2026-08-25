@@ -22,14 +22,16 @@ if %errorlevel% neq 0 (
 )
 
 echo.
-:: 2. Configurar ADB Reverse para o Emulador / Celular
-echo [2/4] Configurando tunelamento ADB (adb reverse tcp:8082 tcp:8082)...
+:: 2. Configurar ADB Reverse para TODAS as portas (Auth 8080, Resource 8081, Gateway 8082)
+echo [2/4] Configurando tunelamento ADB para celular/emulador...
+adb reverse tcp:8080 tcp:8080 2>nul
+adb reverse tcp:8081 tcp:8081 2>nul
 adb reverse tcp:8082 tcp:8082 2>nul
 if %errorlevel% equ 0 (
-    echo [OK] Celular/Emulador conectado ao Gateway na porta 8082!
+    echo [OK] Celular/Emulador conectado com sucesso nas portas 8080, 8081 e 8082!
 ) else (
-    echo [INFO] Nenhum dispositivo USB detectado no momento.
-    echo        (Ao conectar o celular/iniciar o emulador, o Gradle configurara automaticamente).
+    echo [INFO] Dispositivo USB ainda nao conectado.
+    echo        (Ao conectar o celular/iniciar o emulador, o tunelamento sera reconfigurado).
 )
 
 echo.
@@ -51,7 +53,7 @@ echo ================================================================
 echo.
 echo   • PostgreSQL:       localhost:5432 (Banco: andreadb)
 echo   • Redis Cache:      localhost:6379
-echo   • Auth Server:      http://localhost:8080
+echo   • Auth Server:      http://localhost:8080/login
 echo   • Resource API:     http://localhost:8081
 echo   • API Gateway:      http://localhost:8082 (Alvo do app mobile)
 echo   • Web Preview:      http://localhost:8090

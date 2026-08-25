@@ -2,15 +2,17 @@
 <network-security-config>
     <!--
         Permite tráfego HTTP (cleartext) para desenvolvimento local.
-        Em produção, use HTTPS e remova este bloco.
-
-        base-config com cleartextTrafficPermitted="true" libera HTTP para
-        todos os hosts — suficiente para desenvolvimento com IP local.
-        Restrinja ao mínimo necessário em produção.
+        Libera localhost, 10.0.2.2 (emulador) e IPs da rede local.
     -->
     <base-config cleartextTrafficPermitted="true">
         <trust-anchors>
             <certificates src="system" />
+            <certificates src="user" />
         </trust-anchors>
     </base-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">localhost</domain>
+        <domain includeSubdomains="true">10.0.2.2</domain>
+        <domain includeSubdomains="true">127.0.0.1</domain>
+    </domain-config>
 </network-security-config>
