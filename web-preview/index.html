@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Andrea CRM - Live Mobile UI Preview</title>
+  <meta name="description" content="Visualizador interativo de alta fidelidade do aplicativo Andrea CRM Android com fundo aurora animado e estética preto e branco.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --jet-black: #030406;
+      --pitch-dark: #080b10;
+      --dark-glass: rgba(14, 19, 28, 0.82);
+      --dark-glass-elevated: #151c28;
+      --dark-glass-highlight: #1f293b;
+      
+      --pure-white: #ffffff;
+      --pearl-white: #f8fafc;
+      --silver-muted: #94a3b8;
+      --dark-muted: #64748b;
+      
+      --aurora-cyan: #00e5ff;
+      --aurora-violet: #8b5cf6;
+      --aurora-indigo: #6366f1;
+      --aurora-emerald: #10b981;
+      --aurora-rose: #f43f5e;
+      --aurora-amber: #f59e0b;
+      
+      --specular-border: linear-gradient(180deg, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0.08) 50%, transparent 100%);
+      --specular-subtle: linear-gradient(180deg, rgba(255, 255, 255, 0.20) 0%, rgba(255, 255, 255, 0.04) 50%, transparent 100%);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background: #020305;
+      color: var(--pure-white);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      overflow-x: hidden;
+    }
+
+    /* Top Studio Bar */
+    header.studio-header {
+      width: 100%;
+      background: rgba(8, 11, 16, 0.95);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .studio-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--pure-white);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--jet-black);
+      font-weight: 900;
+      font-size: 18px;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+    }
+
+    .brand-title {
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+    }
+
+    .brand-badge {
+      background: rgba(0, 229, 255, 0.15);
+      border: 1px solid rgba(0, 229, 255, 0.4);
+      color: var(--aurora-cyan);
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 6px;
+      letter-spacing: 1px;
+    }
+
+    /* Screen Selector Navigation */
+    .screen-nav {
+      display: flex;
+      background: #111622;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+      padding: 4px;
+      gap: 4px;
+    }
+
+    .screen-nav button {
+      background: transparent;
+      border: none;
+      color: var(--silver-muted);
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 700;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .screen-nav button:hover {
+      color: var(--pure-white);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .screen-nav button.active {
+      background: var(--pure-white);
+      color: var(--jet-black);
+      box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+    }
+
+    /* Main Showcase Canvas */
+    main.stage-container {
+      flex: 1;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      position: relative;
+    }
+
+    /* Phone Device Frame */
+    .device-mockup {
+      width: 395px;
+      height: 830px;
+      background: #000000;
+      border-radius: 52px;
+      border: 10px solid #1c2230;
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.15), 0 0 40px rgba(0, 229, 255, 0.15);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Dynamic Island Notch */
+    .device-notch {
+      position: absolute;
+      top: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 110px;
+      height: 28px;
+      background: #000000;
+      border-radius: 20px;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 10px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .notch-camera {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #111a28;
+    }
+
+    .notch-sensor {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #0a111a;
+    }
+
+    /* Device Canvas Viewport */
+    .viewport {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Animated Aurora Background Canvas */
+    canvas#aurora-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* App Screens Container */
+    .app-screen {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      padding: 50px 20px 20px 20px;
+      overflow-y: auto;
+      z-index: 10;
+      display: none;
+      flex-direction: column;
+      animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .app-screen.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.98); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* Custom Glass Cards */
+    .luxury-glass-card {
+      background: var(--dark-glass);
+      backdrop-filter: blur(16px);
+      border-radius: 22px;
+      border: 1px solid transparent;
+      border-image: var(--specular-border) 1;
+      border-style: solid;
+      border-width: 1px;
+      padding: 22px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+      margin-bottom: 16px;
+      position: relative;
+    }
+
+    /* Modern Buttons */
+    .btn-primary {
+      width: 100%;
+      height: 52px;
+      background: var(--pure-white);
+      color: var(--jet-black);
+      border: none;
+      border-radius: 14px;
+      font-size: 15px;
+      font-weight: 900;
+      letter-spacing: 0.3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      cursor: pointer;
+      box-shadow: 0 8px 25px rgba(255, 255, 255, 0.3);
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(255, 255, 255, 0.45);
+    }
+
+    .btn-primary:active {
+      transform: translateY(1px);
+    }
+
+    .btn-outline {
+      width: 100%;
+      height: 48px;
+      background: rgba(21, 28, 40, 0.8);
+      color: var(--pure-white);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 14px;
+      font-size: 14px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-outline:hover {
+      background: rgba(30, 40, 58, 0.95);
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+
+    /* Inputs */
+    .input-group {
+      margin-bottom: 16px;
+      width: 100%;
+    }
+
+    .input-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--silver-muted);
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .input-field {
+      width: 100%;
+      height: 48px;
+      background: rgba(21, 28, 40, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      padding: 0 16px;
+      color: var(--pure-white);
+      font-size: 14px;
+      font-weight: 500;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .input-field:focus {
+      border-color: var(--pure-white);
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.15);
+    }
+
+    /* Live Corporate Pass Hologram */
+    .corporate-pass-card {
+      background: linear-gradient(135deg, #18202f 0%, #0a0e17 50%, #101724 100%);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 22px;
+      padding: 22px;
+      box-shadow: 0 16px 35px rgba(0, 0, 0, 0.7);
+      margin-bottom: 20px;
+    }
+
+    .pass-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .pass-avatar {
+      width: 38px;
+      height: 38px;
+      background: var(--pure-white);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--jet-black);
+      font-weight: 900;
+      font-size: 18px;
+    }
+
+    .pass-tag {
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+      color: var(--pure-white);
+    }
+
+    .pass-status {
+      font-size: 9px;
+      color: var(--aurora-emerald);
+      font-weight: 700;
+    }
+
+    .pass-name {
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--pure-white);
+      margin-bottom: 8px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .pass-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--silver-muted);
+    }
+
+    /* Pipeline Widget */
+    .pipeline-bar {
+      display: flex;
+      gap: 3px;
+      height: 8px;
+      border-radius: 4px;
+      overflow: hidden;
+      margin: 12px 0;
+    }
+
+    .bar-seg { height: 100%; border-radius: 2px; }
+    .seg-1 { flex: 35; background: var(--aurora-cyan); }
+    .seg-2 { flex: 25; background: var(--aurora-indigo); }
+    .seg-3 { flex: 20; background: var(--aurora-violet); }
+    .seg-4 { flex: 20; background: var(--aurora-emerald); }
+
+    /* Activity Chart Bars */
+    .chart-row {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      height: 60px;
+      margin-top: 14px;
+    }
+
+    .chart-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      flex: 1;
+    }
+
+    .chart-bar {
+      width: 18px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.12) 100%);
+      border-radius: 4px 4px 0 0;
+      transition: height 0.4s ease;
+    }
+
+    .chart-bar.highlight {
+      background: var(--pure-white);
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+    }
+
+    .chart-day {
+      font-size: 10px;
+      color: var(--silver-muted);
+    }
+
+    /* Company List Card Item */
+    .company-card-item {
+      background: var(--dark-glass);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 18px;
+      padding: 16px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .company-card-item:hover {
+      border-color: var(--pure-white);
+      transform: translateY(-2px);
+    }
+
+    .company-avatar-box {
+      width: 44px;
+      height: 44px;
+      background: var(--pure-white);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--jet-black);
+      font-weight: 900;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .company-info { flex: 1; }
+    .company-name { font-size: 15px; font-weight: 800; color: var(--pure-white); margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+    .status-dot { width: 7px; height: 7px; background: var(--aurora-emerald); border-radius: 50%; display: inline-block; box-shadow: 0 0 6px var(--aurora-emerald); }
+    .category-chip { display: inline-block; background: #1a2233; border: 1px solid rgba(255, 255, 255, 0.15); color: var(--pure-white); font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 6px; margin-bottom: 6px; }
+    .company-meta-line { font-size: 12px; color: var(--silver-muted); display: flex; align-items: center; gap: 6px; margin-top: 2px; }
+
+    /* Category Filter Chips Ribbon */
+    .chips-ribbon {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      margin-bottom: 14px;
+      scrollbar-width: none;
+    }
+
+    .chips-ribbon::-webkit-scrollbar { display: none; }
+
+    .filter-chip {
+      background: rgba(21, 28, 40, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: var(--pure-white);
+      padding: 6px 14px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .filter-chip.active {
+      background: var(--pure-white);
+      color: var(--jet-black);
+      border-color: var(--pure-white);
+      font-weight: 900;
+    }
+
+    /* Floating Extended FAB */
+    .extended-fab {
+      position: absolute;
+      bottom: 24px;
+      right: 20px;
+      background: var(--pure-white);
+      color: var(--jet-black);
+      border: 1px solid var(--pure-white);
+      border-radius: 20px;
+      padding: 12px 20px;
+      font-size: 14px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 10px 25px rgba(255, 255, 255, 0.4);
+      cursor: pointer;
+      z-index: 40;
+      transition: all 0.2s ease;
+    }
+
+    .extended-fab:hover {
+      transform: scale(1.04);
+      box-shadow: 0 14px 30px rgba(255, 255, 255, 0.55);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Studio Bar -->
+  <header class="studio-header">
+    <div class="studio-brand">
+      <div class="brand-icon">A</div>
+      <div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <h1 class="brand-title">ANDREA CRM</h1>
+          <span class="brand-badge">PRODUÇÃO • JETPACK COMPOSE</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Screen Navigation Switcher -->
+    <nav class="screen-nav" aria-label="Seletor de Telas">
+      <button class="active" onclick="switchScreen('login')">🔐 Login</button>
+      <button onclick="switchScreen('register')">📝 Cadastro</button>
+      <button onclick="switchScreen('home')">📊 Dashboard</button>
+      <button onclick="switchScreen('companies')">🏢 Diretório</button>
+      <button onclick="switchScreen('form')">✨ Nova Empresa</button>
+    </nav>
+  </header>
+
+  <!-- Main Stage with Device Mockup -->
+  <main class="stage-container">
+    <div class="device-mockup">
+      <!-- Notch -->
+      <div class="device-notch">
+        <div class="notch-camera"></div>
+        <div class="notch-sensor"></div>
+      </div>
+
+      <!-- Viewport with Animated Aurora -->
+      <div class="viewport">
+        <!-- Live WebGL/Canvas Aurora -->
+        <canvas id="aurora-canvas"></canvas>
+
+        <!-- Screen 1: Login -->
+        <div id="screen-login" class="app-screen active">
+          <div style="text-align: center; margin: 30px 0 24px 0;">
+            <div style="width: 58px; height: 58px; background: var(--pure-white); border-radius: 18px; margin: 0 auto 14px; display: flex; align-items: center; justify-content: center; color: var(--jet-black); font-size: 28px; font-weight: 900; box-shadow: 0 0 30px rgba(255,255,255,0.4);">A</div>
+            <h2 style="font-size: 22px; font-weight: 900; letter-spacing: 1px;">ANDREA CRM</h2>
+            <p style="font-size: 12px; color: var(--silver-muted); margin-top: 4px;">Enterprise Client Intelligence</p>
+          </div>
+
+          <div class="luxury-glass-card">
+            <h3 style="font-size: 18px; font-weight: 900; margin-bottom: 4px;">Acesso Corporativo</h3>
+            <p style="font-size: 12px; color: var(--silver-muted); margin-bottom: 20px;">Autentique-se com sua conta para gerenciar entidades</p>
+
+            <button class="btn-primary" onclick="switchScreen('home')">
+              <span>🔒</span> Entrar com OAuth 2.0 / SSO
+            </button>
+
+            <div style="display: flex; align-items: center; gap: 10px; margin: 20px 0;">
+              <div style="flex: 1; height: 1px; background: rgba(255,255,255,0.15);"></div>
+              <span style="font-size: 11px; color: var(--silver-muted); font-weight: 800;">OU</span>
+              <div style="flex: 1; height: 1px; background: rgba(255,255,255,0.15);"></div>
+            </div>
+
+            <button class="btn-outline" onclick="switchScreen('register')">
+              <span>👤</span> Criar nova conta
+            </button>
+          </div>
+
+          <div style="display: flex; justify-content: space-around; margin-top: 14px;">
+            <span style="font-size: 10px; font-weight: 700; color: var(--silver-muted); background: rgba(255,255,255,0.06); padding: 4px 10px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);">🛡️ OAuth2 + PKCE</span>
+            <span style="font-size: 10px; font-weight: 700; color: var(--silver-muted); background: rgba(255,255,255,0.06); padding: 4px 10px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);">⚡ Spring Gateway</span>
+          </div>
+        </div>
+
+        <!-- Screen 2: Register -->
+        <div id="screen-register" class="app-screen">
+          <button onclick="switchScreen('login')" style="background: none; border: none; color: var(--pure-white); font-size: 14px; font-weight: 700; cursor: pointer; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
+            ← Voltar ao Login
+          </button>
+
+          <div class="luxury-glass-card">
+            <h3 style="font-size: 18px; font-weight: 900; margin-bottom: 4px;">Criar Nova Conta</h3>
+            <p style="font-size: 12px; color: var(--silver-muted); margin-bottom: 20px;">Informe seus dados de acesso corporativo</p>
+
+            <div class="input-group">
+              <label class="input-label">E-MAIL CORPORATIVO</label>
+              <input type="email" class="input-field" placeholder="nome@empresa.com.br" value="diretor@andrea.com">
+            </div>
+
+            <div class="input-group">
+              <label class="input-label">SENHA</label>
+              <input type="password" class="input-field" placeholder="••••••••" value="password123">
+            </div>
+
+            <div class="input-group">
+              <label class="input-label">CONFIRMAR SENHA</label>
+              <input type="password" class="input-field" placeholder="••••••••" value="password123">
+            </div>
+
+            <button class="btn-primary" style="margin-top: 10px;" onclick="switchScreen('home')">
+              <span>✓</span> Concluir Cadastro
+            </button>
+          </div>
+        </div>
+
+        <!-- Screen 3: Home / Dashboard -->
+        <div id="screen-home" class="app-screen">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px;">
+            <div style="background: rgba(21, 28, 40, 0.9); border: 1px solid rgba(255,255,255,0.25); padding: 5px 12px; border-radius: 10px; display: flex; align-items: center; gap: 8px;">
+              <span class="status-dot"></span>
+              <span style="font-size: 11px; font-weight: 900; letter-spacing: 1px;">ANDREA CRM • COMMAND</span>
+            </div>
+            <button onclick="switchScreen('login')" style="background: none; border: none; color: var(--aurora-rose); font-size: 16px; cursor: pointer;">🚪</button>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <div>
+              <h2 style="font-size: 22px; font-weight: 900;">Painel Executivo</h2>
+              <p style="font-size: 12px; color: var(--silver-muted);">Gestão de pipeline e clientes corporativos</p>
+            </div>
+            <div style="width: 44px; height: 44px; background: var(--pure-white); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--jet-black); font-weight: 900; font-size: 18px; box-shadow: 0 4px 15px rgba(255,255,255,0.3);">H</div>
+          </div>
+
+          <!-- Pipeline Card -->
+          <div class="luxury-glass-card">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-size: 11px; font-weight: 900; letter-spacing: 1.5px;">PIPELINE DE VENDAS</span>
+              <span style="background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.4); color: var(--aurora-emerald); font-size: 11px; font-weight: 900; padding: 2px 8px; border-radius: 20px;">12 ativas</span>
+            </div>
+
+            <div class="pipeline-bar">
+              <div class="bar-seg seg-1"></div>
+              <div class="bar-seg seg-2"></div>
+              <div class="bar-seg seg-3"></div>
+              <div class="bar-seg seg-4"></div>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; font-size: 10px; color: var(--silver-muted);">
+              <span>● Leads</span>
+              <span>● Propostas</span>
+              <span>● Negociação</span>
+              <span>● Fechado</span>
+            </div>
+          </div>
+
+          <!-- Weekly Activity Chart -->
+          <div class="luxury-glass-card">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-size: 11px; font-weight: 900; letter-spacing: 1.5px;">ATIVIDADE EM TEMPO REAL</span>
+              <span style="color: var(--aurora-emerald); font-size: 11px; font-weight: 800;">+28% esta semana</span>
+            </div>
+
+            <div class="chart-row">
+              <div class="chart-col"><div class="chart-bar" style="height: 18px;"></div><span class="chart-day">Seg</span></div>
+              <div class="chart-col"><div class="chart-bar" style="height: 32px;"></div><span class="chart-day">Ter</span></div>
+              <div class="chart-col"><div class="chart-bar" style="height: 24px;"></div><span class="chart-day">Qua</span></div>
+              <div class="chart-col"><div class="chart-bar" style="height: 44px;"></div><span class="chart-day">Qui</span></div>
+              <div class="chart-col"><div class="chart-bar" style="height: 28px;"></div><span class="chart-day">Sex</span></div>
+              <div class="chart-col"><div class="chart-bar" style="height: 38px;"></div><span class="chart-day">Sab</span></div>
+              <div class="chart-col"><div class="chart-bar highlight" style="height: 48px;"></div><span class="chart-day">Dom</span></div>
+            </div>
+          </div>
+
+          <!-- Primary Direct Access -->
+          <button class="btn-primary" style="margin: 6px 0 16px 0;" onclick="switchScreen('companies')">
+            <span>🏢</span> Acessar Diretório de Empresas
+          </button>
+        </div>
+
+        <!-- Screen 4: Companies Directory -->
+        <div id="screen-companies" class="app-screen">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <button onclick="switchScreen('home')" style="background: none; border: none; color: var(--pure-white); font-size: 16px; cursor: pointer;">←</button>
+            <h2 style="font-size: 18px; font-weight: 900;">Diretório de Contas</h2>
+            <span style="background: var(--pure-white); color: var(--jet-black); font-size: 10px; font-weight: 900; padding: 3px 8px; border-radius: 6px;">4 ENTIDADES</span>
+          </div>
+
+          <input type="text" id="search-input" class="input-field" placeholder="Buscar por razão social ou setor..." onkeyup="filterCompanies(this.value)" style="margin-bottom: 12px;">
+
+          <!-- Category Chips Ribbon -->
+          <div class="chips-ribbon">
+            <button class="filter-chip active" onclick="setCategory(this, 'Todas')">Todas</button>
+            <button class="filter-chip" onclick="setCategory(this, 'Tecnologia')">Tecnologia</button>
+            <button class="filter-chip" onclick="setCategory(this, 'Financeiro')">Financeiro</button>
+            <button class="filter-chip" onclick="setCategory(this, 'Saúde')">Saúde</button>
+            <button class="filter-chip" onclick="setCategory(this, 'Consultoria')">Consultoria</button>
+          </div>
+
+          <!-- List Container -->
+          <div id="companies-list" style="padding-bottom: 70px;">
+            <!-- Rendered by JS -->
+          </div>
+
+          <button class="extended-fab" onclick="switchScreen('form')">
+            <span>+</span> Nova Empresa
+          </button>
+        </div>
+
+        <!-- Screen 5: Create / Edit Company Form -->
+        <div id="screen-form" class="app-screen">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <button onclick="switchScreen('companies')" style="background: none; border: none; color: var(--pure-white); font-size: 16px; cursor: pointer;">←</button>
+            <h2 style="font-size: 18px; font-weight: 900;">Nova Entidade</h2>
+            <div style="width: 20px;"></div>
+          </div>
+
+          <!-- Live Hologram Pass -->
+          <div class="corporate-pass-card">
+            <div class="pass-header">
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <div class="pass-avatar" id="live-avatar">A</div>
+                <div>
+                  <div class="pass-tag">CORPORATE PASS</div>
+                  <div class="pass-status">● ENTIDADE AUTENTICADA</div>
+                </div>
+              </div>
+              <span style="font-size: 20px; color: var(--pure-white);">✓</span>
+            </div>
+
+            <div class="pass-name" id="live-name">Acme Inovações Globais</div>
+            <div class="pass-meta">
+              <span id="live-cnpj">CNPJ: 12.345.678/0001-99</span>
+              <span id="live-area" style="background: rgba(255,255,255,0.15); padding: 2px 8px; border-radius: 4px; color: var(--pure-white);">Tecnologia</span>
+            </div>
+          </div>
+
+          <!-- Form Fields -->
+          <div class="luxury-glass-card">
+            <div class="input-group">
+              <label class="input-label">RAZÃO SOCIAL *</label>
+              <input type="text" id="form-name" class="input-field" value="Acme Inovações Globais" oninput="updateLivePass()">
+            </div>
+
+            <div class="input-group">
+              <label class="input-label">CNPJ (OPCIONAL)</label>
+              <input type="text" id="form-cnpj" class="input-field" value="12.345.678/0001-99" oninput="updateLivePass()">
+            </div>
+
+            <div class="input-group">
+              <label class="input-label">ÁREA DE ATUAÇÃO</label>
+              <input type="text" id="form-area" class="input-field" value="Tecnologia" oninput="updateLivePass()">
+            </div>
+
+            <div class="input-group">
+              <label class="input-label">E-MAIL CORPORATIVO</label>
+              <input type="email" id="form-email" class="input-field" value="enterprise@acme.com">
+            </div>
+
+            <div class="input-group">
+              <label class="input-label">TELEFONE</label>
+              <input type="tel" id="form-phone" class="input-field" value="(11) 9988-7766">
+            </div>
+
+            <button class="btn-primary" style="margin-top: 10px;" onclick="saveCompany()">
+              <span>✓</span> Cadastrar Empresa
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Mock Data
+    let companies = [
+      { id: 1, name: "Acme Inovações Corporativas", area: "Tecnologia", email: "contato@acme.com", phone: "(11) 9988-7766" },
+      { id: 2, name: "Beta Capital Asset Management", area: "Financeiro", email: "invest@betacapital.com", phone: "(11) 3322-1100" },
+      { id: 3, name: "Gamma Health Solutions", area: "Saúde", email: "atendimento@gammasaude.com.br", phone: "(11) 94433-2211" },
+      { id: 4, name: "Delta Strategic Advisory", area: "Consultoria", email: "projetos@deltaconsultoria.com", phone: "(11) 91122-3344" }
+    ];
+
+    let currentCategory = "Todas";
+
+    function renderCompanies() {
+      const container = document.getElementById('companies-list');
+      const query = document.getElementById('search-input') ? document.getElementById('search-input').value.toLowerCase() : '';
+      
+      const filtered = companies.filter(c => {
+        const matchesQuery = !query || c.name.toLowerCase().includes(query) || (c.area && c.area.toLowerCase().includes(query));
+        const matchesCat = currentCategory === "Todas" || (c.area && c.area.toLowerCase() === currentCategory.toLowerCase());
+        return matchesQuery && matchesCat;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div style="text-align: center; padding: 40px 20px; color: var(--silver-muted);">
+            <div style="font-size: 32px; margin-bottom: 10px;">🔍</div>
+            <div style="font-weight: 800; color: var(--pure-white);">Nenhuma entidade encontrada</div>
+            <div style="font-size: 12px; margin-top: 4px;">Tente ajustar o termo de pesquisa</div>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map(c => `
+        <div class="company-card-item" onclick="editCompany(${c.id})">
+          <div class="company-avatar-box">${c.name.charAt(0).toUpperCase()}</div>
+          <div class="company-info">
+            <div class="company-name">
+              <span>${c.name}</span>
+              <span class="status-dot"></span>
+            </div>
+            ${c.area ? `<span class="category-chip">${c.area}</span>` : ''}
+            ${c.email ? `<div class="company-meta-line">✉️ ${c.email}</div>` : ''}
+            ${c.phone ? `<div class="company-meta-line">📞 ${c.phone}</div>` : ''}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function switchScreen(screenName) {
+      document.querySelectorAll('.app-screen').forEach(s => s.classList.remove('active'));
+      const target = document.getElementById('screen-' + screenName);
+      if (target) target.classList.add('active');
+
+      document.querySelectorAll('.screen-nav button').forEach(b => {
+        b.classList.remove('active');
+        if (b.innerText.toLowerCase().includes(screenName)) b.classList.add('active');
+      });
+
+      if (screenName === 'companies') renderCompanies();
+    }
+
+    function setCategory(el, category) {
+      document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+      el.classList.add('active');
+      currentCategory = category;
+      renderCompanies();
+    }
+
+    function filterCompanies(val) {
+      renderCompanies();
+    }
+
+    function updateLivePass() {
+      const name = document.getElementById('form-name').value || "Nome da Empresa";
+      const cnpj = document.getElementById('form-cnpj').value || "Não informado";
+      const area = document.getElementById('form-area').value || "Geral";
+
+      document.getElementById('live-name').innerText = name;
+      document.getElementById('live-avatar').innerText = name.charAt(0).toUpperCase();
+      document.getElementById('live-cnpj').innerText = "CNPJ: " + cnpj;
+      document.getElementById('live-area').innerText = area;
+    }
+
+    function saveCompany() {
+      const name = document.getElementById('form-name').value;
+      const area = document.getElementById('form-area').value;
+      const email = document.getElementById('form-email').value;
+      const phone = document.getElementById('form-phone').value;
+
+      if (!name) return alert('Por favor informe a razão social');
+
+      companies.unshift({
+        id: Date.now(),
+        name,
+        area,
+        email,
+        phone
+      });
+
+      switchScreen('companies');
+    }
+
+    // --- GPU Aurora Canvas Shader Animation ---
+    const canvas = document.getElementById('aurora-canvas');
+    const ctx = canvas.getContext('2d');
+
+    function resizeCanvas() {
+      canvas.width = canvas.parentElement.offsetWidth;
+      canvas.height = canvas.parentElement.offsetHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    let time = 0;
+    function renderAurora() {
+      time += 0.008;
+      const w = canvas.width;
+      const h = canvas.height;
+
+      ctx.fillStyle = '#030406';
+      ctx.fillRect(0, 0, w, h);
+
+      // Orb 1: Cyan
+      const x1 = w * (0.2 + 0.6 * (Math.sin(time) * 0.5 + 0.5));
+      const y1 = h * (0.15 + 0.25 * (Math.cos(time * 0.8) * 0.5 + 0.5));
+      const grad1 = ctx.createRadialGradient(x1, y1, 0, x1, y1, w * 0.85);
+      grad1.addColorStop(0, 'rgba(0, 229, 255, 0.24)');
+      grad1.addColorStop(0.5, 'rgba(0, 229, 255, 0.08)');
+      grad1.addColorStop(1, 'transparent');
+      ctx.fillStyle = grad1;
+      ctx.beginPath();
+      ctx.arc(x1, y1, w * 0.85, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Orb 2: Violet
+      const x2 = w * (0.8 - 0.55 * (Math.cos(time * 0.7) * 0.5 + 0.5));
+      const y2 = h * (0.4 + 0.3 * (Math.sin(time * 0.9) * 0.5 + 0.5));
+      const grad2 = ctx.createRadialGradient(x2, y2, 0, x2, y2, w * 0.9);
+      grad2.addColorStop(0, 'rgba(139, 92, 246, 0.22)');
+      grad2.addColorStop(0.5, 'rgba(139, 92, 246, 0.06)');
+      grad2.addColorStop(1, 'transparent');
+      ctx.fillStyle = grad2;
+      ctx.beginPath();
+      ctx.arc(x2, y2, w * 0.9, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Orb 3: Emerald
+      const x3 = w * (0.3 + 0.45 * (Math.sin(time * 0.6) * 0.5 + 0.5));
+      const y3 = h * (0.75 - 0.25 * (Math.cos(time * 0.5) * 0.5 + 0.5));
+      const grad3 = ctx.createRadialGradient(x3, y3, 0, x3, y3, w * 0.8);
+      grad3.addColorStop(0, 'rgba(16, 185, 129, 0.18)');
+      grad3.addColorStop(0.5, 'rgba(99, 102, 241, 0.06)');
+      grad3.addColorStop(1, 'transparent');
+      ctx.fillStyle = grad3;
+      ctx.beginPath();
+      ctx.arc(x3, y3, w * 0.8, 0, Math.PI * 2);
+      ctx.fill();
+
+      requestAnimationFrame(renderAurora);
+    }
+    renderAurora();
+    renderCompanies();
+  </script>
+</body>
+</html>

@@ -1,11 +1,9 @@
-version: '3.8'
-
 services:
   postgres:
     image: postgres:15-alpine
     container_name: andrea-postgres
     environment:
-      POSTGRES_DB: hermecarddb
+      POSTGRES_DB: andreadb
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: NeverEndingWar64
     ports:
