@@ -1,12 +1,8 @@
 package com.example.appauthbase.ui.components
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -57,7 +53,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -66,16 +61,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.appauthbase.data.remote.dto.CompanyDto
 import com.example.appauthbase.presentation.CompanyListUiState
-import com.example.appauthbase.theme.AndreaElectricGradient
-import com.example.appauthbase.theme.AndreaGlassBorderDark
-import com.example.appauthbase.theme.AndreaGlassBorderLight
-import com.example.appauthbase.theme.ElectricCyan
-import com.example.appauthbase.theme.EmeraldPulse
-import com.example.appauthbase.theme.ObsidianBase
-import com.example.appauthbase.theme.ObsidianBorder
-import com.example.appauthbase.theme.ObsidianElevated
-import com.example.appauthbase.theme.ObsidianSurface
-import com.example.appauthbase.theme.RoyalSapphire
+import com.example.appauthbase.theme.DarkGlass
+import com.example.appauthbase.theme.DarkGlassElevated
+import com.example.appauthbase.theme.DarkGlassHighlight
+import com.example.appauthbase.theme.PureWhite
+import com.example.appauthbase.theme.SpecularBorderSubtle
+import com.example.appauthbase.theme.SpecularBorderWhite
+import com.example.appauthbase.theme.TextJetBlack
+import com.example.appauthbase.theme.TextPureWhite
+import com.example.appauthbase.theme.TextSilver
+import com.example.appauthbase.theme.WhiteToSilverGradient
 import com.example.appauthbase.theme.AppAuthBaseTheme
 
 private val FAKE_COMPANIES = listOf(
@@ -142,7 +137,6 @@ fun CompanyListContent(
     modifier: Modifier = Modifier
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
-    val isDark = isSystemInDarkTheme()
     var companyPendingDelete by rememberSaveable { mutableStateOf<Long?>(null) }
     var searchQuery by rememberSaveable { mutableStateOf("") }
     var selectedCategory by rememberSaveable { mutableStateOf("Todas") }
@@ -168,197 +162,206 @@ fun CompanyListContent(
         }
     }
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(
-                            text = "Diretório de Empresas",
-                            style = MaterialTheme.typography.titleLarge,
-                            fontWeight = FontWeight.Bold
-                        )
-                        Spacer(Modifier.width(10.dp))
-                        Surface(
-                            shape = RoundedCornerShape(8.dp),
-                            color = ElectricCyan.copy(alpha = 0.15f),
-                            border = androidx.compose.foundation.BorderStroke(1.dp, ElectricCyan.copy(alpha = 0.35f))
-                        ) {
+    AnimatedAuroraBackground(modifier = modifier) {
+        Scaffold(
+            containerColor = Color.Transparent,
+            topBar = {
+                TopAppBar(
+                    title = {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(
-                                text = "${uiState.companies.size} ENTIDADES",
-                                style = MaterialTheme.typography.labelSmall,
-                                fontWeight = FontWeight.Bold,
-                                color = ElectricCyan,
-                                fontSize = 10.sp,
-                                letterSpacing = 1.sp,
-                                modifier = Modifier.padding(horizontal = 7.dp, vertical = 2.5.dp)
+                                text = "Diretório de Contas",
+                                style = MaterialTheme.typography.titleLarge,
+                                fontWeight = FontWeight.Black,
+                                color = PureWhite
+                            )
+                            Spacer(Modifier.width(10.dp))
+                            Surface(
+                                shape = RoundedCornerShape(8.dp),
+                                color = PureWhite,
+                                border = androidx.compose.foundation.BorderStroke(1.dp, Color.White)
+                            ) {
+                                Text(
+                                    text = "${uiState.companies.size} ENTIDADES",
+                                    style = MaterialTheme.typography.labelSmall,
+                                    fontWeight = FontWeight.Black,
+                                    color = TextJetBlack,
+                                    fontSize = 10.sp,
+                                    letterSpacing = 1.sp,
+                                    modifier = Modifier.padding(horizontal = 7.dp, vertical = 2.5.dp)
+                                )
+                            }
+                        }
+                    },
+                    navigationIcon = {
+                        IconButton(onClick = onBack) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                contentDescription = "Voltar",
+                                tint = PureWhite
                             )
                         }
-                    }
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = Color.Transparent,
+                        titleContentColor = PureWhite
+                    )
+                )
+            },
+            floatingActionButton = {
+                ExtendedFloatingActionButton(
+                    onClick = onAddClick,
+                    containerColor = PureWhite,
+                    contentColor = TextJetBlack,
+                    shape = RoundedCornerShape(18.dp),
+                    modifier = Modifier
+                        .shadow(
+                            elevation = 16.dp,
+                            shape = RoundedCornerShape(18.dp),
+                            ambientColor = Color.White.copy(alpha = 0.5f),
+                            spotColor = Color.White.copy(alpha = 0.5f)
+                        )
+                        .border(1.dp, Color.White, RoundedCornerShape(18.dp)),
+                    icon = {
                         Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Voltar"
+                            imageVector = Icons.Default.Add,
+                            contentDescription = "Nova Empresa",
+                            tint = TextJetBlack
+                        )
+                    },
+                    text = {
+                        Text(
+                            text = "Nova Empresa",
+                            style = MaterialTheme.typography.labelLarge,
+                            fontWeight = FontWeight.Black,
+                            letterSpacing = 0.5.sp,
+                            color = TextJetBlack
                         )
                     }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.background,
-                    titleContentColor = MaterialTheme.colorScheme.onBackground
                 )
-            )
-        },
-        floatingActionButton = {
-            ExtendedFloatingActionButton(
-                onClick = onAddClick,
-                containerColor = Color.Transparent,
-                contentColor = Color.White,
-                shape = RoundedCornerShape(18.dp),
-                modifier = Modifier
-                    .shadow(
-                        elevation = 12.dp,
-                        shape = RoundedCornerShape(18.dp),
-                        ambientColor = ElectricCyan.copy(alpha = 0.4f),
-                        spotColor = RoyalSapphire.copy(alpha = 0.4f)
-                    )
-                    .background(AndreaElectricGradient, shape = RoundedCornerShape(18.dp)),
-                icon = {
-                    Icon(
-                        imageVector = Icons.Default.Add,
-                        contentDescription = "Nova Empresa",
-                        tint = Color.White
-                    )
-                },
-                text = {
-                    Text(
-                        text = "Nova Empresa",
-                        style = MaterialTheme.typography.labelLarge,
-                        fontWeight = FontWeight.Bold,
-                        letterSpacing = 0.3.sp,
-                        color = Color.White
+            },
+            snackbarHost = {
+                SnackbarHost(snackbarHostState) { data ->
+                    Snackbar(
+                        snackbarData = data,
+                        shape = RoundedCornerShape(12.dp),
+                        containerColor = DarkGlassElevated,
+                        contentColor = PureWhite
                     )
                 }
-            )
-        },
-        snackbarHost = {
-            SnackbarHost(snackbarHostState) { data ->
-                Snackbar(
-                    snackbarData = data,
-                    shape = RoundedCornerShape(12.dp),
-                    containerColor = if (isDark) ObsidianSurface else MaterialTheme.colorScheme.surfaceVariant,
-                    contentColor = MaterialTheme.colorScheme.onSurface
-                )
             }
-        }
-    ) { padding ->
-        Column(
-            modifier = modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background)
-                .padding(padding)
-        ) {
-            // Search Bar & Filter Header
-            if (uiState.companies.isNotEmpty()) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 6.dp)
-                ) {
-                    AndreaTextField(
-                        value = searchQuery,
-                        onValueChange = { searchQuery = it },
-                        label = "Buscar na base",
-                        placeholder = "Filtrar por razão social, setor ou e-mail...",
-                        leadingIcon = Icons.Default.Search
-                    )
-
-                    Spacer(Modifier.height(8.dp))
-
-                    // Category Filter Chips
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .horizontalScroll(rememberScrollState()),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        val categories = listOf("Todas", "Tecnologia", "Financeiro", "Saúde", "Consultoria", "Comércio")
-                        categories.forEach { category ->
-                            val isSelected = selectedCategory == category
-                            FilterChip(
-                                selected = isSelected,
-                                onClick = { selectedCategory = category },
-                                label = { Text(category, fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal) },
-                                shape = RoundedCornerShape(10.dp),
-                                colors = FilterChipDefaults.filterChipColors(
-                                    selectedContainerColor = ElectricCyan.copy(alpha = 0.2f),
-                                    selectedLabelColor = ElectricCyan,
-                                    containerColor = if (isDark) ObsidianElevated else Color.White
-                                ),
-                                border = FilterChipDefaults.filterChipBorder(
-                                    enabled = true,
-                                    selected = isSelected,
-                                    borderColor = if (isSelected) ElectricCyan else if (isDark) ObsidianBorder else MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
-                                )
-                            )
-                        }
-                    }
-                }
-            }
-
-            Box(
+        ) { padding ->
+            Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .weight(1f)
+                    .padding(padding)
             ) {
-                when {
-                    uiState.isLoading -> {
-                        Column(
-                            modifier = Modifier.align(Alignment.Center),
-                            horizontalAlignment = Alignment.CenterHorizontally
+                // Search Bar & Filter Header
+                if (uiState.companies.isNotEmpty()) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 6.dp)
+                    ) {
+                        AndreaTextField(
+                            value = searchQuery,
+                            onValueChange = { searchQuery = it },
+                            label = "Buscar entidade",
+                            placeholder = "Filtrar por razão social, setor ou e-mail...",
+                            leadingIcon = Icons.Default.Search
+                        )
+
+                        Spacer(Modifier.height(10.dp))
+
+                        // Category Filter Chips
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .horizontalScroll(rememberScrollState()),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
-                            CircularProgressIndicator(
-                                color = ElectricCyan,
-                                strokeWidth = 3.dp
-                            )
-                            Spacer(Modifier.height(16.dp))
-                            Text(
-                                text = "Sincronizando entidades corporativas...",
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                        }
-                    }
-
-                    uiState.companies.isEmpty() -> {
-                        EmptyCompaniesMessage(onAddClick = onAddClick)
-                    }
-
-                    filteredCompanies.isEmpty() -> {
-                        EmptySearchMessage(searchQuery = searchQuery) {
-                            searchQuery = ""
-                            selectedCategory = "Todas"
-                        }
-                    }
-
-                    else -> {
-                        LazyColumn(
-                            modifier = Modifier.fillMaxSize(),
-                            contentPadding = PaddingValues(
-                                start = 16.dp,
-                                end = 16.dp,
-                                top = 8.dp,
-                                bottom = 96.dp
-                            ),
-                            verticalArrangement = Arrangement.spacedBy(10.dp)
-                        ) {
-                            items(filteredCompanies, key = { it.companyId ?: -1 }) { company ->
-                                CompanyCorporateCard(
-                                    company = company,
-                                    onClick = { company.companyId?.let(onCompanyClick) },
-                                    onDeleteClick = { companyPendingDelete = company.companyId }
+                            val categories = listOf("Todas", "Tecnologia", "Financeiro", "Saúde", "Consultoria", "Comércio")
+                            categories.forEach { category ->
+                                val isSelected = selectedCategory == category
+                                FilterChip(
+                                    selected = isSelected,
+                                    onClick = { selectedCategory = category },
+                                    label = {
+                                        Text(
+                                            text = category,
+                                            fontWeight = if (isSelected) FontWeight.Black else FontWeight.Medium,
+                                            color = if (isSelected) TextJetBlack else PureWhite
+                                        )
+                                    },
+                                    shape = RoundedCornerShape(10.dp),
+                                    colors = FilterChipDefaults.filterChipColors(
+                                        selectedContainerColor = PureWhite,
+                                        containerColor = DarkGlassElevated.copy(alpha = 0.8f)
+                                    ),
+                                    border = FilterChipDefaults.filterChipBorder(
+                                        enabled = true,
+                                        selected = isSelected,
+                                        borderColor = if (isSelected) PureWhite else DarkGlassHighlight
+                                    )
                                 )
+                            }
+                        }
+                    }
+                }
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .weight(1f)
+                ) {
+                    when {
+                        uiState.isLoading -> {
+                            Column(
+                                modifier = Modifier.align(Alignment.Center),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                CircularProgressIndicator(
+                                    color = PureWhite,
+                                    strokeWidth = 3.dp
+                                )
+                                Spacer(Modifier.height(16.dp))
+                                Text(
+                                    text = "Sincronizando entidades corporativas...",
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = TextSilver
+                                )
+                            }
+                        }
+
+                        uiState.companies.isEmpty() -> {
+                            EmptyCompaniesMessage(onAddClick = onAddClick)
+                        }
+
+                        filteredCompanies.isEmpty() -> {
+                            EmptySearchMessage(searchQuery = searchQuery) {
+                                searchQuery = ""
+                                selectedCategory = "Todas"
+                            }
+                        }
+
+                        else -> {
+                            LazyColumn(
+                                modifier = Modifier.fillMaxSize(),
+                                contentPadding = PaddingValues(
+                                    start = 16.dp,
+                                    end = 16.dp,
+                                    top = 8.dp,
+                                    bottom = 96.dp
+                                ),
+                                verticalArrangement = Arrangement.spacedBy(12.dp)
+                            ) {
+                                items(filteredCompanies, key = { it.companyId ?: -1 }) { company ->
+                                    CompanyCorporateCard(
+                                        company = company,
+                                        onClick = { company.companyId?.let(onCompanyClick) },
+                                        onDeleteClick = { companyPendingDelete = company.companyId }
+                                    )
+                                }
                             }
                         }
                     }
@@ -389,27 +392,27 @@ private fun EmptyCompaniesMessage(onAddClick: () -> Unit) {
     ) {
         Box(
             modifier = Modifier
-                .size(72.dp)
+                .size(76.dp)
                 .clip(CircleShape)
-                .background(ElectricCyan.copy(alpha = 0.12f))
-                .border(1.dp, ElectricCyan.copy(alpha = 0.3f), CircleShape),
+                .background(PureWhite)
+                .border(1.dp, Color.White, CircleShape),
             contentAlignment = Alignment.Center
         ) {
             Icon(
                 imageVector = Icons.Default.Business,
                 contentDescription = null,
-                tint = ElectricCyan,
-                modifier = Modifier.size(34.dp)
+                tint = TextJetBlack,
+                modifier = Modifier.size(36.dp)
             )
         }
 
-        Spacer(Modifier.height(20.dp))
+        Spacer(Modifier.height(22.dp))
 
         Text(
             text = "Base Corporativa Vazia",
             style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onBackground
+            fontWeight = FontWeight.Black,
+            color = PureWhite
         )
 
         Spacer(Modifier.height(8.dp))
@@ -417,11 +420,11 @@ private fun EmptyCompaniesMessage(onAddClick: () -> Unit) {
         Text(
             text = "Inicie o cadastro de contas, clientes e parceiros para alimentar o pipeline de vendas.",
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = TextSilver,
             textAlign = TextAlign.Center
         )
 
-        Spacer(Modifier.height(24.dp))
+        Spacer(Modifier.height(26.dp))
 
         AndreaPrimaryButton(
             text = "Cadastrar Primeira Empresa",
@@ -446,26 +449,26 @@ private fun EmptySearchMessage(
     ) {
         Box(
             modifier = Modifier
-                .size(64.dp)
+                .size(68.dp)
                 .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.surfaceVariant),
+                .background(DarkGlassElevated),
             contentAlignment = Alignment.Center
         ) {
             Icon(
                 imageVector = Icons.Default.SearchOff,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.size(30.dp)
+                tint = PureWhite,
+                modifier = Modifier.size(32.dp)
             )
         }
 
-        Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.height(18.dp))
 
         Text(
             text = "Nenhuma entidade encontrada",
             style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onBackground
+            fontWeight = FontWeight.Black,
+            color = PureWhite
         )
 
         Spacer(Modifier.height(6.dp))
@@ -473,11 +476,11 @@ private fun EmptySearchMessage(
         Text(
             text = "Nenhum resultado corresponde aos critérios de pesquisa selecionados.",
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = TextSilver,
             textAlign = TextAlign.Center
         )
 
-        Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.height(18.dp))
 
         AndreaOutlinedButton(
             text = "Limpar Filtros",

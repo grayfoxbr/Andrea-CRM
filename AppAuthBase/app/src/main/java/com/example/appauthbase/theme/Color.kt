@@ -3,113 +3,76 @@ package com.example.appauthbase.theme
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
-// Obsidian & Deep Space Theme (Linear / Stripe Luxury Aesthetic)
-val ObsidianBase = Color(0xFF08090C)
-val ObsidianElevated = Color(0xFF0E121A)
-val ObsidianSurface = Color(0xFF141A24)
-val ObsidianSurfaceHighlight = Color(0xFF1C2432)
-val ObsidianBorder = Color(0xFF263245)
-val ObsidianBorderSubtle = Color(0xFF1E2736)
+// Pure Luxury Black & White / Obsidian Palette
+val JetBlack = Color(0xFF030406)
+val PitchDark = Color(0xFF080B10)
+val DarkGlass = Color(0xFF0E131C)
+val DarkGlassElevated = Color(0xFF151C28)
+val DarkGlassHighlight = Color(0xFF1F293B)
 
-// Light Minimalist Theme
 val PureWhite = Color(0xFFFFFFFF)
-val SnowBackground = Color(0xFFF8FAFC)
-val SlateSurfaceLight = Color(0xFFFFFFFF)
-val SlateSurfaceVariantLight = Color(0xFFF1F5F9)
-val SlateBorderLight = Color(0xFFE2E8F0)
-val SlateBorderSubtleLight = Color(0xFFEDF2F7)
+val PearlWhite = Color(0xFFF8FAFC)
+val SilverMuted = Color(0xFF94A3B8)
+val DarkMuted = Color(0xFF64748B)
 
-// Electric & Neon Accent Palette
-val ElectricCyan = Color(0xFF06B6D4)
-val ElectricCyanLight = Color(0xFF22D3EE)
-val ElectricCyanDark = Color(0xFF0891B2)
-
-val RoyalSapphire = Color(0xFF6366F1)
-val RoyalSapphireDark = Color(0xFF4F46E5)
-val RoyalSapphireLight = Color(0xFF818CF8)
-
-val EmeraldPulse = Color(0xFF10B981)
-val EmeraldGlow = Color(0xFF34D399)
-val EmeraldDark = Color(0xFF059669)
-
-val AmberGlow = Color(0xFFF59E0B)
-val RosePulse = Color(0xFFF43F5E)
-val VioletVibrant = Color(0xFF8B5CF6)
+// Moving Aurora Colors (Cyan, Violet, Emerald, Rose)
+val AuroraCyan = Color(0xFF00E5FF)
+val AuroraViolet = Color(0xFF8B5CF6)
+val AuroraIndigo = Color(0xFF6366F1)
+val AuroraEmerald = Color(0xFF10B981)
+val AuroraRose = Color(0xFFF43F5E)
+val AuroraAmber = Color(0xFFF59E0B)
 
 // Text Colors
-val TextWhiteHigh = Color(0xFFF8FAFC)
-val TextWhiteMedium = Color(0xFF94A3B8)
-val TextWhiteLow = Color(0xFF64748B)
+val TextPureWhite = Color(0xFFFFFFFF)
+val TextPearl = Color(0xFFF1F5F9)
+val TextSilver = Color(0xFF94A3B8)
+val TextMuted = Color(0xFF64748B)
 
-val TextDarkHigh = Color(0xFF0F172A)
-val TextDarkMedium = Color(0xFF475569)
-val TextDarkLow = Color(0xFF94A3B8)
+val TextJetBlack = Color(0xFF030406)
+val TextDarkGray = Color(0xFF1E293B)
 
 // Status & Alert Containers
-val DarkSuccessBg = Color(0xFF064E3B)
+val DarkSuccessBg = Color(0xFF052E16)
 val DarkSuccessFg = Color(0xFF34D399)
-val LightSuccessBg = Color(0xFFD1FAE5)
-val LightSuccessFg = Color(0xFF059669)
-
-val DarkErrorBg = Color(0xFF4C0519)
+val DarkErrorBg = Color(0xFF3F0713)
 val DarkErrorFg = Color(0xFFFB7185)
-val LightErrorBg = Color(0xFFFFE4E6)
-val LightErrorFg = Color(0xFFE11D48)
-
-val DarkWarningBg = Color(0xFF451A03)
+val DarkWarningBg = Color(0xFF361803)
 val DarkWarningFg = Color(0xFFFBBF24)
-val LightWarningBg = Color(0xFFFEF3C7)
-val LightWarningFg = Color(0xFFD97706)
 
-// Bespoke Gradients
-val AndreaElectricGradient = Brush.horizontalGradient(
-    listOf(Color(0xFF06B6D4), Color(0xFF6366F1), Color(0xFF8B5CF6))
+// Monochrome & High-Contrast Gradients
+val WhiteToSilverGradient = Brush.horizontalGradient(
+    listOf(Color(0xFFFFFFFF), Color(0xFFE2E8F0), Color(0xFFCBD5E1))
 )
 
-val AndreaPrimaryGradient = Brush.horizontalGradient(
-    listOf(Color(0xFF4F46E5), Color(0xFF6366F1), Color(0xFF06B6D4))
+val BlackToObsidianGradient = Brush.verticalGradient(
+    listOf(Color(0xFF151C28), Color(0xFF080B10))
 )
 
-val AndreaAccentGradient = Brush.linearGradient(
-    listOf(Color(0xFF06B6D4), Color(0xFF10B981))
+val AuroraShineGradient = Brush.horizontalGradient(
+    listOf(Color(0xFF00E5FF), Color(0xFF8B5CF6), Color(0xFF10B981))
 )
 
-val AndreaPassGradient = Brush.linearGradient(
-    listOf(Color(0xFF1E1B4B), Color(0xFF0F172A), Color(0xFF134E4A))
-)
-
-val AndreaPassLightGradient = Brush.linearGradient(
-    listOf(Color(0xFFEEF2FF), Color(0xFFF0FDF4), Color(0xFFE0F2FE))
-)
-
-val AndreaGlassBorderDark = Brush.verticalGradient(
+val SpecularBorderWhite = Brush.verticalGradient(
     listOf(
-        Color.White.copy(alpha = 0.22f),
-        Color.White.copy(alpha = 0.05f),
+        Color.White.copy(alpha = 0.35f),
+        Color.White.copy(alpha = 0.08f),
         Color.Transparent
     )
 )
 
-val AndreaGlassBorderLight = Brush.verticalGradient(
+val SpecularBorderSubtle = Brush.verticalGradient(
     listOf(
-        Color(0xFF6366F1).copy(alpha = 0.3f),
-        Color(0xFFE2E8F0),
-        Color(0xFFCBD5E1)
-    )
-)
-
-val AndreaAmbientGlowDark = Brush.radialGradient(
-    colors = listOf(
-        Color(0xFF6366F1).copy(alpha = 0.18f),
-        Color(0xFF06B6D4).copy(alpha = 0.08f),
+        Color.White.copy(alpha = 0.20f),
+        Color.White.copy(alpha = 0.04f),
         Color.Transparent
     )
 )
 
-val AndreaAmbientGlowLight = Brush.radialGradient(
-    colors = listOf(
-        Color(0xFF6366F1).copy(alpha = 0.10f),
-        Color(0xFF06B6D4).copy(alpha = 0.05f),
-        Color.Transparent
+val CorporatePassMonochrome = Brush.linearGradient(
+    listOf(
+        Color(0xFF18202F),
+        Color(0xFF0A0E17),
+        Color(0xFF101724)
     )
 )

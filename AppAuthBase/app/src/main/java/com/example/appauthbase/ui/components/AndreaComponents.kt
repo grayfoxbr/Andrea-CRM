@@ -2,6 +2,7 @@ package com.example.appauthbase.ui.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
@@ -37,12 +38,10 @@ import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Domain
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Phone
-import androidx.compose.material.icons.filled.Shield
 import androidx.compose.material.icons.filled.Verified
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
@@ -68,11 +67,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -85,43 +81,138 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.appauthbase.data.remote.dto.CompanyDto
-import com.example.appauthbase.theme.AmberGlow
-import com.example.appauthbase.theme.AndreaElectricGradient
-import com.example.appauthbase.theme.AndreaGlassBorderDark
-import com.example.appauthbase.theme.AndreaGlassBorderLight
-import com.example.appauthbase.theme.AndreaPassGradient
-import com.example.appauthbase.theme.AndreaPassLightGradient
-import com.example.appauthbase.theme.AndreaPrimaryGradient
+import com.example.appauthbase.theme.AuroraAmber
+import com.example.appauthbase.theme.AuroraCyan
+import com.example.appauthbase.theme.AuroraEmerald
+import com.example.appauthbase.theme.AuroraIndigo
+import com.example.appauthbase.theme.AuroraRose
+import com.example.appauthbase.theme.AuroraShineGradient
+import com.example.appauthbase.theme.AuroraViolet
+import com.example.appauthbase.theme.CorporatePassMonochrome
 import com.example.appauthbase.theme.DarkErrorBg
 import com.example.appauthbase.theme.DarkErrorFg
+import com.example.appauthbase.theme.DarkGlass
+import com.example.appauthbase.theme.DarkGlassElevated
+import com.example.appauthbase.theme.DarkGlassHighlight
 import com.example.appauthbase.theme.DarkSuccessBg
 import com.example.appauthbase.theme.DarkSuccessFg
 import com.example.appauthbase.theme.DarkWarningBg
 import com.example.appauthbase.theme.DarkWarningFg
-import com.example.appauthbase.theme.ElectricCyan
-import com.example.appauthbase.theme.EmeraldGlow
-import com.example.appauthbase.theme.EmeraldPulse
-import com.example.appauthbase.theme.LightErrorBg
-import com.example.appauthbase.theme.LightErrorFg
-import com.example.appauthbase.theme.LightSuccessBg
-import com.example.appauthbase.theme.LightSuccessFg
-import com.example.appauthbase.theme.LightWarningBg
-import com.example.appauthbase.theme.LightWarningFg
-import com.example.appauthbase.theme.ObsidianBase
-import com.example.appauthbase.theme.ObsidianBorder
-import com.example.appauthbase.theme.ObsidianElevated
-import com.example.appauthbase.theme.ObsidianSurface
-import com.example.appauthbase.theme.RosePulse
-import com.example.appauthbase.theme.RoyalSapphire
-import com.example.appauthbase.theme.RoyalSapphireDark
-import com.example.appauthbase.theme.TextWhiteHigh
-import com.example.appauthbase.theme.TextWhiteLow
-import com.example.appauthbase.theme.TextWhiteMedium
-import com.example.appauthbase.theme.VioletVibrant
+import com.example.appauthbase.theme.JetBlack
+import com.example.appauthbase.theme.PitchDark
+import com.example.appauthbase.theme.PureWhite
+import com.example.appauthbase.theme.SpecularBorderSubtle
+import com.example.appauthbase.theme.SpecularBorderWhite
+import com.example.appauthbase.theme.TextJetBlack
+import com.example.appauthbase.theme.TextMuted
+import com.example.appauthbase.theme.TextPearl
+import com.example.appauthbase.theme.TextPureWhite
+import com.example.appauthbase.theme.TextSilver
+import com.example.appauthbase.theme.WhiteToSilverGradient
 import kotlin.math.abs
 
 /**
- * Luxury Glass Card with top specular highlight and frosted surface
+ * Animated Color-Shifting Aurora Background (Living Fluid Mesh Glow)
+ */
+@Composable
+fun AnimatedAuroraBackground(
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit
+) {
+    val infiniteTransition = rememberInfiniteTransition(label = "auroraTransition")
+
+    val t1 by infiniteTransition.animateFloat(
+        initialValue = 0f,
+        targetValue = 1f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 9000, easing = LinearEasing),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "t1"
+    )
+
+    val t2 by infiniteTransition.animateFloat(
+        initialValue = 0f,
+        targetValue = 1f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 13000, easing = FastOutSlowInEasing),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "t2"
+    )
+
+    val t3 by infiniteTransition.animateFloat(
+        initialValue = 0f,
+        targetValue = 1f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 11000, easing = LinearEasing),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "t3"
+    )
+
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .background(JetBlack)
+    ) {
+        // GPU Canvas Drawing of Fluid Glowing Orbs
+        Canvas(modifier = Modifier.fillMaxSize()) {
+            val w = size.width
+            val h = size.height
+
+            // Orb 1: Electric Cyan shifting horizontally & vertically
+            val c1X = w * (0.15f + 0.65f * t1)
+            val c1Y = h * (0.10f + 0.25f * t2)
+            drawCircle(
+                brush = Brush.radialGradient(
+                    colors = listOf(
+                        AuroraCyan.copy(alpha = 0.24f),
+                        AuroraCyan.copy(alpha = 0.08f),
+                        Color.Transparent
+                    ),
+                    center = Offset(c1X, c1Y),
+                    radius = w * 0.85f
+                )
+            )
+
+            // Orb 2: Royal Violet shifting opposite
+            val c2X = w * (0.85f - 0.60f * t2)
+            val c2Y = h * (0.35f + 0.35f * t3)
+            drawCircle(
+                brush = Brush.radialGradient(
+                    colors = listOf(
+                        AuroraViolet.copy(alpha = 0.22f),
+                        AuroraViolet.copy(alpha = 0.06f),
+                        Color.Transparent
+                    ),
+                    center = Offset(c2X, c2Y),
+                    radius = w * 0.90f
+                )
+            )
+
+            // Orb 3: Emerald & Indigo Pulse at lower section
+            val c3X = w * (0.30f + 0.45f * (1f - t3))
+            val c3Y = h * (0.75f - 0.25f * t1)
+            drawCircle(
+                brush = Brush.radialGradient(
+                    colors = listOf(
+                        AuroraEmerald.copy(alpha = 0.18f),
+                        AuroraIndigo.copy(alpha = 0.06f),
+                        Color.Transparent
+                    ),
+                    center = Offset(c3X, c3Y),
+                    radius = w * 0.80f
+                )
+            )
+        }
+
+        content()
+    }
+}
+
+/**
+ * Luxury Frosted Glass Card with 1px Specular White Highlight Border
  */
 @Composable
 fun LuxuryGlassCard(
@@ -130,16 +221,16 @@ fun LuxuryGlassCard(
     content: @Composable () -> Unit
 ) {
     val isDark = isSystemInDarkTheme()
-    val borderBrush = if (isDark) AndreaGlassBorderDark else AndreaGlassBorderLight
-    val containerBg = if (isDark) ObsidianElevated.copy(alpha = 0.90f) else Color.White
+    val borderBrush = if (isDark) SpecularBorderWhite else SpecularBorderSubtle
+    val containerBg = if (isDark) DarkGlass.copy(alpha = 0.82f) else Color.White.copy(alpha = 0.92f)
 
     Box(
         modifier = modifier
             .shadow(
-                elevation = if (isDark) 8.dp else 4.dp,
+                elevation = 14.dp,
                 shape = RoundedCornerShape(cornerRadius),
-                ambientColor = if (isDark) Color.Black.copy(alpha = 0.6f) else Color(0xFF6366F1).copy(alpha = 0.08f),
-                spotColor = if (isDark) Color.Black.copy(alpha = 0.6f) else Color(0xFF6366F1).copy(alpha = 0.08f)
+                ambientColor = Color.Black.copy(alpha = 0.7f),
+                spotColor = AuroraCyan.copy(alpha = 0.15f)
             )
             .clip(RoundedCornerShape(cornerRadius))
             .background(containerBg)
@@ -154,7 +245,7 @@ fun LuxuryGlassCard(
 }
 
 /**
- * Bespoke Geometric Brand Monogram Logo
+ * High-Contrast Luxury Brand Logo
  */
 @Composable
 fun BespokeLogo(
@@ -165,29 +256,29 @@ fun BespokeLogo(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Monogram Icon Box with Specular Border
+        // Monogram Badge with Specular Border & Shimmer
         Box(
             modifier = Modifier
-                .size(if (isLarge) 64.dp else 48.dp)
+                .size(if (isLarge) 68.dp else 50.dp)
                 .shadow(
-                    elevation = 16.dp,
-                    shape = RoundedCornerShape(18.dp),
-                    ambientColor = ElectricCyan.copy(alpha = 0.4f),
-                    spotColor = RoyalSapphire.copy(alpha = 0.4f)
+                    elevation = 20.dp,
+                    shape = RoundedCornerShape(20.dp),
+                    ambientColor = Color.White.copy(alpha = 0.35f),
+                    spotColor = AuroraCyan.copy(alpha = 0.5f)
                 )
-                .clip(RoundedCornerShape(18.dp))
-                .background(AndreaElectricGradient)
+                .clip(RoundedCornerShape(20.dp))
+                .background(JetBlack)
                 .border(
                     width = 1.5.dp,
-                    color = Color.White.copy(alpha = 0.35f),
-                    shape = RoundedCornerShape(18.dp)
+                    brush = SpecularBorderWhite,
+                    shape = RoundedCornerShape(20.dp)
                 ),
             contentAlignment = Alignment.Center
         ) {
             Icon(
                 imageVector = Icons.Default.Domain,
                 contentDescription = "Andrea CRM Logo",
-                tint = Color.White,
+                tint = PureWhite,
                 modifier = Modifier.size(if (isLarge) 34.dp else 26.dp)
             )
         }
@@ -199,22 +290,22 @@ fun BespokeLogo(
                 text = "ANDREA",
                 style = if (isLarge) MaterialTheme.typography.headlineMedium else MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Black,
-                letterSpacing = 1.sp,
-                color = MaterialTheme.colorScheme.onBackground
+                letterSpacing = 1.5.sp,
+                color = PureWhite
             )
-            Spacer(Modifier.width(6.dp))
+            Spacer(Modifier.width(8.dp))
             Surface(
                 shape = RoundedCornerShape(6.dp),
-                color = ElectricCyan.copy(alpha = 0.15f),
-                border = androidx.compose.foundation.BorderStroke(1.dp, ElectricCyan.copy(alpha = 0.4f))
+                color = PureWhite,
+                border = androidx.compose.foundation.BorderStroke(1.dp, Color.White.copy(alpha = 0.8f))
             ) {
                 Text(
                     text = "CRM",
-                    style = MaterialTheme.typography.labelMedium,
+                    style = MaterialTheme.typography.labelSmall,
                     fontWeight = FontWeight.Black,
-                    letterSpacing = 1.5.sp,
-                    color = ElectricCyan,
-                    modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+                    letterSpacing = 2.sp,
+                    color = TextJetBlack,
+                    modifier = Modifier.padding(horizontal = 7.dp, vertical = 2.5.dp)
                 )
             }
         }
@@ -222,16 +313,16 @@ fun BespokeLogo(
         Spacer(Modifier.height(4.dp))
 
         Text(
-            text = "Enterprise Client Relationship Management",
+            text = "Enterprise Client Intelligence Platform",
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            letterSpacing = 0.3.sp
+            color = TextSilver,
+            letterSpacing = 0.5.sp
         )
     }
 }
 
 /**
- * Top-tier Action Button with 1px top specular highlight
+ * Pure White High-Contrast Tactical Primary Button
  */
 @Composable
 fun AndreaPrimaryButton(
@@ -241,7 +332,7 @@ fun AndreaPrimaryButton(
     enabled: Boolean = true,
     isLoading: Boolean = false,
     icon: ImageVector? = null,
-    gradient: Brush = AndreaElectricGradient,
+    gradient: Brush = WhiteToSilverGradient,
     height: Dp = 52.dp
 ) {
     Button(
@@ -251,15 +342,15 @@ fun AndreaPrimaryButton(
             .fillMaxWidth()
             .height(height)
             .shadow(
-                elevation = if (enabled) 8.dp else 0.dp,
+                elevation = if (enabled) 12.dp else 0.dp,
                 shape = RoundedCornerShape(14.dp),
-                ambientColor = ElectricCyan.copy(alpha = 0.35f),
-                spotColor = RoyalSapphire.copy(alpha = 0.35f)
+                ambientColor = Color.White.copy(alpha = 0.4f),
+                spotColor = Color.White.copy(alpha = 0.4f)
             ),
         shape = RoundedCornerShape(14.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = Color.Transparent,
-            disabledContainerColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f)
+            disabledContainerColor = Color.White.copy(alpha = 0.12f)
         ),
         contentPadding = androidx.compose.foundation.layout.PaddingValues(0.dp)
     ) {
@@ -269,20 +360,12 @@ fun AndreaPrimaryButton(
                 .height(height)
                 .background(
                     if (enabled) gradient else Brush.linearGradient(
-                        listOf(
-                            MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f),
-                            MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f)
-                        )
+                        listOf(Color.White.copy(alpha = 0.2f), Color.White.copy(alpha = 0.2f))
                     )
                 )
                 .border(
                     width = 1.dp,
-                    brush = Brush.verticalGradient(
-                        listOf(
-                            Color.White.copy(alpha = 0.35f),
-                            Color.White.copy(alpha = 0.05f)
-                        )
-                    ),
+                    color = Color.White.copy(alpha = 0.6f),
                     shape = RoundedCornerShape(14.dp)
                 ),
             contentAlignment = Alignment.Center
@@ -290,7 +373,7 @@ fun AndreaPrimaryButton(
             if (isLoading) {
                 CircularProgressIndicator(
                     modifier = Modifier.size(24.dp),
-                    color = Color.White,
+                    color = TextJetBlack,
                     strokeWidth = 2.5.dp
                 )
             } else {
@@ -302,17 +385,17 @@ fun AndreaPrimaryButton(
                         Icon(
                             imageVector = icon,
                             contentDescription = null,
-                            tint = Color.White,
-                            modifier = Modifier.size(19.dp)
+                            tint = TextJetBlack,
+                            modifier = Modifier.size(20.dp)
                         )
                         Spacer(Modifier.width(8.dp))
                     }
                     Text(
                         text = text,
                         style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                        letterSpacing = 0.2.sp,
-                        color = Color.White
+                        fontWeight = FontWeight.Black,
+                        letterSpacing = 0.3.sp,
+                        color = TextJetBlack
                     )
                 }
             }
@@ -321,7 +404,7 @@ fun AndreaPrimaryButton(
 }
 
 /**
- * Modern Outlined Button with subtle specular outline
+ * Jet-Black Frosted Secondary Button with 1px Specular Border
  */
 @Composable
 fun AndreaOutlinedButton(
@@ -332,9 +415,6 @@ fun AndreaOutlinedButton(
     icon: ImageVector? = null,
     height: Dp = 48.dp
 ) {
-    val isDark = isSystemInDarkTheme()
-    val bgColor = if (isDark) ObsidianSurface.copy(alpha = 0.7f) else MaterialTheme.colorScheme.surface
-
     OutlinedButton(
         onClick = onClick,
         enabled = enabled,
@@ -343,12 +423,12 @@ fun AndreaOutlinedButton(
             .height(height),
         shape = RoundedCornerShape(14.dp),
         colors = ButtonDefaults.outlinedButtonColors(
-            containerColor = bgColor,
-            contentColor = MaterialTheme.colorScheme.onSurface
+            containerColor = DarkGlass.copy(alpha = 0.75f),
+            contentColor = PureWhite
         ),
         border = androidx.compose.foundation.BorderStroke(
             width = 1.dp,
-            brush = if (isDark) AndreaGlassBorderDark else AndreaGlassBorderLight
+            brush = SpecularBorderWhite
         )
     ) {
         Row(
@@ -359,7 +439,7 @@ fun AndreaOutlinedButton(
                 Icon(
                     imageVector = icon,
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
+                    tint = PureWhite,
                     modifier = Modifier.size(18.dp)
                 )
                 Spacer(Modifier.width(8.dp))
@@ -367,14 +447,15 @@ fun AndreaOutlinedButton(
             Text(
                 text = text,
                 style = MaterialTheme.typography.titleSmall,
-                fontWeight = FontWeight.SemiBold
+                fontWeight = FontWeight.Bold,
+                color = PureWhite
             )
         }
     }
 }
 
 /**
- * Linear-styled input field with glowing focus border and frosted container
+ * Luxury Linear/Obsidian Text Field
  */
 @Composable
 fun AndreaTextField(
@@ -394,14 +475,13 @@ fun AndreaTextField(
     errorMessage: String? = null
 ) {
     var passwordVisible by remember { mutableStateOf(false) }
-    val isDark = isSystemInDarkTheme()
 
     Column(modifier = modifier.fillMaxWidth()) {
         OutlinedTextField(
             value = value,
             onValueChange = onValueChange,
-            label = { Text(label, fontWeight = FontWeight.Medium) },
-            placeholder = placeholder?.let { { Text(it, color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.45f)) } },
+            label = { Text(label, fontWeight = FontWeight.SemiBold) },
+            placeholder = placeholder?.let { { Text(it, color = TextMuted) } },
             enabled = enabled,
             singleLine = singleLine,
             minLines = minLines,
@@ -415,7 +495,7 @@ fun AndreaTextField(
                     Icon(
                         imageVector = it,
                         contentDescription = null,
-                        tint = if (isError) MaterialTheme.colorScheme.error else ElectricCyan.copy(alpha = 0.85f),
+                        tint = if (isError) AuroraRose else PureWhite.copy(alpha = 0.85f),
                         modifier = Modifier.size(19.dp)
                     )
                 }
@@ -426,7 +506,7 @@ fun AndreaTextField(
                         Icon(
                             imageVector = if (passwordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility,
                             contentDescription = if (passwordVisible) "Ocultar senha" else "Mostrar senha",
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
+                            tint = TextSilver
                         )
                     }
                 } else if (value.isNotEmpty() && enabled) {
@@ -434,18 +514,22 @@ fun AndreaTextField(
                         Icon(
                             imageVector = Icons.Default.Close,
                             contentDescription = "Limpar texto",
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                            tint = TextSilver,
                             modifier = Modifier.size(18.dp)
                         )
                     }
                 }
             },
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = ElectricCyan,
-                unfocusedBorderColor = if (isDark) ObsidianBorder else MaterialTheme.colorScheme.outline.copy(alpha = 0.4f),
-                focusedContainerColor = if (isDark) ObsidianSurface.copy(alpha = 0.8f) else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
-                unfocusedContainerColor = if (isDark) ObsidianElevated.copy(alpha = 0.6f) else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.15f),
-                disabledContainerColor = if (isDark) ObsidianBase else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.08f)
+                focusedBorderColor = PureWhite,
+                unfocusedBorderColor = DarkGlassHighlight,
+                focusedContainerColor = DarkGlassElevated.copy(alpha = 0.85f),
+                unfocusedContainerColor = DarkGlass.copy(alpha = 0.70f),
+                disabledContainerColor = JetBlack,
+                focusedTextColor = TextPureWhite,
+                unfocusedTextColor = TextPearl,
+                focusedLabelColor = PureWhite,
+                unfocusedLabelColor = TextSilver
             ),
             modifier = Modifier.fillMaxWidth()
         )
@@ -455,7 +539,7 @@ fun AndreaTextField(
             Text(
                 text = errorMessage,
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.error,
+                color = AuroraRose,
                 modifier = Modifier.padding(start = 8.dp)
             )
         }
@@ -463,7 +547,7 @@ fun AndreaTextField(
 }
 
 /**
- * Pipeline Funnel Bar Widget (Bespoke CRM Widget)
+ * Pipeline Funnel Bar Widget
  */
 @Composable
 fun PipelineStageBar(
@@ -471,10 +555,10 @@ fun PipelineStageBar(
     modifier: Modifier = Modifier
 ) {
     val stages = listOf(
-        Triple("Leads", 0.35f, ElectricCyan),
-        Triple("Propostas", 0.25f, RoyalSapphire),
-        Triple("Negociação", 0.20f, VioletVibrant),
-        Triple("Fechado", 0.20f, EmeraldPulse)
+        Triple("Leads", 0.35f, AuroraCyan),
+        Triple("Propostas", 0.25f, AuroraIndigo),
+        Triple("Negociação", 0.20f, AuroraViolet),
+        Triple("Fechado", 0.20f, AuroraEmerald)
     )
 
     Column(modifier = modifier.fillMaxWidth()) {
@@ -484,16 +568,17 @@ fun PipelineStageBar(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "FUNIL DE RELACIONAMENTO",
+                text = "PIPELINE DE VENDAS",
                 style = MaterialTheme.typography.labelSmall,
-                fontWeight = FontWeight.Bold,
-                letterSpacing = 1.sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                fontWeight = FontWeight.Black,
+                letterSpacing = 1.5.sp,
+                color = PureWhite
             )
 
             Surface(
                 shape = RoundedCornerShape(50),
-                color = EmeraldPulse.copy(alpha = 0.15f)
+                color = AuroraEmerald.copy(alpha = 0.15f),
+                border = androidx.compose.foundation.BorderStroke(1.dp, AuroraEmerald.copy(alpha = 0.4f))
             ) {
                 Row(
                     modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
@@ -503,23 +588,23 @@ fun PipelineStageBar(
                         modifier = Modifier
                             .size(6.dp)
                             .clip(CircleShape)
-                            .background(EmeraldPulse)
+                            .background(AuroraEmerald)
                     )
                     Spacer(Modifier.width(5.dp))
                     Text(
                         text = "$activeCompaniesCount ativas",
                         style = MaterialTheme.typography.labelSmall,
-                        fontWeight = FontWeight.Bold,
-                        color = EmeraldPulse,
+                        fontWeight = FontWeight.Black,
+                        color = AuroraEmerald,
                         fontSize = 11.sp
                     )
                 }
             }
         }
 
-        Spacer(Modifier.height(10.dp))
+        Spacer(Modifier.height(12.dp))
 
-        // Segmented visual bar
+        // Progress Bar
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -537,9 +622,8 @@ fun PipelineStageBar(
             }
         }
 
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(10.dp))
 
-        // Stage labels
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
@@ -557,7 +641,7 @@ fun PipelineStageBar(
                         text = label,
                         style = MaterialTheme.typography.bodySmall,
                         fontSize = 10.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = TextSilver
                     )
                 }
             }
@@ -566,13 +650,13 @@ fun PipelineStageBar(
 }
 
 /**
- * Mini Activity Sparkline Chart (Compose Canvas Drawn)
+ * Mini Activity Sparkline Chart
  */
 @Composable
 fun MiniActivityChart(
     modifier: Modifier = Modifier
 ) {
-    val barValues = listOf(0.4f, 0.7f, 0.5f, 0.9f, 0.6f, 0.85f, 1.0f)
+    val barValues = listOf(0.35f, 0.65f, 0.50f, 0.90f, 0.60f, 0.85f, 1.0f)
     val days = listOf("Seg", "Ter", "Qua", "Qui", "Sex", "Sab", "Dom")
 
     Column(modifier = modifier.fillMaxWidth()) {
@@ -582,21 +666,21 @@ fun MiniActivityChart(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "ATIVIDADE SEMANAL",
+                text = "ATIVIDADE EM TEMPO REAL",
                 style = MaterialTheme.typography.labelSmall,
-                fontWeight = FontWeight.Bold,
-                letterSpacing = 1.sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                fontWeight = FontWeight.Black,
+                letterSpacing = 1.5.sp,
+                color = PureWhite
             )
             Text(
-                text = "+24% vs mês anterior",
+                text = "+28% esta semana",
                 style = MaterialTheme.typography.labelSmall,
                 fontWeight = FontWeight.Bold,
-                color = EmeraldPulse
+                color = AuroraEmerald
             )
         }
 
-        Spacer(Modifier.height(12.dp))
+        Spacer(Modifier.height(14.dp))
 
         Row(
             modifier = Modifier
@@ -616,9 +700,9 @@ fun MiniActivityChart(
                             .height((40 * value).dp)
                             .clip(RoundedCornerShape(topStart = 4.dp, topEnd = 4.dp))
                             .background(
-                                if (index == barValues.lastIndex) AndreaElectricGradient
+                                if (index == barValues.lastIndex) Brush.linearGradient(listOf(PureWhite, PureWhite))
                                 else Brush.verticalGradient(
-                                    listOf(ElectricCyan.copy(alpha = 0.6f), RoyalSapphire.copy(alpha = 0.3f))
+                                    listOf(Color.White.copy(alpha = 0.5f), Color.White.copy(alpha = 0.12f))
                                 )
                             )
                     )
@@ -627,7 +711,7 @@ fun MiniActivityChart(
                         text = days[index],
                         style = MaterialTheme.typography.bodySmall,
                         fontSize = 9.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = TextSilver
                     )
                 }
             }
@@ -636,7 +720,7 @@ fun MiniActivityChart(
 }
 
 /**
- * Holographic Corporate Pass (Live card shown on Form & Directory)
+ * Holographic Black & White Corporate Pass
  */
 @Composable
 fun CorporatePassHologram(
@@ -645,17 +729,14 @@ fun CorporatePassHologram(
     businessArea: String?,
     modifier: Modifier = Modifier
 ) {
-    val isDark = isSystemInDarkTheme()
-    val bgGradient = if (isDark) AndreaPassGradient else AndreaPassLightGradient
-
     Card(
         modifier = modifier
             .fillMaxWidth()
             .shadow(
-                elevation = 12.dp,
+                elevation = 16.dp,
                 shape = RoundedCornerShape(22.dp),
-                ambientColor = ElectricCyan.copy(alpha = 0.3f),
-                spotColor = RoyalSapphire.copy(alpha = 0.3f)
+                ambientColor = Color.White.copy(alpha = 0.2f),
+                spotColor = AuroraCyan.copy(alpha = 0.35f)
             ),
         shape = RoundedCornerShape(22.dp),
         colors = CardDefaults.cardColors(containerColor = Color.Transparent)
@@ -663,13 +744,13 @@ fun CorporatePassHologram(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(bgGradient)
+                .background(CorporatePassMonochrome)
                 .border(
                     width = 1.2.dp,
-                    brush = if (isDark) AndreaGlassBorderDark else AndreaGlassBorderLight,
+                    brush = SpecularBorderWhite,
                     shape = RoundedCornerShape(22.dp)
                 )
-                .padding(20.dp)
+                .padding(22.dp)
         ) {
             Column {
                 Row(
@@ -680,32 +761,32 @@ fun CorporatePassHologram(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Box(
                             modifier = Modifier
-                                .size(36.dp)
+                                .size(38.dp)
                                 .clip(RoundedCornerShape(10.dp))
-                                .background(AndreaElectricGradient),
+                                .background(PureWhite),
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
                                 text = companyName.take(1).uppercase().ifEmpty { "A" },
                                 style = MaterialTheme.typography.titleMedium,
-                                fontWeight = FontWeight.Bold,
-                                color = Color.White
+                                fontWeight = FontWeight.Black,
+                                color = TextJetBlack
                             )
                         }
-                        Spacer(Modifier.width(10.dp))
+                        Spacer(Modifier.width(12.dp))
                         Column {
                             Text(
                                 text = "CORPORATE PASS",
                                 style = MaterialTheme.typography.labelSmall,
-                                fontWeight = FontWeight.Bold,
-                                letterSpacing = 1.2.sp,
-                                color = ElectricCyan
+                                fontWeight = FontWeight.Black,
+                                letterSpacing = 1.5.sp,
+                                color = PureWhite
                             )
                             Text(
-                                text = "ID VERIFICADO",
+                                text = "ENTIDADE AUTENTICADA",
                                 style = MaterialTheme.typography.bodySmall,
                                 fontSize = 9.sp,
-                                color = EmeraldPulse
+                                color = AuroraEmerald
                             )
                         }
                     }
@@ -713,23 +794,23 @@ fun CorporatePassHologram(
                     Icon(
                         imageVector = Icons.Default.Verified,
                         contentDescription = null,
-                        tint = ElectricCyan,
+                        tint = PureWhite,
                         modifier = Modifier.size(24.dp)
                     )
                 }
 
-                Spacer(Modifier.height(18.dp))
+                Spacer(Modifier.height(20.dp))
 
                 Text(
-                    text = companyName.ifEmpty { "Nome da Empresa" },
+                    text = companyName.ifEmpty { "Razão Social da Empresa" },
                     style = MaterialTheme.typography.headlineSmall,
-                    fontWeight = FontWeight.Bold,
-                    color = if (isDark) Color.White else TextWhiteHigh.copy(alpha = 0.95f),
+                    fontWeight = FontWeight.Black,
+                    color = PureWhite,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
 
-                Spacer(Modifier.height(6.dp))
+                Spacer(Modifier.height(8.dp))
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -737,9 +818,9 @@ fun CorporatePassHologram(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = if (!cnpj.isNullOrBlank()) "CNPJ: $cnpj" else "CNPJ: Em aberto",
+                        text = if (!cnpj.isNullOrBlank()) "CNPJ: $cnpj" else "CNPJ: Não informado",
                         style = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace),
-                        color = if (isDark) TextWhiteMedium else MaterialTheme.colorScheme.onSurfaceVariant
+                        color = TextSilver
                     )
 
                     if (!businessArea.isNullOrBlank()) {
@@ -761,8 +842,6 @@ fun CompanyCorporateCard(
     onDeleteClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val isDark = isSystemInDarkTheme()
-
     LuxuryGlassCard(
         modifier = modifier
             .fillMaxWidth()
@@ -795,18 +874,17 @@ fun CompanyCorporateCard(
                         text = company.companyName,
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface,
+                        color = PureWhite,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         modifier = Modifier.weight(1f, fill = false)
                     )
 
-                    // Active indicator dot
                     Box(
                         modifier = Modifier
                             .size(7.dp)
                             .clip(CircleShape)
-                            .background(EmeraldPulse)
+                            .background(AuroraEmerald)
                     )
                 }
 
@@ -827,14 +905,14 @@ fun CompanyCorporateCard(
                         Icon(
                             imageVector = Icons.Default.Email,
                             contentDescription = null,
-                            tint = ElectricCyan.copy(alpha = 0.8f),
+                            tint = PureWhite.copy(alpha = 0.7f),
                             modifier = Modifier.size(13.dp)
                         )
                         Spacer(Modifier.width(6.dp))
                         Text(
                             text = email,
                             style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            color = TextSilver,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
                         )
@@ -846,14 +924,14 @@ fun CompanyCorporateCard(
                         Icon(
                             imageVector = Icons.Default.Phone,
                             contentDescription = null,
-                            tint = EmeraldPulse.copy(alpha = 0.8f),
+                            tint = AuroraEmerald,
                             modifier = Modifier.size(13.dp)
                         )
                         Spacer(Modifier.width(6.dp))
                         Text(
                             text = phone,
                             style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            color = TextSilver,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
                         )
@@ -867,14 +945,12 @@ fun CompanyCorporateCard(
                 modifier = Modifier
                     .size(34.dp)
                     .clip(RoundedCornerShape(8.dp))
-                    .background(
-                        if (isDark) DarkErrorBg.copy(alpha = 0.5f) else LightErrorBg
-                    )
+                    .background(DarkErrorBg)
             ) {
                 Icon(
                     imageVector = Icons.Default.Delete,
                     contentDescription = "Excluir empresa",
-                    tint = RosePulse,
+                    tint = AuroraRose,
                     modifier = Modifier.size(16.dp)
                 )
             }
@@ -893,30 +969,20 @@ fun CompanyAvatar(
 ) {
     val initial = name.trim().take(1).uppercase().ifEmpty { "A" }
 
-    val gradients = listOf(
-        listOf(Color(0xFF06B6D4), Color(0xFF6366F1)), // Cyan - Sapphire
-        listOf(Color(0xFF6366F1), Color(0xFF8B5CF6)), // Sapphire - Violet
-        listOf(Color(0xFF10B981), Color(0xFF06B6D4)), // Emerald - Cyan
-        listOf(Color(0xFFF59E0B), Color(0xFFF43F5E)), // Amber - Rose
-        listOf(Color(0xFFEC4899), Color(0xFF8B5CF6))  // Magenta - Violet
-    )
-    val colorIndex = abs(name.hashCode()) % gradients.size
-    val gradient = Brush.linearGradient(gradients[colorIndex])
-
     Box(
         modifier = modifier
             .size(size)
-            .shadow(6.dp, RoundedCornerShape(14.dp))
+            .shadow(8.dp, RoundedCornerShape(14.dp))
             .clip(RoundedCornerShape(14.dp))
-            .background(gradient)
-            .border(1.dp, Color.White.copy(alpha = 0.25f), RoundedCornerShape(14.dp)),
+            .background(PureWhite)
+            .border(1.dp, Color.White.copy(alpha = 0.4f), RoundedCornerShape(14.dp)),
         contentAlignment = Alignment.Center
     ) {
         Text(
             text = initial,
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Black,
-            color = Color.White
+            color = TextJetBlack
         )
     }
 }
@@ -929,53 +995,18 @@ fun CategoryBadge(
     area: String,
     modifier: Modifier = Modifier
 ) {
-    val isDark = isSystemInDarkTheme()
-
-    val (bgColor, textColor, borderCol) = when (area.lowercase()) {
-        "tecnologia", "tech", "ti", "software" -> Triple(
-            if (isDark) Color(0xFF0E2A47) else Color(0xFFE0F2FE),
-            if (isDark) ElectricCyan else Color(0xFF0284C7),
-            ElectricCyan.copy(alpha = 0.4f)
-        )
-        "financeiro", "fintech", "banco", "investimentos" -> Triple(
-            if (isDark) Color(0xFF1E1B4B) else Color(0xFFEEF2FF),
-            if (isDark) RoyalSapphire else Color(0xFF4F46E5),
-            RoyalSapphire.copy(alpha = 0.4f)
-        )
-        "saúde", "health", "medicina" -> Triple(
-            if (isDark) Color(0xFF064E3B) else Color(0xFFD1FAE5),
-            if (isDark) EmeraldGlow else Color(0xFF059669),
-            EmeraldGlow.copy(alpha = 0.4f)
-        )
-        "consultoria", "consulting" -> Triple(
-            if (isDark) Color(0xFF2E1065) else Color(0xFFF3E8FF),
-            if (isDark) VioletVibrant else Color(0xFF7C3AED),
-            VioletVibrant.copy(alpha = 0.4f)
-        )
-        "comércio", "varejo", "loja" -> Triple(
-            if (isDark) Color(0xFF451A03) else Color(0xFFFEF3C7),
-            if (isDark) AmberGlow else Color(0xFFB45309),
-            AmberGlow.copy(alpha = 0.4f)
-        )
-        else -> Triple(
-            MaterialTheme.colorScheme.surfaceVariant,
-            MaterialTheme.colorScheme.onSurfaceVariant,
-            MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
-        )
-    }
-
     Surface(
         shape = RoundedCornerShape(6.dp),
-        color = bgColor,
-        border = androidx.compose.foundation.BorderStroke(1.dp, borderCol),
+        color = DarkGlassElevated,
+        border = androidx.compose.foundation.BorderStroke(1.dp, SpecularBorderSubtle),
         modifier = modifier
     ) {
         Text(
             text = area,
             style = MaterialTheme.typography.labelSmall,
             fontWeight = FontWeight.Bold,
-            color = textColor,
-            modifier = Modifier.padding(horizontal = 7.dp, vertical = 2.5.dp)
+            color = PureWhite,
+            modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp)
         )
     }
 }
@@ -989,19 +1020,17 @@ fun AndreaStatusBanner(
     type: BannerType = BannerType.ERROR,
     modifier: Modifier = Modifier
 ) {
-    val isDark = isSystemInDarkTheme()
-
     val (bg, fg, icon) = when (type) {
-        BannerType.ERROR -> Triple(if (isDark) DarkErrorBg else LightErrorBg, if (isDark) DarkErrorFg else LightErrorFg, Icons.Default.Error)
-        BannerType.SUCCESS -> Triple(if (isDark) DarkSuccessBg else LightSuccessBg, if (isDark) DarkSuccessFg else LightSuccessFg, Icons.Default.CheckCircle)
-        BannerType.WARNING -> Triple(if (isDark) DarkWarningBg else LightWarningBg, if (isDark) DarkWarningFg else LightWarningFg, Icons.Default.Warning)
-        BannerType.INFO -> Triple(if (isDark) Color(0xFF0E2A47) else Color(0xFFE0F2FE), if (isDark) ElectricCyan else Color(0xFF0284C7), Icons.Default.Info)
+        BannerType.ERROR -> Triple(DarkErrorBg, DarkErrorFg, Icons.Default.Error)
+        BannerType.SUCCESS -> Triple(DarkSuccessBg, DarkSuccessFg, Icons.Default.CheckCircle)
+        BannerType.WARNING -> Triple(DarkWarningBg, DarkWarningFg, Icons.Default.Warning)
+        BannerType.INFO -> Triple(DarkGlassElevated, PureWhite, Icons.Default.Info)
     }
 
     Surface(
         shape = RoundedCornerShape(12.dp),
         color = bg,
-        border = androidx.compose.foundation.BorderStroke(1.dp, fg.copy(alpha = 0.3f)),
+        border = androidx.compose.foundation.BorderStroke(1.dp, fg.copy(alpha = 0.35f)),
         modifier = modifier.fillMaxWidth()
     ) {
         Row(
@@ -1018,7 +1047,7 @@ fun AndreaStatusBanner(
             Text(
                 text = message,
                 style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Medium,
+                fontWeight = FontWeight.Bold,
                 color = fg
             )
         }

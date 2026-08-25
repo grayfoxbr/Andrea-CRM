@@ -10,7 +10,6 @@ import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,20 +26,13 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Business
-import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.Key
-import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Security
-import androidx.compose.material.icons.filled.Shield
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -60,7 +52,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
@@ -68,23 +59,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.appauthbase.theme.AndreaAmbientGlowDark
-import com.example.appauthbase.theme.AndreaAmbientGlowLight
-import com.example.appauthbase.theme.AndreaElectricGradient
-import com.example.appauthbase.theme.AndreaGlassBorderDark
-import com.example.appauthbase.theme.AndreaGlassBorderLight
-import com.example.appauthbase.theme.AndreaPrimaryGradient
-import com.example.appauthbase.theme.ElectricCyan
-import com.example.appauthbase.theme.EmeraldPulse
-import com.example.appauthbase.theme.ObsidianBase
-import com.example.appauthbase.theme.ObsidianBorder
-import com.example.appauthbase.theme.ObsidianElevated
-import com.example.appauthbase.theme.ObsidianSurface
-import com.example.appauthbase.theme.RosePulse
-import com.example.appauthbase.theme.RoyalSapphire
-import com.example.appauthbase.theme.TextWhiteHigh
-import com.example.appauthbase.theme.TextWhiteLow
-import com.example.appauthbase.theme.TextWhiteMedium
+import com.example.appauthbase.theme.AuroraEmerald
+import com.example.appauthbase.theme.AuroraRose
+import com.example.appauthbase.theme.DarkGlass
+import com.example.appauthbase.theme.DarkGlassElevated
+import com.example.appauthbase.theme.DarkGlassHighlight
+import com.example.appauthbase.theme.JetBlack
+import com.example.appauthbase.theme.PitchDark
+import com.example.appauthbase.theme.PureWhite
+import com.example.appauthbase.theme.SpecularBorderSubtle
+import com.example.appauthbase.theme.SpecularBorderWhite
+import com.example.appauthbase.theme.TextJetBlack
+import com.example.appauthbase.theme.TextPureWhite
+import com.example.appauthbase.theme.TextSilver
 import com.example.appauthbase.theme.AppAuthBaseTheme
 
 @Preview(showBackground = true)
@@ -108,72 +95,58 @@ fun HomeContent(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
-    val isDark = isSystemInDarkTheme()
     var isTokenExpanded by remember { mutableStateOf(false) }
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Surface(
-                            shape = RoundedCornerShape(10.dp),
-                            color = ElectricCyan.copy(alpha = 0.12f),
-                            border = androidx.compose.foundation.BorderStroke(1.dp, ElectricCyan.copy(alpha = 0.35f))
-                        ) {
-                            Row(
-                                modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp),
-                                verticalAlignment = Alignment.CenterVertically
+    AnimatedAuroraBackground(modifier = modifier) {
+        Scaffold(
+            containerColor = Color.Transparent,
+            topBar = {
+                TopAppBar(
+                    title = {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Surface(
+                                shape = RoundedCornerShape(10.dp),
+                                color = DarkGlass.copy(alpha = 0.85f),
+                                border = androidx.compose.foundation.BorderStroke(1.dp, SpecularBorderWhite)
                             ) {
-                                Box(
-                                    modifier = Modifier
-                                        .size(7.dp)
-                                        .clip(CircleShape)
-                                        .background(EmeraldPulse)
-                                )
-                                Spacer(Modifier.width(6.dp))
-                                Text(
-                                    text = "ANDREA CRM • PROD",
-                                    style = MaterialTheme.typography.labelSmall,
-                                    fontWeight = FontWeight.Bold,
-                                    letterSpacing = 1.sp,
-                                    color = ElectricCyan
-                                )
+                                Row(
+                                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Box(
+                                        modifier = Modifier
+                                            .size(7.dp)
+                                            .clip(CircleShape)
+                                            .background(AuroraEmerald)
+                                    )
+                                    Spacer(Modifier.width(8.dp))
+                                    Text(
+                                        text = "ANDREA CRM • COMMAND",
+                                        style = MaterialTheme.typography.labelSmall,
+                                        fontWeight = FontWeight.Black,
+                                        letterSpacing = 1.5.sp,
+                                        color = PureWhite
+                                    )
+                                }
                             }
                         }
-                    }
-                },
-                actions = {
-                    IconButton(onClick = onLogout) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ExitToApp,
-                            contentDescription = "Encerrar Sessão",
-                            tint = RosePulse
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.background,
-                    titleContentColor = MaterialTheme.colorScheme.onBackground
+                    },
+                    actions = {
+                        IconButton(onClick = onLogout) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.ExitToApp,
+                                contentDescription = "Encerrar Sessão",
+                                tint = AuroraRose
+                            )
+                        }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = Color.Transparent,
+                        titleContentColor = PureWhite
+                    )
                 )
-            )
-        }
-    ) { padding ->
-        Box(
-            modifier = modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background)
-        ) {
-            // Ambient Radial Glow
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(350.dp)
-                    .background(if (isDark) AndreaAmbientGlowDark else AndreaAmbientGlowLight)
-            )
-
+            }
+        ) { padding ->
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -192,76 +165,77 @@ fun HomeContent(
                             text = "Painel Executivo",
                             style = MaterialTheme.typography.headlineSmall,
                             fontWeight = FontWeight.Black,
-                            color = MaterialTheme.colorScheme.onBackground
+                            color = PureWhite
                         )
                         Text(
-                            text = "Gestão de carteira e sincronização OAuth2",
+                            text = "Gestão de pipeline e clientes corporativos",
                             style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            color = TextSilver
                         )
                     }
 
-                    // Online user avatar
+                    // Online user avatar (Crisp Black & White)
                     Box(
                         modifier = Modifier
-                            .size(44.dp)
-                            .shadow(6.dp, CircleShape)
+                            .size(46.dp)
+                            .shadow(10.dp, CircleShape)
                             .clip(CircleShape)
-                            .background(AndreaElectricGradient),
+                            .background(PureWhite)
+                            .border(1.dp, Color.White.copy(alpha = 0.5f), CircleShape),
                         contentAlignment = Alignment.Center
                     ) {
                         Icon(
                             imageVector = Icons.Default.Person,
                             contentDescription = null,
-                            tint = Color.White,
+                            tint = TextJetBlack,
                             modifier = Modifier.size(24.dp)
                         )
                     }
                 }
 
-                Spacer(Modifier.height(20.dp))
+                Spacer(Modifier.height(22.dp))
 
                 // Funnel & Pipeline Stage Widget
                 LuxuryGlassCard {
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(18.dp)
+                            .padding(20.dp)
                     ) {
                         PipelineStageBar(activeCompaniesCount = 12)
                     }
                 }
 
-                Spacer(Modifier.height(14.dp))
+                Spacer(Modifier.height(16.dp))
 
                 // Weekly Activity Chart Widget
                 LuxuryGlassCard {
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(18.dp)
+                            .padding(20.dp)
                     ) {
                         MiniActivityChart()
                     }
                 }
 
-                Spacer(Modifier.height(20.dp))
+                Spacer(Modifier.height(22.dp))
 
-                // Main CTA Button
+                // High Contrast CTA Button (Pure White on Jet Black)
                 AndreaPrimaryButton(
                     text = "Acessar Diretório de Empresas",
                     icon = Icons.Default.Business,
                     onClick = onCompaniesClick
                 )
 
-                Spacer(Modifier.height(20.dp))
+                Spacer(Modifier.height(22.dp))
 
                 // Session Security Inspector (Collapsible)
                 LuxuryGlassCard {
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(18.dp)
+                            .padding(20.dp)
                     ) {
                         Row(
                             modifier = Modifier
@@ -273,15 +247,15 @@ fun HomeContent(
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Box(
                                     modifier = Modifier
-                                        .size(32.dp)
+                                        .size(34.dp)
                                         .clip(RoundedCornerShape(8.dp))
-                                        .background(ElectricCyan.copy(alpha = 0.15f)),
+                                        .background(PureWhite),
                                     contentAlignment = Alignment.Center
                                 ) {
                                     Icon(
                                         imageVector = Icons.Default.Key,
                                         contentDescription = null,
-                                        tint = ElectricCyan,
+                                        tint = TextJetBlack,
                                         modifier = Modifier.size(18.dp)
                                     )
                                 }
@@ -290,14 +264,14 @@ fun HomeContent(
                                     Text(
                                         text = "Credenciais OAuth2 / JWT",
                                         style = MaterialTheme.typography.titleSmall,
-                                        fontWeight = FontWeight.Bold,
-                                        color = MaterialTheme.colorScheme.onSurface
+                                        fontWeight = FontWeight.Black,
+                                        color = PureWhite
                                     )
                                     Text(
-                                        text = "Bearer Token Ativo • OpenID Connect",
+                                        text = "Bearer Token Criptografado • Ativo",
                                         style = MaterialTheme.typography.bodySmall,
                                         fontSize = 11.sp,
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                        color = TextSilver
                                     )
                                 }
                             }
@@ -305,7 +279,7 @@ fun HomeContent(
                             Icon(
                                 imageVector = if (isTokenExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
                                 contentDescription = null,
-                                tint = MaterialTheme.colorScheme.onSurfaceVariant
+                                tint = PureWhite
                             )
                         }
 
@@ -314,28 +288,27 @@ fun HomeContent(
                             enter = expandVertically(),
                             exit = shrinkVertically()
                         ) {
-                            Column(modifier = Modifier.padding(top = 14.dp)) {
-                                HorizontalDivider(
-                                    color = if (isDark) ObsidianBorder else MaterialTheme.colorScheme.outline.copy(alpha = 0.2f)
-                                )
-                                Spacer(Modifier.height(12.dp))
+                            Column(modifier = Modifier.padding(top = 16.dp)) {
+                                HorizontalDivider(color = DarkGlassHighlight)
+                                Spacer(Modifier.height(14.dp))
 
                                 Surface(
                                     shape = RoundedCornerShape(10.dp),
-                                    color = if (isDark) ObsidianBase else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f),
+                                    color = JetBlack,
+                                    border = androidx.compose.foundation.BorderStroke(1.dp, SpecularBorderSubtle),
                                     modifier = Modifier.fillMaxWidth()
                                 ) {
                                     Text(
                                         text = accessToken ?: "Token não disponível",
                                         style = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace),
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                        color = TextSilver,
                                         maxLines = 4,
-                                        modifier = Modifier.padding(12.dp)
+                                        modifier = Modifier.padding(14.dp)
                                     )
                                 }
 
                                 if (!accessToken.isNullOrBlank()) {
-                                    Spacer(Modifier.height(10.dp))
+                                    Spacer(Modifier.height(12.dp))
                                     Row(
                                         modifier = Modifier.fillMaxWidth(),
                                         horizontalArrangement = Arrangement.End
@@ -343,12 +316,12 @@ fun HomeContent(
                                         AndreaOutlinedButton(
                                             text = "Copiar Token",
                                             icon = Icons.Default.ContentCopy,
-                                            height = 38.dp,
+                                            height = 40.dp,
                                             onClick = {
                                                 val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                                                 val clip = ClipData.newPlainText("Access Token", accessToken)
                                                 clipboard.setPrimaryClip(clip)
-                                                Toast.makeText(context, "Token copiado para a área de transferência!", Toast.LENGTH_SHORT).show()
+                                                Toast.makeText(context, "Token copiado com sucesso!", Toast.LENGTH_SHORT).show()
                                             }
                                         )
                                     }
@@ -358,7 +331,7 @@ fun HomeContent(
                     }
                 }
 
-                Spacer(Modifier.height(20.dp))
+                Spacer(Modifier.height(24.dp))
             }
         }
     }

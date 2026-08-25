@@ -2,13 +2,9 @@ package com.example.appauthbase.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -27,18 +23,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.appauthbase.theme.AndreaGlassBorderDark
-import com.example.appauthbase.theme.AndreaGlassBorderLight
+import com.example.appauthbase.theme.AuroraRose
 import com.example.appauthbase.theme.DarkErrorBg
-import com.example.appauthbase.theme.DarkErrorFg
-import com.example.appauthbase.theme.LightErrorBg
-import com.example.appauthbase.theme.LightErrorFg
-import com.example.appauthbase.theme.ObsidianElevated
-import com.example.appauthbase.theme.RosePulse
+import com.example.appauthbase.theme.DarkGlass
+import com.example.appauthbase.theme.PureWhite
+import com.example.appauthbase.theme.SpecularBorderWhite
+import com.example.appauthbase.theme.TextPureWhite
+import com.example.appauthbase.theme.TextSilver
 import com.example.appauthbase.theme.AppAuthBaseTheme
 
 @Preview(showBackground = true)
@@ -54,31 +48,29 @@ fun DeleteCompanyDialog(
     onConfirm: () -> Unit,
     onDismiss: () -> Unit
 ) {
-    val isDark = isSystemInDarkTheme()
-
     AlertDialog(
         onDismissRequest = onDismiss,
         shape = RoundedCornerShape(22.dp),
-        containerColor = if (isDark) ObsidianElevated else Color.White,
+        containerColor = DarkGlass,
         modifier = Modifier.border(
             width = 1.dp,
-            brush = if (isDark) AndreaGlassBorderDark else AndreaGlassBorderLight,
+            brush = SpecularBorderWhite,
             shape = RoundedCornerShape(22.dp)
         ),
         icon = {
             Box(
                 modifier = Modifier
-                    .size(52.dp)
+                    .size(54.dp)
                     .clip(CircleShape)
-                    .background(if (isDark) DarkErrorBg else LightErrorBg)
-                    .border(1.dp, RosePulse.copy(alpha = 0.3f), CircleShape),
+                    .background(DarkErrorBg)
+                    .border(1.dp, AuroraRose.copy(alpha = 0.4f), CircleShape),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     imageVector = Icons.Default.DeleteForever,
                     contentDescription = null,
-                    tint = RosePulse,
-                    modifier = Modifier.size(26.dp)
+                    tint = AuroraRose,
+                    modifier = Modifier.size(28.dp)
                 )
             }
         },
@@ -86,15 +78,15 @@ fun DeleteCompanyDialog(
             Text(
                 text = "Excluir Entidade Corporativa",
                 style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onSurface
+                fontWeight = FontWeight.Black,
+                color = PureWhite
             )
         },
         text = {
             Text(
                 text = "Esta ação removerá permanentemente todos os registros, contatos e histórico associados a esta conta no Andrea CRM.",
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = TextSilver
             )
         },
         confirmButton = {
@@ -102,13 +94,13 @@ fun DeleteCompanyDialog(
                 onClick = onConfirm,
                 shape = RoundedCornerShape(12.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = RosePulse,
-                    contentColor = Color.White
+                    containerColor = AuroraRose,
+                    contentColor = PureWhite
                 )
             ) {
                 Text(
                     text = "Excluir Definitivamente",
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Black
                 )
             }
         },
@@ -120,7 +112,8 @@ fun DeleteCompanyDialog(
                 Text(
                     text = "Cancelar",
                     style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    fontWeight = FontWeight.Bold,
+                    color = TextSilver
                 )
             }
         }

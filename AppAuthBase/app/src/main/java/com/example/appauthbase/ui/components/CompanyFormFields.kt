@@ -1,7 +1,6 @@
 package com.example.appauthbase.ui.components
 
 import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -36,13 +35,11 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.appauthbase.presentation.CompanyFormUiState
-import com.example.appauthbase.theme.ElectricCyan
-import com.example.appauthbase.theme.ObsidianBorder
-import com.example.appauthbase.theme.ObsidianElevated
+import com.example.appauthbase.theme.DarkGlassElevated
+import com.example.appauthbase.theme.DarkGlassHighlight
+import com.example.appauthbase.theme.PureWhite
+import com.example.appauthbase.theme.TextJetBlack
 
-/**
- * Clean linear-style fields of the company form organized in clear visual cards.
- */
 @Composable
 fun CompanyFormFields(
     uiState: CompanyFormUiState,
@@ -55,7 +52,6 @@ fun CompanyFormFields(
     modifier: Modifier = Modifier
 ) {
     val enabled = !uiState.isSaving
-    val isDark = isSystemInDarkTheme()
 
     Column(modifier = modifier.fillMaxWidth()) {
         // Section 1: Dados Legais & Razão Social
@@ -63,7 +59,7 @@ fun CompanyFormFields(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(18.dp)
+                    .padding(20.dp)
             ) {
                 FormSectionHeader(icon = Icons.Default.Business, title = "IDENTIFICAÇÃO CORPORATIVA")
 
@@ -100,7 +96,7 @@ fun CompanyFormFields(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(18.dp)
+                    .padding(20.dp)
             ) {
                 FormSectionHeader(icon = Icons.Default.Work, title = "SEGMENTO & MERCADO")
 
@@ -131,17 +127,23 @@ fun CompanyFormFields(
                         FilterChip(
                             selected = isSelected,
                             onClick = { if (enabled) onBusinessAreaChange(suggestion) },
-                            label = { Text(suggestion, fontSize = 12.sp) },
+                            label = {
+                                Text(
+                                    text = suggestion,
+                                    fontSize = 12.sp,
+                                    fontWeight = if (isSelected) FontWeight.Black else FontWeight.Medium,
+                                    color = if (isSelected) TextJetBlack else PureWhite
+                                )
+                            },
                             shape = RoundedCornerShape(8.dp),
                             colors = FilterChipDefaults.filterChipColors(
-                                selectedContainerColor = ElectricCyan.copy(alpha = 0.2f),
-                                selectedLabelColor = ElectricCyan,
-                                containerColor = if (isDark) ObsidianElevated else MaterialTheme.colorScheme.surface
+                                selectedContainerColor = PureWhite,
+                                containerColor = DarkGlassElevated.copy(alpha = 0.8f)
                             ),
                             border = FilterChipDefaults.filterChipBorder(
                                 enabled = true,
                                 selected = isSelected,
-                                borderColor = if (isSelected) ElectricCyan else if (isDark) ObsidianBorder else MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
+                                borderColor = if (isSelected) PureWhite else DarkGlassHighlight
                             )
                         )
                     }
@@ -156,7 +158,7 @@ fun CompanyFormFields(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(18.dp)
+                    .padding(20.dp)
             ) {
                 FormSectionHeader(icon = Icons.Default.Email, title = "CANAIS DE CONTATO")
 
@@ -193,7 +195,7 @@ fun CompanyFormFields(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(18.dp)
+                    .padding(20.dp)
             ) {
                 FormSectionHeader(icon = Icons.Default.Description, title = "OBSERVAÇÕES E NOTAS")
 
@@ -223,7 +225,7 @@ private fun FormSectionHeader(icon: ImageVector, title: String) {
         Icon(
             imageVector = icon,
             contentDescription = null,
-            tint = ElectricCyan,
+            tint = PureWhite,
             modifier = Modifier.size(16.dp)
         )
         Spacer(Modifier.width(8.dp))
@@ -231,8 +233,8 @@ private fun FormSectionHeader(icon: ImageVector, title: String) {
             text = title,
             style = MaterialTheme.typography.labelSmall,
             fontWeight = FontWeight.Black,
-            letterSpacing = 1.sp,
-            color = ElectricCyan
+            letterSpacing = 1.5.sp,
+            color = PureWhite
         )
     }
 }

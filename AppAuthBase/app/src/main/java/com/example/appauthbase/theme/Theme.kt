@@ -10,80 +10,81 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 private val DarkColorScheme = darkColorScheme(
-    primary = ElectricCyan,
-    onPrimary = ObsidianBase,
-    primaryContainer = ObsidianSurfaceHighlight,
-    onPrimaryContainer = ElectricCyanLight,
+    primary = PureWhite,
+    onPrimary = TextJetBlack,
+    primaryContainer = DarkGlassElevated,
+    onPrimaryContainer = PureWhite,
 
-    secondary = RoyalSapphireLight,
-    onSecondary = ObsidianBase,
-    secondaryContainer = ObsidianSurface,
-    onSecondaryContainer = RoyalSapphireLight,
+    secondary = AuroraCyan,
+    onSecondary = TextJetBlack,
+    secondaryContainer = DarkGlass,
+    onSecondaryContainer = AuroraCyan,
 
-    tertiary = EmeraldGlow,
-    onTertiary = ObsidianBase,
-    tertiaryContainer = DarkSuccessBg,
-    onTertiaryContainer = EmeraldGlow,
+    tertiary = AuroraViolet,
+    onTertiary = TextJetBlack,
+    tertiaryContainer = DarkGlassElevated,
+    onTertiaryContainer = AuroraViolet,
 
-    background = ObsidianBase,
-    onBackground = TextWhiteHigh,
+    background = JetBlack,
+    onBackground = TextPureWhite,
 
-    surface = ObsidianElevated,
-    onSurface = TextWhiteHigh,
-    surfaceVariant = ObsidianSurface,
-    onSurfaceVariant = TextWhiteMedium,
+    surface = PitchDark,
+    onSurface = TextPureWhite,
+    surfaceVariant = DarkGlass,
+    onSurfaceVariant = TextSilver,
 
-    error = RosePulse,
-    onError = TextWhiteHigh,
+    error = AuroraRose,
+    onError = PureWhite,
     errorContainer = DarkErrorBg,
     onErrorContainer = DarkErrorFg,
 
-    outline = ObsidianBorder,
-    outlineVariant = ObsidianBorderSubtle
+    outline = DarkGlassHighlight,
+    outlineVariant = DarkGlassElevated
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = RoyalSapphireDark,
+    primary = TextJetBlack,
     onPrimary = PureWhite,
-    primaryContainer = SlateSurfaceVariantLight,
-    onPrimaryContainer = RoyalSapphireDark,
+    primaryContainer = Color(0xFFF1F5F9),
+    onPrimaryContainer = TextJetBlack,
 
-    secondary = ElectricCyanDark,
+    secondary = AuroraIndigo,
     onSecondary = PureWhite,
-    secondaryContainer = SlateSurfaceVariantLight,
-    onSecondaryContainer = ElectricCyanDark,
+    secondaryContainer = Color(0xFFE2E8F0),
+    onSecondaryContainer = AuroraIndigo,
 
-    tertiary = EmeraldDark,
+    tertiary = AuroraEmerald,
     onTertiary = PureWhite,
-    tertiaryContainer = LightSuccessBg,
-    onTertiaryContainer = LightSuccessFg,
+    tertiaryContainer = Color(0xFFD1FAE5),
+    onTertiaryContainer = AuroraEmerald,
 
-    background = SnowBackground,
-    onBackground = TextDarkHigh,
+    background = Color(0xFFF8FAFC),
+    onBackground = TextJetBlack,
 
-    surface = SlateSurfaceLight,
-    onSurface = TextDarkHigh,
-    surfaceVariant = SlateSurfaceVariantLight,
-    onSurfaceVariant = TextDarkMedium,
+    surface = PureWhite,
+    onSurface = TextJetBlack,
+    surfaceVariant = Color(0xFFF1F5F9),
+    onSurfaceVariant = TextDarkGray,
 
-    error = RosePulse,
+    error = AuroraRose,
     onError = PureWhite,
-    errorContainer = LightErrorBg,
-    onErrorContainer = LightErrorFg,
+    errorContainer = Color(0xFFFFE4E6),
+    onErrorContainer = Color(0xFFE11D48),
 
-    outline = SlateBorderLight,
-    outlineVariant = SlateBorderSubtleLight
+    outline = Color(0xFFE2E8F0),
+    outlineVariant = Color(0xFFCBD5E1)
 )
 
 @Composable
 fun AppAuthBaseTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    dynamicColor: Boolean = false, // Preserve brand identity
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit,
 ) {
     val colorScheme = when {
