@@ -117,9 +117,9 @@ val setupGatewayAdbReverse by tasks.registering {
             "adb"
         }
         listOf(8080, 8081, 8082).forEach { port ->
-            exec {
-                commandLine(adbPath, "reverse", "tcp:$port", "tcp:$port")
-                isIgnoreExitValue = true
+            try {
+                ProcessBuilder(adbPath, "reverse", "tcp:$port", "tcp:$port").start().waitFor()
+            } catch (_: Exception) {
             }
         }
     }
