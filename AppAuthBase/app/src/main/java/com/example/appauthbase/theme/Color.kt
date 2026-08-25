@@ -3,83 +3,113 @@ package com.example.appauthbase.theme
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
-// Primary Brand Colors (Indigo & Royal Violet)
-val AndreaPrimary = Color(0xFF6366F1)
-val AndreaPrimaryDark = Color(0xFF4F46E5)
-val AndreaPrimaryLight = Color(0xFF818CF8)
-val AndreaPrimaryContainerLight = Color(0xFFEEF2FF)
-val AndreaPrimaryContainerDark = Color(0xFF1E1B4B)
+// Obsidian & Deep Space Theme (Linear / Stripe Luxury Aesthetic)
+val ObsidianBase = Color(0xFF08090C)
+val ObsidianElevated = Color(0xFF0E121A)
+val ObsidianSurface = Color(0xFF141A24)
+val ObsidianSurfaceHighlight = Color(0xFF1C2432)
+val ObsidianBorder = Color(0xFF263245)
+val ObsidianBorderSubtle = Color(0xFF1E2736)
 
-// Secondary Colors (Teal & Cyan)
-val AndreaSecondary = Color(0xFF0EA5E9)
-val AndreaSecondaryDark = Color(0xFF0284C7)
-val AndreaSecondaryLight = Color(0xFF38BDF8)
-val AndreaSecondaryContainerLight = Color(0xFFE0F2FE)
-val AndreaSecondaryContainerDark = Color(0xFF082F49)
+// Light Minimalist Theme
+val PureWhite = Color(0xFFFFFFFF)
+val SnowBackground = Color(0xFFF8FAFC)
+val SlateSurfaceLight = Color(0xFFFFFFFF)
+val SlateSurfaceVariantLight = Color(0xFFF1F5F9)
+val SlateBorderLight = Color(0xFFE2E8F0)
+val SlateBorderSubtleLight = Color(0xFFEDF2F7)
 
-// Tertiary Accent (Violet / Magenta)
-val AndreaTertiary = Color(0xFF8B5CF6)
-val AndreaTertiaryDark = Color(0xFF7C3AED)
-val AndreaTertiaryLight = Color(0xFFA78BFA)
-val AndreaTertiaryContainerLight = Color(0xFFF3E8FF)
-val AndreaTertiaryContainerDark = Color(0xFF2E1065)
+// Electric & Neon Accent Palette
+val ElectricCyan = Color(0xFF06B6D4)
+val ElectricCyanLight = Color(0xFF22D3EE)
+val ElectricCyanDark = Color(0xFF0891B2)
 
-// Neutral & Backgrounds - Dark Theme
-val AndreaDarkBackground = Color(0xFF0B0F19)
-val AndreaDarkSurface = Color(0xFF111827)
-val AndreaDarkSurfaceVariant = Color(0xFF1F2937)
-val AndreaDarkCard = Color(0xFF172033)
-val AndreaDarkCardBorder = Color(0xFF25334D)
-val AndreaDarkOnBackground = Color(0xFFF8FAFC)
-val AndreaDarkOnSurface = Color(0xFFF1F5F9)
-val AndreaDarkOnSurfaceVariant = Color(0xFF94A3B8)
+val RoyalSapphire = Color(0xFF6366F1)
+val RoyalSapphireDark = Color(0xFF4F46E5)
+val RoyalSapphireLight = Color(0xFF818CF8)
 
-// Neutral & Backgrounds - Light Theme
-val AndreaLightBackground = Color(0xFFF8FAFC)
-val AndreaLightSurface = Color(0xFFFFFFFF)
-val AndreaLightSurfaceVariant = Color(0xFFF1F5F9)
-val AndreaLightCard = Color(0xFFFFFFFF)
-val AndreaLightCardBorder = Color(0xFFE2E8F0)
-val AndreaLightOnBackground = Color(0xFF0F172A)
-val AndreaLightOnSurface = Color(0xFF1E293B)
-val AndreaLightOnSurfaceVariant = Color(0xFF64748B)
+val EmeraldPulse = Color(0xFF10B981)
+val EmeraldGlow = Color(0xFF34D399)
+val EmeraldDark = Color(0xFF059669)
 
-// Status & Semantic Colors
-val AndreaSuccess = Color(0xFF10B981)
-val AndreaSuccessContainer = Color(0xFFD1FAE5)
-val AndreaSuccessDark = Color(0xFF065F46)
+val AmberGlow = Color(0xFFF59E0B)
+val RosePulse = Color(0xFFF43F5E)
+val VioletVibrant = Color(0xFF8B5CF6)
 
-val AndreaWarning = Color(0xFFF59E0B)
-val AndreaWarningContainer = Color(0xFFFEF3C7)
+// Text Colors
+val TextWhiteHigh = Color(0xFFF8FAFC)
+val TextWhiteMedium = Color(0xFF94A3B8)
+val TextWhiteLow = Color(0xFF64748B)
 
-val AndreaError = Color(0xFFEF4444)
-val AndreaErrorContainer = Color(0xFFFEE2E2)
-val AndreaErrorDarkContainer = Color(0xFF450A0A)
+val TextDarkHigh = Color(0xFF0F172A)
+val TextDarkMedium = Color(0xFF475569)
+val TextDarkLow = Color(0xFF94A3B8)
 
-val AndreaInfo = Color(0xFF3B82F6)
-val AndreaInfoContainer = Color(0xFFDBEAFE)
+// Status & Alert Containers
+val DarkSuccessBg = Color(0xFF064E3B)
+val DarkSuccessFg = Color(0xFF34D399)
+val LightSuccessBg = Color(0xFFD1FAE5)
+val LightSuccessFg = Color(0xFF059669)
 
-// Gradient Brushes
+val DarkErrorBg = Color(0xFF4C0519)
+val DarkErrorFg = Color(0xFFFB7185)
+val LightErrorBg = Color(0xFFFFE4E6)
+val LightErrorFg = Color(0xFFE11D48)
+
+val DarkWarningBg = Color(0xFF451A03)
+val DarkWarningFg = Color(0xFFFBBF24)
+val LightWarningBg = Color(0xFFFEF3C7)
+val LightWarningFg = Color(0xFFD97706)
+
+// Bespoke Gradients
+val AndreaElectricGradient = Brush.horizontalGradient(
+    listOf(Color(0xFF06B6D4), Color(0xFF6366F1), Color(0xFF8B5CF6))
+)
+
 val AndreaPrimaryGradient = Brush.horizontalGradient(
-    listOf(Color(0xFF6366F1), Color(0xFF8B5CF6))
+    listOf(Color(0xFF4F46E5), Color(0xFF6366F1), Color(0xFF06B6D4))
 )
 
-val AndreaAccentGradient = Brush.horizontalGradient(
-    listOf(Color(0xFF0EA5E9), Color(0xFF6366F1))
+val AndreaAccentGradient = Brush.linearGradient(
+    listOf(Color(0xFF06B6D4), Color(0xFF10B981))
 )
 
-val AndreaCardGradientDark = Brush.linearGradient(
-    listOf(Color(0xFF1E293B), Color(0xFF111827))
+val AndreaPassGradient = Brush.linearGradient(
+    listOf(Color(0xFF1E1B4B), Color(0xFF0F172A), Color(0xFF134E4A))
 )
 
-val AndreaCardGradientLight = Brush.linearGradient(
-    listOf(Color(0xFFFFFFFF), Color(0xFFF8FAFC))
+val AndreaPassLightGradient = Brush.linearGradient(
+    listOf(Color(0xFFEEF2FF), Color(0xFFF0FDF4), Color(0xFFE0F2FE))
 )
 
-val AndreaHeroGradientDark = Brush.verticalGradient(
-    listOf(Color(0xFF1E1B4B), Color(0xFF0B0F19))
+val AndreaGlassBorderDark = Brush.verticalGradient(
+    listOf(
+        Color.White.copy(alpha = 0.22f),
+        Color.White.copy(alpha = 0.05f),
+        Color.Transparent
+    )
 )
 
-val AndreaHeroGradientLight = Brush.verticalGradient(
-    listOf(Color(0xFFEEF2FF), Color(0xFFF8FAFC))
+val AndreaGlassBorderLight = Brush.verticalGradient(
+    listOf(
+        Color(0xFF6366F1).copy(alpha = 0.3f),
+        Color(0xFFE2E8F0),
+        Color(0xFFCBD5E1)
+    )
+)
+
+val AndreaAmbientGlowDark = Brush.radialGradient(
+    colors = listOf(
+        Color(0xFF6366F1).copy(alpha = 0.18f),
+        Color(0xFF06B6D4).copy(alpha = 0.08f),
+        Color.Transparent
+    )
+)
+
+val AndreaAmbientGlowLight = Brush.radialGradient(
+    colors = listOf(
+        Color(0xFF6366F1).copy(alpha = 0.10f),
+        Color(0xFF06B6D4).copy(alpha = 0.05f),
+        Color.Transparent
+    )
 )

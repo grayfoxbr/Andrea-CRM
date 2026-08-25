@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,10 +27,7 @@ import androidx.compose.material.icons.filled.PersonAdd
 import androidx.compose.material.icons.filled.Security
 import androidx.compose.material.icons.filled.Shield
 import androidx.compose.material.icons.filled.Speed
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Divider
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -47,11 +45,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.appauthbase.presentation.AuthStateData
-import com.example.appauthbase.theme.AndreaHeroGradientDark
-import com.example.appauthbase.theme.AndreaHeroGradientLight
-import com.example.appauthbase.theme.AndreaPrimary
-import com.example.appauthbase.theme.AndreaPrimaryGradient
-import com.example.appauthbase.theme.AndreaSuccess
+import com.example.appauthbase.theme.AndreaAmbientGlowDark
+import com.example.appauthbase.theme.AndreaAmbientGlowLight
+import com.example.appauthbase.theme.AndreaElectricGradient
+import com.example.appauthbase.theme.ElectricCyan
+import com.example.appauthbase.theme.EmeraldPulse
+import com.example.appauthbase.theme.ObsidianBorder
+import com.example.appauthbase.theme.RosePulse
+import com.example.appauthbase.theme.RoyalSapphire
 import com.example.appauthbase.theme.AppAuthBaseTheme
 
 @Preview(showBackground = true, name = "Logged Out")
@@ -72,7 +73,7 @@ private fun LoginContentLoggedOutPreview() {
 private fun LoginContentErrorPreview() {
     AppAuthBaseTheme {
         LoginContent(
-            uiState = AuthStateData(errorMessage = "Falha na autenticação com o servidor OAuth2."),
+            uiState = AuthStateData(errorMessage = "Credenciais inválidas ou sessão expirada."),
             onLoginClick = {},
             onRegisterClick = {},
             onLogoutClick = {}
@@ -114,72 +115,42 @@ fun LoginContent(
     onLogoutClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val isDark = isSystemInDarkTheme()
+
     Box(
         modifier = modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
     ) {
-        // Decorative ambient top glow
+        // Ambient Radial Glow
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(280.dp)
-                .background(
-                    Brush.verticalGradient(
-                        listOf(
-                            MaterialTheme.colorScheme.primary.copy(alpha = 0.12f),
-                            Color.Transparent
-                        )
-                    )
-                )
+                .height(400.dp)
+                .background(if (isDark) AndreaAmbientGlowDark else AndreaAmbientGlowLight)
         )
 
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .padding(horizontal = 24.dp, vertical = 36.dp),
+                .padding(horizontal = 24.dp, vertical = 32.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Spacer(Modifier.height(16.dp))
-
-            // Brand Header
-            AndreaLogoBadge(isLarge = true)
-
             Spacer(Modifier.height(12.dp))
 
-            Text(
-                text = "Gestão Estratégica & Relacionamento",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                textAlign = TextAlign.Center
-            )
+            // Bespoke Geometric Monogram Logo
+            BespokeLogo(isLarge = true)
 
             Spacer(Modifier.height(32.dp))
 
-            // Main Auth Card
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(24.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surface
-                ),
-                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-                border = CardDefaults.outlinedCardBorder().copy(
-                    brush = Brush.linearGradient(
-                        listOf(
-                            MaterialTheme.colorScheme.outline.copy(alpha = 0.4f),
-                            MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
-                        )
-                    ),
-                    width = 1.dp
-                )
-            ) {
+            // Main Glass Authentication Card
+            LuxuryGlassCard(cornerRadius = 24.dp) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(24.dp),
+                        .padding(26.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     when {
@@ -202,15 +173,15 @@ fun LoginContent(
 
             Spacer(Modifier.height(32.dp))
 
-            // Trust & Architecture Badges
+            // Architecture Trust Badges
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                SecurityPill(icon = Icons.Default.Shield, text = "OAuth2 + PKCE")
-                SecurityPill(icon = Icons.Default.Speed, text = "Spring WebFlux")
-                SecurityPill(icon = Icons.Default.CheckCircle, text = "JWT Protegido")
+                SecurityPill(icon = Icons.Default.Shield, text = "OAuth2.0 + PKCE")
+                SecurityPill(icon = Icons.Default.Speed, text = "Spring Gateway")
+                SecurityPill(icon = Icons.Default.CheckCircle, text = "Redis Cache")
             }
 
             Spacer(Modifier.height(16.dp))
@@ -227,19 +198,19 @@ private fun LoginLoadingSection() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         CircularProgressIndicator(
-            color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.size(48.dp),
+            color = ElectricCyan,
+            modifier = Modifier.size(46.dp),
             strokeWidth = 3.dp
         )
         Spacer(Modifier.height(20.dp))
         Text(
-            text = "Autenticando sessão...",
+            text = "Autenticando sessão segura...",
             style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.SemiBold
+            fontWeight = FontWeight.Bold
         )
         Spacer(Modifier.height(4.dp))
         Text(
-            text = "Conectando ao Andrea Auth Server",
+            text = "Validando tokens com Andrea Auth Server",
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
@@ -256,13 +227,13 @@ private fun LoggedInSection(onLogoutClick: () -> Unit) {
             modifier = Modifier
                 .size(60.dp)
                 .clip(CircleShape)
-                .background(AndreaSuccess.copy(alpha = 0.15f)),
+                .background(EmeraldPulse.copy(alpha = 0.15f)),
             contentAlignment = Alignment.Center
         ) {
             Icon(
                 imageVector = Icons.Default.CheckCircle,
                 contentDescription = null,
-                tint = AndreaSuccess,
+                tint = EmeraldPulse,
                 modifier = Modifier.size(36.dp)
             )
         }
@@ -278,7 +249,7 @@ private fun LoggedInSection(onLogoutClick: () -> Unit) {
         Spacer(Modifier.height(6.dp))
 
         Text(
-            text = "Você está conectado com sucesso ao Andrea CRM.",
+            text = "Credenciais autenticadas com sucesso.",
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center
@@ -299,9 +270,11 @@ private fun LoggedOutSection(
     onLoginClick: () -> Unit,
     onRegisterClick: () -> Unit
 ) {
+    val isDark = isSystemInDarkTheme()
+
     Column(modifier = Modifier.fillMaxWidth()) {
         Text(
-            text = "Acesse sua conta",
+            text = "Acesso Corporativo",
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onSurface
@@ -310,7 +283,7 @@ private fun LoggedOutSection(
         Spacer(Modifier.height(4.dp))
 
         Text(
-            text = "Conecte-se com sua identidade corporativa",
+            text = "Conecte-se com sua conta para gerenciar clientes",
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
@@ -336,7 +309,7 @@ private fun LoggedOutSection(
         ) {
             HorizontalDivider(
                 modifier = Modifier.weight(1f),
-                color = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
+                color = if (isDark) ObsidianBorder else MaterialTheme.colorScheme.outline.copy(alpha = 0.25f)
             )
             Text(
                 text = "OU",
@@ -346,7 +319,7 @@ private fun LoggedOutSection(
             )
             HorizontalDivider(
                 modifier = Modifier.weight(1f),
-                color = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
+                color = if (isDark) ObsidianBorder else MaterialTheme.colorScheme.outline.copy(alpha = 0.25f)
             )
         }
 
@@ -367,7 +340,8 @@ private fun SecurityPill(
 ) {
     Surface(
         shape = RoundedCornerShape(50),
-        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+        color = ElectricCyan.copy(alpha = 0.08f),
+        border = androidx.compose.foundation.BorderStroke(1.dp, ElectricCyan.copy(alpha = 0.25f)),
         modifier = Modifier.padding(horizontal = 2.dp)
     ) {
         Row(
@@ -377,15 +351,16 @@ private fun SecurityPill(
             Icon(
                 imageVector = icon,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(13.dp)
+                tint = ElectricCyan,
+                modifier = Modifier.size(12.dp)
             )
-            Spacer(Modifier.width(4.dp))
+            Spacer(Modifier.width(5.dp))
             Text(
                 text = text,
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                fontSize = 10.sp
+                fontSize = 10.sp,
+                fontWeight = FontWeight.SemiBold
             )
         }
     }

@@ -10,81 +10,80 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 private val DarkColorScheme = darkColorScheme(
-    primary = AndreaPrimary,
-    onPrimary = AndreaDarkOnBackground,
-    primaryContainer = AndreaPrimaryContainerDark,
-    onPrimaryContainer = AndreaPrimaryLight,
+    primary = ElectricCyan,
+    onPrimary = ObsidianBase,
+    primaryContainer = ObsidianSurfaceHighlight,
+    onPrimaryContainer = ElectricCyanLight,
 
-    secondary = AndreaSecondary,
-    onSecondary = AndreaDarkOnBackground,
-    secondaryContainer = AndreaSecondaryContainerDark,
-    onSecondaryContainer = AndreaSecondaryLight,
+    secondary = RoyalSapphireLight,
+    onSecondary = ObsidianBase,
+    secondaryContainer = ObsidianSurface,
+    onSecondaryContainer = RoyalSapphireLight,
 
-    tertiary = AndreaTertiary,
-    onTertiary = AndreaDarkOnBackground,
-    tertiaryContainer = AndreaTertiaryContainerDark,
-    onTertiaryContainer = AndreaTertiaryLight,
+    tertiary = EmeraldGlow,
+    onTertiary = ObsidianBase,
+    tertiaryContainer = DarkSuccessBg,
+    onTertiaryContainer = EmeraldGlow,
 
-    background = AndreaDarkBackground,
-    onBackground = AndreaDarkOnBackground,
+    background = ObsidianBase,
+    onBackground = TextWhiteHigh,
 
-    surface = AndreaDarkSurface,
-    onSurface = AndreaDarkOnSurface,
-    surfaceVariant = AndreaDarkSurfaceVariant,
-    onSurfaceVariant = AndreaDarkOnSurfaceVariant,
+    surface = ObsidianElevated,
+    onSurface = TextWhiteHigh,
+    surfaceVariant = ObsidianSurface,
+    onSurfaceVariant = TextWhiteMedium,
 
-    error = AndreaError,
-    onError = AndreaDarkOnBackground,
-    errorContainer = AndreaErrorDarkContainer,
-    onErrorContainer = AndreaError,
+    error = RosePulse,
+    onError = TextWhiteHigh,
+    errorContainer = DarkErrorBg,
+    onErrorContainer = DarkErrorFg,
 
-    outline = AndreaDarkCardBorder,
-    outlineVariant = AndreaDarkSurfaceVariant
+    outline = ObsidianBorder,
+    outlineVariant = ObsidianBorderSubtle
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = AndreaPrimaryDark,
-    onPrimary = AndreaLightSurface,
-    primaryContainer = AndreaPrimaryContainerLight,
-    onPrimaryContainer = AndreaPrimaryDark,
+    primary = RoyalSapphireDark,
+    onPrimary = PureWhite,
+    primaryContainer = SlateSurfaceVariantLight,
+    onPrimaryContainer = RoyalSapphireDark,
 
-    secondary = AndreaSecondaryDark,
-    onSecondary = AndreaLightSurface,
-    secondaryContainer = AndreaSecondaryContainerLight,
-    onSecondaryContainer = AndreaSecondaryDark,
+    secondary = ElectricCyanDark,
+    onSecondary = PureWhite,
+    secondaryContainer = SlateSurfaceVariantLight,
+    onSecondaryContainer = ElectricCyanDark,
 
-    tertiary = AndreaTertiaryDark,
-    onTertiary = AndreaLightSurface,
-    tertiaryContainer = AndreaTertiaryContainerLight,
-    onTertiaryContainer = AndreaTertiaryDark,
+    tertiary = EmeraldDark,
+    onTertiary = PureWhite,
+    tertiaryContainer = LightSuccessBg,
+    onTertiaryContainer = LightSuccessFg,
 
-    background = AndreaLightBackground,
-    onBackground = AndreaLightOnBackground,
+    background = SnowBackground,
+    onBackground = TextDarkHigh,
 
-    surface = AndreaLightSurface,
-    onSurface = AndreaLightOnSurface,
-    surfaceVariant = AndreaLightSurfaceVariant,
-    onSurfaceVariant = AndreaLightOnSurfaceVariant,
+    surface = SlateSurfaceLight,
+    onSurface = TextDarkHigh,
+    surfaceVariant = SlateSurfaceVariantLight,
+    onSurfaceVariant = TextDarkMedium,
 
-    error = AndreaError,
-    onError = AndreaLightSurface,
-    errorContainer = AndreaErrorContainer,
-    onErrorContainer = AndreaError,
+    error = RosePulse,
+    onError = PureWhite,
+    errorContainer = LightErrorBg,
+    onErrorContainer = LightErrorFg,
 
-    outline = AndreaLightCardBorder,
-    outlineVariant = AndreaLightSurfaceVariant
+    outline = SlateBorderLight,
+    outlineVariant = SlateBorderSubtleLight
 )
 
 @Composable
 fun AppAuthBaseTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    dynamicColor: Boolean = false, // Keep consistent brand identity by default
+    dynamicColor: Boolean = false, // Preserve brand identity
     content: @Composable () -> Unit,
 ) {
     val colorScheme = when {

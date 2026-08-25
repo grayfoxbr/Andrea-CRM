@@ -4,7 +4,9 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,7 +28,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Business
-import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.SearchOff
 import androidx.compose.material3.CircularProgressIndicator
@@ -34,7 +35,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -63,17 +63,26 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.appauthbase.data.remote.dto.CompanyDto
 import com.example.appauthbase.presentation.CompanyListUiState
-import com.example.appauthbase.theme.AndreaPrimary
-import com.example.appauthbase.theme.AndreaPrimaryGradient
+import com.example.appauthbase.theme.AndreaElectricGradient
+import com.example.appauthbase.theme.AndreaGlassBorderDark
+import com.example.appauthbase.theme.AndreaGlassBorderLight
+import com.example.appauthbase.theme.ElectricCyan
+import com.example.appauthbase.theme.EmeraldPulse
+import com.example.appauthbase.theme.ObsidianBase
+import com.example.appauthbase.theme.ObsidianBorder
+import com.example.appauthbase.theme.ObsidianElevated
+import com.example.appauthbase.theme.ObsidianSurface
+import com.example.appauthbase.theme.RoyalSapphire
 import com.example.appauthbase.theme.AppAuthBaseTheme
 
 private val FAKE_COMPANIES = listOf(
-    CompanyDto(companyId = 1, companyName = "Acme Inovações Ltda", businessArea = "Tecnologia", companyEmail = "contato@acme.com", companyPhoneNumber = "(11) 9988-7766"),
-    CompanyDto(companyId = 2, companyName = "Beta Capital Investimentos", businessArea = "Financeiro", companyEmail = "invest@betacapital.com", companyPhoneNumber = "(11) 3322-1100"),
-    CompanyDto(companyId = 3, companyName = "Gamma Soluções em Saúde", businessArea = "Saúde", companyEmail = "atendimento@gammasaude.com.br"),
-    CompanyDto(companyId = 4, companyName = "Delta Consultoria Empresarial", businessArea = "Consultoria", companyEmail = "projetos@deltaconsultoria.com")
+    CompanyDto(companyId = 1, companyName = "Acme Inovações Corporativas", businessArea = "Tecnologia", companyEmail = "contato@acme.com", companyPhoneNumber = "(11) 9988-7766"),
+    CompanyDto(companyId = 2, companyName = "Beta Capital Asset Management", businessArea = "Financeiro", companyEmail = "invest@betacapital.com", companyPhoneNumber = "(11) 3322-1100"),
+    CompanyDto(companyId = 3, companyName = "Gamma Health Solutions", businessArea = "Saúde", companyEmail = "atendimento@gammasaude.com.br"),
+    CompanyDto(companyId = 4, companyName = "Delta Strategic Advisory", businessArea = "Consultoria", companyEmail = "projetos@deltaconsultoria.com")
 )
 
 @Preview(showBackground = true, name = "Com dados")
@@ -133,6 +142,7 @@ fun CompanyListContent(
     modifier: Modifier = Modifier
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
+    val isDark = isSystemInDarkTheme()
     var companyPendingDelete by rememberSaveable { mutableStateOf<Long?>(null) }
     var searchQuery by rememberSaveable { mutableStateOf("") }
     var selectedCategory by rememberSaveable { mutableStateOf("Todas") }
@@ -144,7 +154,6 @@ fun CompanyListContent(
         }
     }
 
-    // Filter companies based on search and category
     val filteredCompanies = remember(uiState.companies, searchQuery, selectedCategory) {
         uiState.companies.filter { company ->
             val matchesQuery = searchQuery.isBlank() ||
@@ -165,21 +174,24 @@ fun CompanyListContent(
                 title = {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(
-                            text = "Empresas",
+                            text = "Diretório de Empresas",
                             style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.Bold
                         )
-                        Spacer(Modifier.width(8.dp))
+                        Spacer(Modifier.width(10.dp))
                         Surface(
-                            shape = RoundedCornerShape(12.dp),
-                            color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.7f)
+                            shape = RoundedCornerShape(8.dp),
+                            color = ElectricCyan.copy(alpha = 0.15f),
+                            border = androidx.compose.foundation.BorderStroke(1.dp, ElectricCyan.copy(alpha = 0.35f))
                         ) {
                             Text(
-                                text = "${uiState.companies.size}",
+                                text = "${uiState.companies.size} ENTIDADES",
                                 style = MaterialTheme.typography.labelSmall,
                                 fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.primary,
-                                modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp)
+                                color = ElectricCyan,
+                                fontSize = 10.sp,
+                                letterSpacing = 1.sp,
+                                modifier = Modifier.padding(horizontal = 7.dp, vertical = 2.5.dp)
                             )
                         }
                     }
@@ -193,8 +205,8 @@ fun CompanyListContent(
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surface,
-                    titleContentColor = MaterialTheme.colorScheme.onSurface
+                    containerColor = MaterialTheme.colorScheme.background,
+                    titleContentColor = MaterialTheme.colorScheme.onBackground
                 )
             )
         },
@@ -206,12 +218,12 @@ fun CompanyListContent(
                 shape = RoundedCornerShape(18.dp),
                 modifier = Modifier
                     .shadow(
-                        elevation = 8.dp,
+                        elevation = 12.dp,
                         shape = RoundedCornerShape(18.dp),
-                        ambientColor = AndreaPrimary.copy(alpha = 0.5f),
-                        spotColor = AndreaPrimary.copy(alpha = 0.5f)
+                        ambientColor = ElectricCyan.copy(alpha = 0.4f),
+                        spotColor = RoyalSapphire.copy(alpha = 0.4f)
                     )
-                    .background(AndreaPrimaryGradient, shape = RoundedCornerShape(18.dp)),
+                    .background(AndreaElectricGradient, shape = RoundedCornerShape(18.dp)),
                 icon = {
                     Icon(
                         imageVector = Icons.Default.Add,
@@ -224,6 +236,7 @@ fun CompanyListContent(
                         text = "Nova Empresa",
                         style = MaterialTheme.typography.labelLarge,
                         fontWeight = FontWeight.Bold,
+                        letterSpacing = 0.3.sp,
                         color = Color.White
                     )
                 }
@@ -234,8 +247,8 @@ fun CompanyListContent(
                 Snackbar(
                     snackbarData = data,
                     shape = RoundedCornerShape(12.dp),
-                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant
+                    containerColor = if (isDark) ObsidianSurface else MaterialTheme.colorScheme.surfaceVariant,
+                    contentColor = MaterialTheme.colorScheme.onSurface
                 )
             }
         }
@@ -251,19 +264,19 @@ fun CompanyListContent(
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                        .padding(horizontal = 16.dp, vertical = 6.dp)
                 ) {
                     AndreaTextField(
                         value = searchQuery,
                         onValueChange = { searchQuery = it },
-                        label = "Buscar empresas",
-                        placeholder = "Filtrar por nome, área ou e-mail...",
+                        label = "Buscar na base",
+                        placeholder = "Filtrar por razão social, setor ou e-mail...",
                         leadingIcon = Icons.Default.Search
                     )
 
                     Spacer(Modifier.height(8.dp))
 
-                    // Quick Category Filter Chips
+                    // Category Filter Chips
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -272,14 +285,21 @@ fun CompanyListContent(
                     ) {
                         val categories = listOf("Todas", "Tecnologia", "Financeiro", "Saúde", "Consultoria", "Comércio")
                         categories.forEach { category ->
+                            val isSelected = selectedCategory == category
                             FilterChip(
-                                selected = selectedCategory == category,
+                                selected = isSelected,
                                 onClick = { selectedCategory = category },
-                                label = { Text(category) },
+                                label = { Text(category, fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal) },
                                 shape = RoundedCornerShape(10.dp),
                                 colors = FilterChipDefaults.filterChipColors(
-                                    selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
-                                    selectedLabelColor = MaterialTheme.colorScheme.primary
+                                    selectedContainerColor = ElectricCyan.copy(alpha = 0.2f),
+                                    selectedLabelColor = ElectricCyan,
+                                    containerColor = if (isDark) ObsidianElevated else Color.White
+                                ),
+                                border = FilterChipDefaults.filterChipBorder(
+                                    enabled = true,
+                                    selected = isSelected,
+                                    borderColor = if (isSelected) ElectricCyan else if (isDark) ObsidianBorder else MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
                                 )
                             )
                         }
@@ -299,12 +319,12 @@ fun CompanyListContent(
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             CircularProgressIndicator(
-                                color = MaterialTheme.colorScheme.primary,
+                                color = ElectricCyan,
                                 strokeWidth = 3.dp
                             )
                             Spacer(Modifier.height(16.dp))
                             Text(
-                                text = "Carregando base de empresas...",
+                                text = "Sincronizando entidades corporativas...",
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
@@ -329,12 +349,12 @@ fun CompanyListContent(
                                 start = 16.dp,
                                 end = 16.dp,
                                 top = 8.dp,
-                                bottom = 88.dp // padding for Extended FAB
+                                bottom = 96.dp
                             ),
-                            verticalArrangement = Arrangement.spacedBy(12.dp)
+                            verticalArrangement = Arrangement.spacedBy(10.dp)
                         ) {
                             items(filteredCompanies, key = { it.companyId ?: -1 }) { company ->
-                                CompanyCard(
+                                CompanyCorporateCard(
                                     company = company,
                                     onClick = { company.companyId?.let(onCompanyClick) },
                                     onDeleteClick = { companyPendingDelete = company.companyId }
@@ -371,21 +391,22 @@ private fun EmptyCompaniesMessage(onAddClick: () -> Unit) {
             modifier = Modifier
                 .size(72.dp)
                 .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f)),
+                .background(ElectricCyan.copy(alpha = 0.12f))
+                .border(1.dp, ElectricCyan.copy(alpha = 0.3f), CircleShape),
             contentAlignment = Alignment.Center
         ) {
             Icon(
                 imageVector = Icons.Default.Business,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(36.dp)
+                tint = ElectricCyan,
+                modifier = Modifier.size(34.dp)
             )
         }
 
         Spacer(Modifier.height(20.dp))
 
         Text(
-            text = "Nenhuma empresa cadastrada",
+            text = "Base Corporativa Vazia",
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onBackground
@@ -394,7 +415,7 @@ private fun EmptyCompaniesMessage(onAddClick: () -> Unit) {
         Spacer(Modifier.height(8.dp))
 
         Text(
-            text = "Comece construindo sua base de clientes e parceiros corporativos.",
+            text = "Inicie o cadastro de contas, clientes e parceiros para alimentar o pipeline de vendas.",
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center
@@ -406,7 +427,7 @@ private fun EmptyCompaniesMessage(onAddClick: () -> Unit) {
             text = "Cadastrar Primeira Empresa",
             icon = Icons.Default.Add,
             onClick = onAddClick,
-            modifier = Modifier.width(260.dp)
+            modifier = Modifier.width(280.dp)
         )
     }
 }
@@ -434,14 +455,14 @@ private fun EmptySearchMessage(
                 imageVector = Icons.Default.SearchOff,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.size(32.dp)
+                modifier = Modifier.size(30.dp)
             )
         }
 
         Spacer(Modifier.height(16.dp))
 
         Text(
-            text = "Nenhum resultado encontrado",
+            text = "Nenhuma entidade encontrada",
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onBackground
@@ -450,7 +471,7 @@ private fun EmptySearchMessage(
         Spacer(Modifier.height(6.dp))
 
         Text(
-            text = "Não encontramos nenhuma empresa correspondente ao filtro.",
+            text = "Nenhum resultado corresponde aos critérios de pesquisa selecionados.",
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center
@@ -461,7 +482,7 @@ private fun EmptySearchMessage(
         AndreaOutlinedButton(
             text = "Limpar Filtros",
             onClick = onClearFilters,
-            modifier = Modifier.width(200.dp),
+            modifier = Modifier.width(180.dp),
             height = 42.dp
         )
     }

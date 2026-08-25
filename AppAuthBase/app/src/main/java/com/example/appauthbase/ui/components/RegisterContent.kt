@@ -1,6 +1,7 @@
 package com.example.appauthbase.ui.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,16 +18,12 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.PersonAdd
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,7 +33,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.appauthbase.presentation.RegisterUiState
-import com.example.appauthbase.theme.AndreaPrimary
+import com.example.appauthbase.theme.AndreaAmbientGlowDark
+import com.example.appauthbase.theme.AndreaAmbientGlowLight
+import com.example.appauthbase.theme.ElectricCyan
 import com.example.appauthbase.theme.AppAuthBaseTheme
 
 @Preview(showBackground = true, name = "Default")
@@ -125,38 +124,33 @@ fun RegisterContent(
     onBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val isDark = isSystemInDarkTheme()
+
     Box(
         modifier = modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
     ) {
-        // Decorative ambient top glow
+        // Ambient Radial Glow
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(260.dp)
-                .background(
-                    Brush.verticalGradient(
-                        listOf(
-                            MaterialTheme.colorScheme.primary.copy(alpha = 0.12f),
-                            Color.Transparent
-                        )
-                    )
-                )
+                .height(350.dp)
+                .background(if (isDark) AndreaAmbientGlowDark else AndreaAmbientGlowLight)
         )
 
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .padding(horizontal = 24.dp, vertical = 24.dp),
+                .padding(horizontal = 24.dp, vertical = 20.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Top Navigation Row
+            // Navigation Bar Row
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 8.dp),
+                    .padding(top = 4.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 IconButton(onClick = onBack) {
@@ -168,29 +162,13 @@ fun RegisterContent(
                 }
             }
 
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(4.dp))
 
-            AndreaLogoBadge()
+            BespokeLogo(isLarge = false)
 
-            Spacer(Modifier.height(28.dp))
+            Spacer(Modifier.height(26.dp))
 
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(24.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surface
-                ),
-                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-                border = CardDefaults.outlinedCardBorder().copy(
-                    brush = Brush.linearGradient(
-                        listOf(
-                            MaterialTheme.colorScheme.outline.copy(alpha = 0.4f),
-                            MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
-                        )
-                    ),
-                    width = 1.dp
-                )
-            ) {
+            LuxuryGlassCard(cornerRadius = 24.dp) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -206,12 +184,12 @@ fun RegisterContent(
                     Spacer(Modifier.height(4.dp))
 
                     Text(
-                        text = "Preencha os dados de acesso corporativo",
+                        text = "Informe seus dados de acesso corporativo",
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
 
-                    Spacer(Modifier.height(24.dp))
+                    Spacer(Modifier.height(22.dp))
 
                     RegisterForm(
                         email = email,
@@ -242,13 +220,13 @@ fun RegisterContent(
                     Spacer(Modifier.height(24.dp))
 
                     AndreaPrimaryButton(
-                        text = "Cadastrar",
+                        text = "Concluir Cadastro",
                         icon = Icons.Default.PersonAdd,
                         isLoading = uiState.loading,
                         onClick = onRegisterClick
                     )
 
-                    Spacer(Modifier.height(16.dp))
+                    Spacer(Modifier.height(14.dp))
 
                     TextButton(
                         onClick = onBack,
@@ -258,7 +236,7 @@ fun RegisterContent(
                             text = "Já possui uma conta? Entrar",
                             style = MaterialTheme.typography.bodyMedium,
                             fontWeight = FontWeight.SemiBold,
-                            color = MaterialTheme.colorScheme.primary
+                            color = ElectricCyan
                         )
                     }
                 }
