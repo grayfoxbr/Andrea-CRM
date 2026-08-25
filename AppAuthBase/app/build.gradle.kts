@@ -99,26 +99,27 @@ dependencies {
 
 }
 
+val localPropertiesFile = rootProject.file("local.properties")
+val sdkDirConfig: String? = if (localPropertiesFile.exists()) {
+    val properties = Properties()
+    localPropertiesFile.inputStream().use { properties.load(it) }
+    properties.getProperty("sdk.dir")
+} else {
+    System.getenv("ANDROID_HOME") ?: System.getenv("ANDROID_SDK_ROOT")
+}
+val resolvedAdbPath: String = if (!sdkDirConfig.isNullOrBlank()) {
+    File(sdkDirConfig, if (System.getProperty("os.name").lowercase().contains("windows")) "platform-tools/adb.exe" else "platform-tools/adb").absolutePath
+} else {
+    "adb"
+}
+
 val setupGatewayAdbReverse by tasks.registering {
     group = "custom"
     description = "Setup adb reverse ports 8080, 8081, 8082 for local dev"
     doLast {
-        val localPropertiesFile = project.rootProject.file("local.properties")
-        val sdkDir = if (localPropertiesFile.exists()) {
-            val properties = Properties()
-            localPropertiesFile.inputStream().use { properties.load(it) }
-            properties.getProperty("sdk.dir")
-        } else {
-            System.getenv("ANDROID_HOME") ?: System.getenv("ANDROID_SDK_ROOT")
-        }
-        val adbPath = if (!sdkDir.isNullOrBlank()) {
-            File(sdkDir, if (System.getProperty("os.name").lowercase().contains("windows")) "platform-tools/adb.exe" else "platform-tools/adb").absolutePath
-        } else {
-            "adb"
-        }
         listOf(8080, 8081, 8082).forEach { port ->
             try {
-                ProcessBuilder(adbPath, "reverse", "tcp:$port", "tcp:$port").start().waitFor()
+                ProcessBuilder(resolvedAdbPath, "reverse", "tcp:$port", "tcp:$port").start().waitFor()
             } catch (_: Exception) {
             }
         }
