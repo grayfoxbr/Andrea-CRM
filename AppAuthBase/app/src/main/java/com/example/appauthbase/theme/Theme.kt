@@ -15,70 +15,70 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
-private val DarkColorScheme = darkColorScheme(
-    primary = PureWhite,
-    onPrimary = TextJetBlack,
-    primaryContainer = DarkGlassElevated,
-    onPrimaryContainer = PureWhite,
+private val LightColorScheme = lightColorScheme(
+    primary = NeoYellow,
+    onPrimary = NeoBlack,
+    primaryContainer = NeoLime,
+    onPrimaryContainer = NeoBlack,
 
-    secondary = AuroraCyan,
-    onSecondary = TextJetBlack,
-    secondaryContainer = DarkGlass,
-    onSecondaryContainer = AuroraCyan,
+    secondary = NeoCyan,
+    onSecondary = NeoBlack,
+    secondaryContainer = NeoPurple,
+    onSecondaryContainer = NeoBlack,
 
-    tertiary = AuroraViolet,
-    onTertiary = TextJetBlack,
-    tertiaryContainer = DarkGlassElevated,
-    onTertiaryContainer = AuroraViolet,
+    tertiary = NeoPink,
+    onTertiary = NeoBlack,
+    tertiaryContainer = NeoOrange,
+    onTertiaryContainer = NeoBlack,
 
-    background = JetBlack,
-    onBackground = TextPureWhite,
+    background = NeoBackground,
+    onBackground = NeoTextDark,
 
-    surface = PitchDark,
-    onSurface = TextPureWhite,
-    surfaceVariant = DarkGlass,
-    onSurfaceVariant = TextSilver,
+    surface = NeoCardWhite,
+    onSurface = NeoTextDark,
+    surfaceVariant = Color(0xFFF4F4F5),
+    onSurfaceVariant = NeoTextMuted,
 
-    error = AuroraRose,
-    onError = PureWhite,
-    errorContainer = DarkErrorBg,
-    onErrorContainer = DarkErrorFg,
+    error = NeoPink,
+    onError = Color.White,
+    errorContainer = NeoErrorBg,
+    onErrorContainer = NeoBlack,
 
-    outline = DarkGlassHighlight,
-    outlineVariant = DarkGlassElevated
+    outline = NeoBlack,
+    outlineVariant = NeoBorderGray
 )
 
-private val LightColorScheme = lightColorScheme(
-    primary = TextJetBlack,
-    onPrimary = PureWhite,
-    primaryContainer = Color(0xFFF1F5F9),
-    onPrimaryContainer = TextJetBlack,
+private val DarkColorScheme = darkColorScheme(
+    primary = NeoYellow,
+    onPrimary = NeoBlack,
+    primaryContainer = NeoLime,
+    onPrimaryContainer = NeoBlack,
 
-    secondary = AuroraIndigo,
-    onSecondary = PureWhite,
-    secondaryContainer = Color(0xFFE2E8F0),
-    onSecondaryContainer = AuroraIndigo,
+    secondary = NeoCyan,
+    onSecondary = NeoBlack,
+    secondaryContainer = NeoPurple,
+    onSecondaryContainer = NeoBlack,
 
-    tertiary = AuroraEmerald,
-    onTertiary = PureWhite,
-    tertiaryContainer = Color(0xFFD1FAE5),
-    onTertiaryContainer = AuroraEmerald,
+    tertiary = NeoPink,
+    onTertiary = NeoBlack,
+    tertiaryContainer = NeoOrange,
+    onTertiaryContainer = NeoBlack,
 
-    background = Color(0xFFF8FAFC),
-    onBackground = TextJetBlack,
+    background = NeoBackgroundDark,
+    onBackground = Color.White,
 
-    surface = PureWhite,
-    onSurface = TextJetBlack,
-    surfaceVariant = Color(0xFFF1F5F9),
-    onSurfaceVariant = TextDarkGray,
+    surface = Color(0xFF27272A),
+    onSurface = Color.White,
+    surfaceVariant = Color(0xFF3F3F46),
+    onSurfaceVariant = Color(0xFFA1A1AA),
 
-    error = AuroraRose,
-    onError = PureWhite,
-    errorContainer = Color(0xFFFFE4E6),
-    onErrorContainer = Color(0xFFE11D48),
+    error = NeoPink,
+    onError = Color.White,
+    errorContainer = Color(0xFF881337),
+    onErrorContainer = Color.White,
 
-    outline = Color(0xFFE2E8F0),
-    outlineVariant = Color(0xFFCBD5E1)
+    outline = Color.White,
+    outlineVariant = Color(0xFF52525B)
 )
 
 @Composable
@@ -87,14 +87,7 @@ fun AppAuthBaseTheme(
     dynamicColor: Boolean = false,
     content: @Composable () -> Unit,
 ) {
-    val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
-    }
+    val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
 
     val view = LocalView.current
     if (!view.isInEditMode) {

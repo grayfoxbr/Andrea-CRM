@@ -35,10 +35,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.appauthbase.presentation.CompanyFormUiState
-import com.example.appauthbase.theme.DarkGlassElevated
-import com.example.appauthbase.theme.DarkGlassHighlight
-import com.example.appauthbase.theme.PureWhite
-import com.example.appauthbase.theme.TextJetBlack
+import com.example.appauthbase.theme.NeoBlack
+import com.example.appauthbase.theme.NeoCardWhite
+import com.example.appauthbase.theme.NeoYellow
 
 @Composable
 fun CompanyFormFields(
@@ -54,7 +53,7 @@ fun CompanyFormFields(
     val enabled = !uiState.isSaving
 
     Column(modifier = modifier.fillMaxWidth()) {
-        // Section 1: Dados Legais & Razão Social
+        // Section 1: Identificação Corporativa
         LuxuryGlassCard {
             Column(
                 modifier = Modifier
@@ -91,7 +90,7 @@ fun CompanyFormFields(
 
         Spacer(Modifier.height(16.dp))
 
-        // Section 2: Segmento de Atuação
+        // Section 2: Segmento de Mercado
         LuxuryGlassCard {
             Column(
                 modifier = Modifier
@@ -121,7 +120,7 @@ fun CompanyFormFields(
                         .horizontalScroll(rememberScrollState()),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    val suggestions = listOf("Tecnologia", "Financeiro", "Consultoria", "Saúde", "Comércio", "Indústria", "Educação")
+                    val suggestions = listOf("Tecnologia", "Financeiro", "Consultoria", "Saúde", "Comércio", "Indústria")
                     suggestions.forEach { suggestion ->
                         val isSelected = uiState.businessArea.equals(suggestion, ignoreCase = true)
                         FilterChip(
@@ -131,19 +130,20 @@ fun CompanyFormFields(
                                 Text(
                                     text = suggestion,
                                     fontSize = 12.sp,
-                                    fontWeight = if (isSelected) FontWeight.Black else FontWeight.Medium,
-                                    color = if (isSelected) TextJetBlack else PureWhite
+                                    fontWeight = if (isSelected) FontWeight.Black else FontWeight.Bold,
+                                    color = NeoBlack
                                 )
                             },
                             shape = RoundedCornerShape(8.dp),
                             colors = FilterChipDefaults.filterChipColors(
-                                selectedContainerColor = PureWhite,
-                                containerColor = DarkGlassElevated.copy(alpha = 0.8f)
+                                selectedContainerColor = NeoYellow,
+                                containerColor = NeoCardWhite
                             ),
                             border = FilterChipDefaults.filterChipBorder(
                                 enabled = true,
                                 selected = isSelected,
-                                borderColor = if (isSelected) PureWhite else DarkGlassHighlight
+                                borderColor = NeoBlack,
+                                borderWidth = 2.dp
                             )
                         )
                     }
@@ -153,7 +153,7 @@ fun CompanyFormFields(
 
         Spacer(Modifier.height(16.dp))
 
-        // Section 3: Canais de Comunicação
+        // Section 3: Contatos
         LuxuryGlassCard {
             Column(
                 modifier = Modifier
@@ -219,22 +219,20 @@ fun CompanyFormFields(
 
 @Composable
 private fun FormSectionHeader(icon: ImageVector, title: String) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically
-    ) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
         Icon(
             imageVector = icon,
             contentDescription = null,
-            tint = PureWhite,
-            modifier = Modifier.size(16.dp)
+            tint = NeoBlack,
+            modifier = Modifier.size(18.dp)
         )
         Spacer(Modifier.width(8.dp))
         Text(
             text = title,
             style = MaterialTheme.typography.labelSmall,
             fontWeight = FontWeight.Black,
-            letterSpacing = 1.5.sp,
-            color = PureWhite
+            letterSpacing = 1.sp,
+            color = NeoBlack
         )
     }
 }

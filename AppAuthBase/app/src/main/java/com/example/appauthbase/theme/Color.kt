@@ -1,78 +1,33 @@
 package com.example.appauthbase.theme
 
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
-// Pure Luxury Black & White / Obsidian Palette
-val JetBlack = Color(0xFF030406)
-val PitchDark = Color(0xFF080B10)
-val DarkGlass = Color(0xFF0E131C)
-val DarkGlassElevated = Color(0xFF151C28)
-val DarkGlassHighlight = Color(0xFF1F293B)
+// Neo-Brutalism Signature Palette (Inspired by Pop Brutalism & Folder Bento Cards)
+val NeoBackground = Color(0xFFFBF8EE)       // Warm Vanilla Cream Canvas
+val NeoBackgroundDark = Color(0xFF18181B)   // Dark Canvas
+val NeoCardWhite = Color(0xFFFFFFFF)        // Pure Card Surface
+val NeoBlack = Color(0xFF121212)            // Deep Ink Black (Borders & Hard Shadows)
+val NeoBlackPure = Color(0xFF000000)
 
-val PureWhite = Color(0xFFFFFFFF)
-val PearlWhite = Color(0xFFF8FAFC)
-val SilverMuted = Color(0xFF94A3B8)
-val DarkMuted = Color(0xFF64748B)
+// Vibrant Pop Accents (Folder Tabs, Action Buttons, Badges)
+val NeoYellow = Color(0xFFFFE043)           // Signature Pop Yellow (Buttons & Tabs)
+val NeoLime = Color(0xFFA3E635)             // Pop Lime Green
+val NeoPink = Color(0xFFFF6B8B)             // Pop Coral / Pink
+val NeoPurple = Color(0xFFC084FC)           // Pop Lavender / Violet
+val NeoCyan = Color(0xFF38BDF8)             // Pop Electric Cyan
+val NeoOrange = Color(0xFFFB923C)           // Pop Warm Orange
+val NeoEmerald = Color(0xFF34D399)          // Pop Emerald Green
 
-// Moving Aurora Colors (Cyan, Violet, Emerald, Rose)
-val AuroraCyan = Color(0xFF00E5FF)
-val AuroraViolet = Color(0xFF8B5CF6)
-val AuroraIndigo = Color(0xFF6366F1)
-val AuroraEmerald = Color(0xFF10B981)
-val AuroraRose = Color(0xFFF43F5E)
-val AuroraAmber = Color(0xFFF59E0B)
+// Neutral & Slate Tones
+val NeoTextDark = Color(0xFF121212)
+val NeoTextMuted = Color(0xFF52525B)
+val NeoBorderGray = Color(0xFFE4E4E7)
+val NeoShadowDark = Color(0xFF121212)
 
-// Text Colors
-val TextPureWhite = Color(0xFFFFFFFF)
-val TextPearl = Color(0xFFF1F5F9)
-val TextSilver = Color(0xFF94A3B8)
-val TextMuted = Color(0xFF64748B)
-
-val TextJetBlack = Color(0xFF030406)
-val TextDarkGray = Color(0xFF1E293B)
-
-// Status & Alert Containers
-val DarkSuccessBg = Color(0xFF052E16)
-val DarkSuccessFg = Color(0xFF34D399)
-val DarkErrorBg = Color(0xFF3F0713)
-val DarkErrorFg = Color(0xFFFB7185)
-val DarkWarningBg = Color(0xFF361803)
-val DarkWarningFg = Color(0xFFFBBF24)
-
-// Monochrome & High-Contrast Gradients
-val WhiteToSilverGradient = Brush.horizontalGradient(
-    listOf(Color(0xFFFFFFFF), Color(0xFFE2E8F0), Color(0xFFCBD5E1))
-)
-
-val BlackToObsidianGradient = Brush.verticalGradient(
-    listOf(Color(0xFF151C28), Color(0xFF080B10))
-)
-
-val AuroraShineGradient = Brush.horizontalGradient(
-    listOf(Color(0xFF00E5FF), Color(0xFF8B5CF6), Color(0xFF10B981))
-)
-
-val SpecularBorderWhite = Brush.verticalGradient(
-    listOf(
-        Color.White.copy(alpha = 0.35f),
-        Color.White.copy(alpha = 0.08f),
-        Color.Transparent
-    )
-)
-
-val SpecularBorderSubtle = Brush.verticalGradient(
-    listOf(
-        Color.White.copy(alpha = 0.20f),
-        Color.White.copy(alpha = 0.04f),
-        Color.Transparent
-    )
-)
-
-val CorporatePassMonochrome = Brush.linearGradient(
-    listOf(
-        Color(0xFF18202F),
-        Color(0xFF0A0E17),
-        Color(0xFF101724)
-    )
-)
+// Status Colors
+val NeoSuccessBg = Color(0xFFDCFCE7)
+val NeoSuccessBorder = Color(0xFF16A34A)
+val NeoErrorBg = Color(0xFFFFE4E6)
+val NeoErrorBorder = Color(0xFFE11D48)
+val NeoWarningBg = Color(0xFFFEF9C3)
+val NeoWarningBorder = Color(0xFFCA8A04)

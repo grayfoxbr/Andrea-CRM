@@ -1,7 +1,6 @@
 package com.example.appauthbase.ui.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,7 +17,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.PersonAdd
 import androidx.compose.material.icons.filled.Shield
@@ -40,15 +39,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.appauthbase.presentation.AuthStateData
-import com.example.appauthbase.theme.AuroraCyan
-import com.example.appauthbase.theme.AuroraEmerald
-import com.example.appauthbase.theme.DarkGlassElevated
-import com.example.appauthbase.theme.DarkGlassHighlight
-import com.example.appauthbase.theme.PureWhite
-import com.example.appauthbase.theme.SpecularBorderSubtle
-import com.example.appauthbase.theme.TextJetBlack
-import com.example.appauthbase.theme.TextPureWhite
-import com.example.appauthbase.theme.TextSilver
+import com.example.appauthbase.theme.NeoBackground
+import com.example.appauthbase.theme.NeoBlack
+import com.example.appauthbase.theme.NeoCardWhite
+import com.example.appauthbase.theme.NeoLime
+import com.example.appauthbase.theme.NeoTextDark
+import com.example.appauthbase.theme.NeoTextMuted
+import com.example.appauthbase.theme.NeoYellow
 import com.example.appauthbase.theme.AppAuthBaseTheme
 
 @Preview(showBackground = true, name = "Logged Out")
@@ -111,7 +108,11 @@ fun LoginContent(
     onLogoutClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    AnimatedAuroraBackground(modifier = modifier) {
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .background(NeoBackground)
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -122,17 +123,17 @@ fun LoginContent(
         ) {
             Spacer(Modifier.height(16.dp))
 
-            // Bespoke Monochrome Logo with Specular Ring
+            // Neo-Brutalist Brand Logo
             BespokeLogo(isLarge = true)
 
             Spacer(Modifier.height(36.dp))
 
-            // Luxury Frosted Glass Authentication Card
-            LuxuryGlassCard(cornerRadius = 24.dp) {
+            // Neo-Brutalist Authentication Card
+            LuxuryGlassCard(cornerRadius = 22.dp) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(28.dp),
+                        .padding(26.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     when {
@@ -155,15 +156,14 @@ fun LoginContent(
 
             Spacer(Modifier.height(32.dp))
 
-            // Security Badges (Black & White with specular border)
+            // Security Badges
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                SecurityPill(icon = Icons.Default.Shield, text = "OAuth2.0 + PKCE")
-                SecurityPill(icon = Icons.Default.Speed, text = "Spring Gateway")
-                SecurityPill(icon = Icons.Default.CheckCircle, text = "Redis Cache")
+                NeoSecurityPill(icon = Icons.Default.Shield, text = "OAuth2.0 + PKCE")
+                NeoSecurityPill(icon = Icons.Default.Speed, text = "Spring Gateway")
             }
 
             Spacer(Modifier.height(16.dp))
@@ -180,22 +180,23 @@ private fun LoginLoadingSection() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         CircularProgressIndicator(
-            color = PureWhite,
+            color = NeoBlack,
             modifier = Modifier.size(46.dp),
-            strokeWidth = 3.dp
+            strokeWidth = 3.5.dp
         )
         Spacer(Modifier.height(20.dp))
         Text(
             text = "Autenticando sessão segura...",
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Black,
-            color = PureWhite
+            color = NeoBlack
         )
         Spacer(Modifier.height(4.dp))
         Text(
             text = "Validando tokens com Andrea Auth Server",
             style = MaterialTheme.typography.bodySmall,
-            color = TextSilver
+            fontWeight = FontWeight.Bold,
+            color = NeoTextMuted
         )
     }
 }
@@ -210,13 +211,13 @@ private fun LoggedInSection(onLogoutClick: () -> Unit) {
             modifier = Modifier
                 .size(60.dp)
                 .clip(CircleShape)
-                .background(AuroraEmerald.copy(alpha = 0.2f)),
+                .background(NeoLime),
             contentAlignment = Alignment.Center
         ) {
             Icon(
-                imageVector = Icons.Default.CheckCircle,
+                imageVector = Icons.Default.Check,
                 contentDescription = null,
-                tint = AuroraEmerald,
+                tint = NeoBlack,
                 modifier = Modifier.size(36.dp)
             )
         }
@@ -227,15 +228,16 @@ private fun LoggedInSection(onLogoutClick: () -> Unit) {
             text = "Sessão Ativa",
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Black,
-            color = PureWhite
+            color = NeoBlack
         )
 
         Spacer(Modifier.height(6.dp))
 
         Text(
-            text = "Credenciais autenticadas com sucesso no servidor.",
+            text = "Credenciais autenticadas com sucesso.",
             style = MaterialTheme.typography.bodyMedium,
-            color = TextSilver,
+            fontWeight = FontWeight.Bold,
+            color = NeoTextMuted,
             textAlign = TextAlign.Center
         )
 
@@ -259,15 +261,16 @@ private fun LoggedOutSection(
             text = "Acesso Corporativo",
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Black,
-            color = PureWhite
+            color = NeoBlack
         )
 
         Spacer(Modifier.height(4.dp))
 
         Text(
-            text = "Autentique-se com sua conta para gerenciar entidades",
+            text = "Conecte-se para gerenciar sua carteira de clientes",
             style = MaterialTheme.typography.bodySmall,
-            color = TextSilver
+            fontWeight = FontWeight.Bold,
+            color = NeoTextMuted
         )
 
         if (errorMessage != null) {
@@ -275,9 +278,8 @@ private fun LoggedOutSection(
             AndreaStatusBanner(message = errorMessage, type = BannerType.ERROR)
         }
 
-        Spacer(Modifier.height(26.dp))
+        Spacer(Modifier.height(24.dp))
 
-        // High-Contrast Pure White CTA Button
         AndreaPrimaryButton(
             text = "Entrar com OAuth 2.0 / SSO",
             icon = Icons.Default.Lock,
@@ -292,17 +294,20 @@ private fun LoggedOutSection(
         ) {
             HorizontalDivider(
                 modifier = Modifier.weight(1f),
-                color = DarkGlassHighlight
+                color = NeoBlack,
+                thickness = 1.5.dp
             )
             Text(
                 text = "OU",
                 style = MaterialTheme.typography.labelSmall,
-                color = TextSilver,
+                fontWeight = FontWeight.Black,
+                color = NeoBlack,
                 modifier = Modifier.padding(horizontal = 12.dp)
             )
             HorizontalDivider(
                 modifier = Modifier.weight(1f),
-                color = DarkGlassHighlight
+                color = NeoBlack,
+                thickness = 1.5.dp
             )
         }
 
@@ -317,33 +322,33 @@ private fun LoggedOutSection(
 }
 
 @Composable
-private fun SecurityPill(
+private fun NeoSecurityPill(
     icon: androidx.compose.ui.graphics.vector.ImageVector,
     text: String
 ) {
     Surface(
-        shape = RoundedCornerShape(50),
-        color = DarkGlassElevated,
-        border = androidx.compose.foundation.BorderStroke(1.dp, SpecularBorderSubtle),
+        shape = RoundedCornerShape(10.dp),
+        color = NeoCardWhite,
+        border = androidx.compose.foundation.BorderStroke(2.dp, NeoBlack),
         modifier = Modifier.padding(horizontal = 2.dp)
     ) {
         Row(
-            modifier = Modifier.padding(horizontal = 8.dp, vertical = 5.dp),
+            modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
                 imageVector = icon,
                 contentDescription = null,
-                tint = PureWhite,
-                modifier = Modifier.size(12.dp)
+                tint = NeoBlack,
+                modifier = Modifier.size(14.dp)
             )
-            Spacer(Modifier.width(5.dp))
+            Spacer(Modifier.width(6.dp))
             Text(
                 text = text,
                 style = MaterialTheme.typography.labelSmall,
-                color = TextSilver,
-                fontSize = 10.sp,
-                fontWeight = FontWeight.Bold
+                color = NeoBlack,
+                fontSize = 11.sp,
+                fontWeight = FontWeight.Black
             )
         }
     }
